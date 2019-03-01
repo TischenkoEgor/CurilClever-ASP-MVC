@@ -12,6 +12,12 @@ namespace CurilClever2.Controllers
   [Authorize]
   public class HomeController : Controller
   {
+    private CleverDBContext db;
+
+    public HomeController(CleverDBContext _db)
+    {
+      db = _db;
+    }
     public IActionResult Index()
     {
       return View();
@@ -19,9 +25,12 @@ namespace CurilClever2.Controllers
 
     public IActionResult Hotels()
     {
+      return View(db.Hotels.ToList());
+    }
+    public IActionResult AddHotel()
+    {
       return View();
     }
-
     public IActionResult Clients()
     {
       return View();
