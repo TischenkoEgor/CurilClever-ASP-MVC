@@ -15,14 +15,14 @@ namespace CurilClever2.Models
             new User
             {
               name = "Admin",
-              passwordHash = CryptoHelper.GetMD5("123"),
-              accessLevel = 0
+              PasswordHash = CryptoHelper.GetMD5("123"),
+              AccessLevel = 0
             },
             new User
             {
               name = "Loh",
-              passwordHash = CryptoHelper.GetMD5("123"),
-              accessLevel = 9000
+              PasswordHash = CryptoHelper.GetMD5("123"),
+              AccessLevel = 9000
             }
         );
         context.SaveChanges();

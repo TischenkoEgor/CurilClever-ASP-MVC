@@ -40,10 +40,19 @@
             </div>
             <div class="contact_container">
                 <a id="calllink" href="http://localhost/index.php#">
-                <h4>заказать звонок</h4> </a>
+                    <h4>заказать звонок</h4>
+                </a>
                 <hr style="margin: 3px;">
                 <h5>+7 (654) 123 44 55</h5>
-                <p> вы вошли как admin <a href="logout">Выйти</a> </p>
+                @if (User.Identity.Name != null)
+                {
+                    <p> вы вошли как @User.Identity.Name @Html.ActionLink("Выход", "Logout", "Account", new { @class = "logout-link" }, null) </p>
+                }
+                else
+                {
+                    <p> Для работы с порталом <br /> авторизуйтесь! </p>
+                }
+
             </div>
         </div>
     </header>
