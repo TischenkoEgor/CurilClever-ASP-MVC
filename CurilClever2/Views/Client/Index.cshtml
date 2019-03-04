@@ -1,0 +1,48 @@
+﻿@model  List<Client>
+  @{
+    ViewData["Title"] = "Index";
+  }
+
+  <h2>Управление клиентами агенства</h2>
+  <div>
+    <p>
+      @Html.ActionLink("ДОБАВИТЬ КЛИЕНТА", "CreateClient", "Client", new { @class = "create-client-link" }, null)
+    </p>
+    <H2>Клиенты агенства</H2>
+    <br>
+    <table border="1" width='1150'>
+      <tr>
+        <td>ИД</td>
+        <td>ФИО</td>
+        <td>Возраст/Пол</td>
+        <td>Телефон</td>
+        <td>Управление</td>
+      </tr>
+      @if (Model.Count == 0)
+      {
+        <tr>
+          <td colspan="5">
+            Клиентов в базе нет!
+
+          </td>
+        </tr>
+      }
+      else
+      {
+        foreach (Client client in Model)
+        {
+          <tr>
+            <td>@client.id </td>
+            <td>@client.GetFullName()</td>
+            <td>@client.GetYearsFromBirth() лет | @client.GetGenderName()</td>
+            <td>@client.Phone</td>
+            <td>
+              @Html.ActionLink("Удалить", "DeleteClient", "Client", new { id = client.id }, null)
+              |
+              @Html.ActionLink("Изменить", "EditClient", "Client", new { id = client.id }, null)
+            </td>
+          </tr>
+        }
+      }
+    </table>
+  </div>
