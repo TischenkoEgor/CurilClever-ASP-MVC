@@ -25,19 +25,24 @@ namespace CurilClever2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Age");
+                    b.Property<DateTime>("DateOfBirthday");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("PassportData");
+                    b.Property<int>("Gender");
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("PassportData")
+                        .IsRequired();
 
-                    b.Property<string>("SecondName");
+                    b.Property<string>("Phone")
+                        .IsRequired();
 
-                    b.Property<int>("Sex");
+                    b.Property<string>("SecondName")
+                        .IsRequired();
 
                     b.HasKey("id");
 
