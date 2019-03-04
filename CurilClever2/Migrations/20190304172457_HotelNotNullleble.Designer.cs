@@ -4,14 +4,16 @@ using CurilClever2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CurilClever2.Migrations
 {
     [DbContext(typeof(CleverDBContext))]
-    partial class CleverDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190304172457_HotelNotNullleble")]
+    partial class HotelNotNullleble
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

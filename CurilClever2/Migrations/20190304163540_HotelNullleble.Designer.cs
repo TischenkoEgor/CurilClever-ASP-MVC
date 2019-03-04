@@ -4,14 +4,16 @@ using CurilClever2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CurilClever2.Migrations
 {
     [DbContext(typeof(CleverDBContext))]
-    partial class CleverDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190304163540_HotelNullleble")]
+    partial class HotelNullleble
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,10 +98,10 @@ namespace CurilClever2.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int?>("Price")
+                    b.Property<decimal?>("Price")
                         .IsRequired();
 
-                    b.Property<int?>("StarsRate")
+                    b.Property<decimal?>("StarsRate")
                         .IsRequired();
 
                     b.HasKey("id");
