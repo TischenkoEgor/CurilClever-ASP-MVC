@@ -23,14 +23,6 @@ namespace CurilClever2.Controllers
       return View();
     }
 
-    public IActionResult Hotels()
-    {
-      return View(db.Hotels.ToList());
-    }
-    public IActionResult AddHotel()
-    {
-      return View();
-    }
     public IActionResult Clients()
     {
       return View();

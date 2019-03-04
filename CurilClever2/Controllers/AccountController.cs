@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CurilClever2.Controllers
 {
-    public class AccountController : Controller
-    {
+  public class AccountController : Controller
+  {
     private CleverDBContext db;
     public AccountController(CleverDBContext context)
     {
@@ -56,7 +56,7 @@ namespace CurilClever2.Controllers
         if (user == null)
         {
           // добавляем пользователя в бд
-          db.Users.Add(new User { Login = model.Login, PasswordHash = CryptoHelper.GetMD5( model.Password) });
+          db.Users.Add(new User { Login = model.Login, PasswordHash = CryptoHelper.GetMD5(model.Password) });
           await db.SaveChangesAsync();
 
           await Authenticate(model.Login); // аутентификация
