@@ -1,16 +1,15 @@
 ﻿@model CurilClever2.Models.Hotel
 
 @{
-    ViewData["Title"] = "AddHotel";
+    ViewData["Title"] = "CreateHotel";
 }
 
-<h2>AddHotel</h2>
-
-<h4>Hotel</h4>
+<h2>Добавление отеля</h2>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddHotel">
+        <form asp-action="CreateHotel">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -26,11 +25,6 @@
                 <label asp-for="StarsRate" class="control-label"></label>
                 <input asp-for="StarsRate" class="form-control" />
                 <span asp-validation-for="StarsRate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LocationType" class="control-label"></label>
-                <input asp-for="LocationType" class="form-control" />
-                <span asp-validation-for="LocationType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>

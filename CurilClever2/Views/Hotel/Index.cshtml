@@ -1,0 +1,47 @@
+﻿@model List<Hotel>
+@{
+  ViewData["Title"] = "Отели";
+}
+
+<h2>Управление отелями</h2>
+<div>
+  <p>
+    @Html.ActionLink("ДОБАВИТЬ ОТЕЛЬ", "CreateHotel", "Hotel", new { @class = "create-hotel-link" }, null)
+  </p>
+</div>
+<div class='hotelstablecontainer'>
+  <table border="1">
+
+    <tr>
+      <td><b>Отель</b></td>
+      <td><b>Звезды</b></td>
+      <td><b>Стоимость одного дня</b></td>
+      <td><b>Адрес</b></td>
+      <td><b>Действия</b></td>
+    </tr>
+    @if (Model.Count == 0)
+    {
+      <tr>
+        <td colspan="5">
+          Отелей в базе нет!
+
+        </td>
+      </tr>
+    }
+    @foreach (Hotel hotel in Model)
+    {
+      <tr>
+        <td>@hotel.Name</td>
+        <td>@hotel.StarsRate *</td>
+        <td>@hotel.Price</td>
+        <td>@hotel.Addres</td>
+        <td>
+          @Html.ActionLink("Удалить", "DeleteHotel", "Hotel", new { id = hotel.id }, null)
+          <br>
+          @Html.ActionLink("Изменить", "EditHotel", "Hotel", new { id = hotel.id }, null)
+        </td>
+      </tr>
+    }
+
+  </table>
+</div>
