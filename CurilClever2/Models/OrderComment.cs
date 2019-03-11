@@ -9,10 +9,10 @@ namespace CurilClever2.Models
   {
     public int id { get; set; }
 
-    public int CommetId { get; set; }
+    public int Commentid { get; set; }
     public Comment Comment { get; set; }
 
-    public int OrderId { get; set; }
+    public int Orderid { get; set; }
     public Order Order { get; set; }
   }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,9 @@ namespace CurilClever2.Models
     [MinLength(1, ErrorMessage = "не может быть короче 3 символа")]
     [Display(Name = "Фамилия")]
     public string SecondName { get; set; }
+
+    [NotMapped]
+    public string FIO { get { return GetFullName();} }
 
     [Required(ErrorMessage = "Укажите дату рождения")]
     [DataType(DataType.Date)]
@@ -49,6 +53,8 @@ namespace CurilClever2.Models
     }
     public int GetYearsFromBirth()
     {
+      if (this.DateOfBirthday.Date >= DateTime.Now.Date)
+        return 0;
       return (new DateTime(1, 1, 1) + (DateTime.Now - this.DateOfBirthday)).Year - 1;
     }
     public string GetGenderName()

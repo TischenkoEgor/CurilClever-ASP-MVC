@@ -9,7 +9,7 @@ namespace CurilClever2.Models
   {
     public int id { get; set; }
 
-    public int UserId { get; set; }
+    public int Userid { get; set; }
     public User User { get; set; }
     
     public string Text { get; set; }
