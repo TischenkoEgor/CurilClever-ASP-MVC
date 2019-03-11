@@ -4,14 +4,16 @@ using CurilClever2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CurilClever2.Migrations
 {
     [DbContext(typeof(CleverDBContext))]
-    partial class CleverDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190306190433_исправление_навигации")]
+    partial class исправление_навигации
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +59,9 @@ namespace CurilClever2.Migrations
 
                     b.Property<int>("Clientid");
 
-                    b.Property<int>("Commentid");
+                    b.Property<int?>("Commentid");
+
+                    b.Property<int>("Commetid");
 
                     b.HasKey("id");
 
@@ -147,7 +151,9 @@ namespace CurilClever2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Commentid");
+                    b.Property<int?>("Commentid");
+
+                    b.Property<int>("Commetid");
 
                     b.Property<int>("Orderid");
 
@@ -188,8 +194,7 @@ namespace CurilClever2.Migrations
 
                     b.HasOne("CurilClever2.Models.Comment", "Comment")
                         .WithMany()
-                        .HasForeignKey("Commentid")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Commentid");
                 });
 
             modelBuilder.Entity("CurilClever2.Models.Comment", b =>
@@ -217,8 +222,7 @@ namespace CurilClever2.Migrations
                 {
                     b.HasOne("CurilClever2.Models.Comment", "Comment")
                         .WithMany()
-                        .HasForeignKey("Commentid")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Commentid");
 
                     b.HasOne("CurilClever2.Models.Order", "Order")
                         .WithMany()

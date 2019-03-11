@@ -4,14 +4,16 @@ using CurilClever2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CurilClever2.Migrations
 {
     [DbContext(typeof(CleverDBContext))]
-    partial class CleverDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190306162707_оплата-список")]
+    partial class оплатасписок
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,13 +57,15 @@ namespace CurilClever2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Clientid");
+                    b.Property<int>("ClientId");
 
-                    b.Property<int>("Commentid");
+                    b.Property<int?>("Commentid");
+
+                    b.Property<int>("CommetId");
 
                     b.HasKey("id");
 
-                    b.HasIndex("Clientid");
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("Commentid");
 
@@ -78,11 +82,11 @@ namespace CurilClever2.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<int>("Userid");
+                    b.Property<int>("UserId");
 
                     b.HasKey("id");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -118,13 +122,15 @@ namespace CurilClever2.Migrations
 
                     b.Property<DateTime>("BeginTravelDate");
 
-                    b.Property<int>("Clientid");
+                    b.Property<int>("ClientId");
 
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("EndTravelDate");
 
-                    b.Property<int>("Hotelid");
+                    b.Property<int>("HoteId");
+
+                    b.Property<int?>("Hotelid");
 
                     b.Property<int>("PayStatus");
 
@@ -134,7 +140,7 @@ namespace CurilClever2.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Clientid");
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("Hotelid");
 
@@ -147,15 +153,17 @@ namespace CurilClever2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Commentid");
+                    b.Property<int?>("Commentid");
 
-                    b.Property<int>("Orderid");
+                    b.Property<int>("CommetId");
+
+                    b.Property<int>("OrderId");
 
                     b.HasKey("id");
 
                     b.HasIndex("Commentid");
 
-                    b.HasIndex("Orderid");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderComments");
                 });
@@ -183,20 +191,19 @@ namespace CurilClever2.Migrations
                 {
                     b.HasOne("CurilClever2.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("Clientid")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CurilClever2.Models.Comment", "Comment")
                         .WithMany()
-                        .HasForeignKey("Commentid")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Commentid");
                 });
 
             modelBuilder.Entity("CurilClever2.Models.Comment", b =>
                 {
                     b.HasOne("CurilClever2.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("Userid")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -204,25 +211,23 @@ namespace CurilClever2.Migrations
                 {
                     b.HasOne("CurilClever2.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("Clientid")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CurilClever2.Models.Hotel", "Hotel")
                         .WithMany()
-                        .HasForeignKey("Hotelid")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Hotelid");
                 });
 
             modelBuilder.Entity("CurilClever2.Models.OrderComment", b =>
                 {
                     b.HasOne("CurilClever2.Models.Comment", "Comment")
                         .WithMany()
-                        .HasForeignKey("Commentid")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Commentid");
 
                     b.HasOne("CurilClever2.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("Orderid")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
