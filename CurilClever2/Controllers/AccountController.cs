@@ -56,7 +56,7 @@ namespace CurilClever2.Controllers
         if (user == null)
         {
           // добавляем пользователя в бд
-          db.Users.Add(new User { Login = model.Login, PasswordHash = CryptoHelper.GetMD5(model.Password) });
+          db.Users.Add(new User { name=model.Name, Login = model.Login, PasswordHash = CryptoHelper.GetMD5(model.Password), AccessLevel=9000});
           await db.SaveChangesAsync();
 
           await Authenticate(model.Login); // аутентификация
@@ -64,7 +64,7 @@ namespace CurilClever2.Controllers
           return RedirectToAction("Index", "Home");
         }
         else
-          ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+          ModelState.AddModelError("", "Некорректные имя, логин и(или) пароль");
       }
       return View(model);
     }

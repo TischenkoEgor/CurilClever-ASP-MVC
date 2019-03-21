@@ -8,6 +8,10 @@ namespace CurilClever2.ViewModels
 {
   public class RegisterModel
   {
+    [Display(Name = "Имя")]
+    [Required(ErrorMessage = "Не указан Имя")]
+    public string Name { get; set; }
+
     [Required(ErrorMessage = "Не указан Email")]
     public string Login { get; set; }
 
