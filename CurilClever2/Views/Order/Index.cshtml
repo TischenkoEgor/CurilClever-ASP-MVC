@@ -1,45 +1,10 @@
 ﻿@model List<Order>
 @{
-    ViewData["Title"] = "Index";
+  ViewData["Title"] = "Index";
 }
 
 <h2>Управление заявками</h2>
 @Html.ActionLink("ДОБАВИТЬ ЗАЯВКУ", "CreateOrder", "Order", new { @class = "create-hotel-link" }, null)
-<h2>Все заявки</h2>
-<table border="1" width='1150'>
-  <tr>
-    <td>Номер</td>
-    <td>ФИО Клиента</td>
-    <td>Отель</td>
-    <td>Стоимость</td>
-    <td>Управление</td>
-  </tr>
-  @if (Model.Count == 0)
-  {
-    <tr>
-      <td colspan="5">
-        Заявок в базе нет!
-
-      </td>
-    </tr>
-  }
-  else
-  {
-    foreach (Order order in Model)
-    {
-      <tr>
-        <td>Заявка № @order.id </td>
-        <td>@order.Client.FIO</td>
-        <td>@order.Hotel.Name</td>
-        <td>@order.Price</td>
-        <td>
-          @Html.ActionLink("Удалить", "DeleteOrder", "Order", new { id = order.id }, null)
-          |
-          @Html.ActionLink("Изменить", "EditOrder", "Order", new { id = order.id }, null)
-          |
-          @Html.ActionLink("Просмотр", "ShowOrder", "Order", new { id = order.id }, null)
-        </td>
-      </tr>
-    }
-  }
-</table>
+<div id="TableOfOrdersBlock">
+  @await Html.PartialAsync("TableOfOrders.cshtml", Model);
+</div>

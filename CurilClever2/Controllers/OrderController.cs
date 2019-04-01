@@ -21,6 +21,11 @@ namespace CurilClever2.Controllers
       var list = db.Orders.Include((o) => o.Client).Include((o)=>o.Hotel).ToList();
       return View(list);
     }
+    public IActionResult TableOfOrders()
+    {
+      var list = db.Orders.Include((o) => o.Client).Include((o) => o.Hotel).ToList();
+      return PartialView(list);
+    }
     [HttpGet]
     public IActionResult CreateOrder()
     {
@@ -44,6 +49,17 @@ namespace CurilClever2.Controllers
       ViewBag.Hotels = new SelectList(db.Hotels, "id", "Name");
       ViewBag.Clients = new SelectList(db.Clients, "id", "FIO");
       return View(order);
+    }
+    public IActionResult DeleteOrder(int id)
+    {
+      Order ord = db.Orders.Where(o => o.id == id).FirstOrDefault();
+      if (ord != null)
+      {
+        db.Orders.Remove(ord);
+        db.SaveChanges();
+      }
+      var list = db.Orders.Include((o) => o.Client).Include((o) => o.Hotel).ToList();
+      return PartialView("TableOfOrders", list);
     }
   }
 }
