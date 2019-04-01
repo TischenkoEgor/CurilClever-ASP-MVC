@@ -59,7 +59,11 @@ namespace CurilClever2.Controllers
           db.SaveChanges();
         }
       }
-      return RedirectToAction("Index");
+      return PartialView("GetTableOfClients", db.Clients.ToList());
+    }
+    public IActionResult GetTableOfClients()
+    {
+      return PartialView(db.Clients.ToList());
     }
   }
 }

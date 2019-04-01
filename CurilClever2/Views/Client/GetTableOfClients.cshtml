@@ -1,0 +1,38 @@
+﻿@model List<Client>
+<H2>Клиенты агенства</H2>
+<br>
+<table border="1" width='1150'>
+  <tr>
+    <td>ИД</td>
+    <td>ФИО</td>
+    <td>Возраст/Пол</td>
+    <td>Телефон</td>
+    <td>Управление</td>
+  </tr>
+  @if (Model.Count == 0)
+  {
+    <tr>
+      <td colspan="5">
+        Клиентов в базе нет!
+
+      </td>
+    </tr>
+  }
+  else
+  {
+    foreach (Client client in Model)
+    {
+      <tr>
+        <td>@client.id </td>
+        <td>@client.GetFullName()</td>
+        <td>@client.GetYearsFromBirth() лет | @client.GetGenderName()</td>
+        <td>@client.Phone</td>
+        <td>
+          <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock" href="/Client/DeleteClient?id=@client.id">Удалить</a>
+
+          @Html.ActionLink("Изменить", "EditClient", "Client", new { id = client.id }, null)
+        </td>
+      </tr>
+    }
+  }
+</table>
