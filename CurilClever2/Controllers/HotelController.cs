@@ -58,7 +58,6 @@ namespace CurilClever2.Controllers
       db.SaveChanges();
       return RedirectToAction("Index");
     }
-
     public IActionResult DeleteHotel(int? id)
     {
       if (id != null)
@@ -70,8 +69,11 @@ namespace CurilClever2.Controllers
           db.SaveChanges();
         }
       }
-      return RedirectToAction("Index");
+      return PartialView("GetTableOfHotels", db.Hotels.OrderByDescending(x => x.id).ToList());
     }
-
+    public IActionResult GetTableOfHotels()
+    {
+      return PartialView();
+    }
   }
 }
