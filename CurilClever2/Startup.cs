@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using reCAPTCHA.AspNetCore;
 
 namespace CurilClever2
 {
@@ -27,6 +28,9 @@ namespace CurilClever2
     public void ConfigureServices(IServiceCollection services)
     {
       string connection = Configuration.GetConnectionString("DefaultConnection");
+      services.Configure<RecaptchaSettings>(Configuration.GetSection("RecaptchaSettings"));
+      services.AddTransient<IRecaptchaService, RecaptchaService>();
+
       services.AddDbContext<CleverDBContext>(options => options.UseSqlServer(connection));
       services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions

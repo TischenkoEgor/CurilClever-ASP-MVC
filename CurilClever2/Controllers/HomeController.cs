@@ -37,6 +37,11 @@ namespace CurilClever2.Controllers
     {
       return View();
     }
+    [AllowAnonymous]
+    public IActionResult AccountInfo()
+    {
+      return PartialView();
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

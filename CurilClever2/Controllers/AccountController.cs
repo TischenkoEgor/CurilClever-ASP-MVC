@@ -9,15 +9,19 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using reCAPTCHA.AspNetCore;
 
 namespace CurilClever2.Controllers
 {
   public class AccountController : Controller
   {
     private CleverDBContext db;
-    public AccountController(CleverDBContext context)
+    private IRecaptchaService _recaptcha;
+
+    public AccountController(CleverDBContext context, IRecaptchaService recaptcha)
     {
       db = context;
+      _recaptcha = recaptcha;
     }
     [HttpGet]
     public IActionResult Login()
@@ -50,13 +54,20 @@ namespace CurilClever2.Controllers
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterModel model)
     {
+      var recaptcha = await _recaptcha.Validate(Request);
+      if (!recaptcha.success)
+      {
+        ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
+        return View(model);
+      }
+
       if (ModelState.IsValid)
       {
         User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login);
         if (user == null)
         {
           // добавляем пользователя в бд
-          db.Users.Add(new User { name=model.Name, Login = model.Login, PasswordHash = CryptoHelper.GetMD5(model.Password), AccessLevel=9000});
+          db.Users.Add(new User { name = model.Name, Login = model.Login, PasswordHash = CryptoHelper.GetMD5(model.Password), AccessLevel = 9000 });
           await db.SaveChangesAsync();
 
           await Authenticate(model.Login); // аутентификация
