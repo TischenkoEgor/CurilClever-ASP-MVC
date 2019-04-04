@@ -27,7 +27,7 @@
       <span asp-validation-for="ConfirmPassword" />
     </div>
     <div style="height:80px;">
-      @Html.Recaptcha(RecaptchaSettings.Value)
+      @Html.Recaptcha(RecaptchaSettings.Value, language: "ru")
     </div>
     <div>
       <input type="submit" value="Регистрация" />
