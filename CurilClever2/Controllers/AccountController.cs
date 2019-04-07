@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using reCAPTCHA.AspNetCore;
+using CurilClever2.Utils;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
+using System.IO;
 
 namespace CurilClever2.Controllers
 {
@@ -45,22 +49,57 @@ namespace CurilClever2.Controllers
       }
       return View(model);
     }
+
+    public FileContentResult GetCapturePicture(string hash)
+    {
+      CaptureModel cm = db.CaptureModels.Find(hash);
+      if (cm == null) return null;
+
+      var img = new CaptchaImage(cm.code, 120, 50);
+      MemoryStream ms = new MemoryStream();
+      img.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+      return new FileContentResult(ms.GetBuffer(), "image/jpeg");
+    }
+    public IActionResult GetCaptureBlock()
+    {
+      RegisterModel rm = new RegisterModel();
+      CaptureModel cm = new CaptureModel();
+      cm.code = rm.code;
+      cm.hashstring = rm.CaptureHash;
+      if (db.CaptureModels.Find(cm.hashstring) == null)
+      {
+        db.CaptureModels.Add(cm);
+        db.SaveChanges();
+      }
+      return PartialView(rm);
+    }
     [HttpGet]
     public IActionResult Register()
     {
-      return View();
+      RegisterModel rm = new RegisterModel();
+      CaptureModel cm = new CaptureModel();
+      cm.code = rm.code;
+      cm.hashstring = rm.CaptureHash;
+      if (db.CaptureModels.Find(cm.hashstring) == null)
+      {
+        db.CaptureModels.Add(cm);
+        db.SaveChanges();
+      }
+      return View(rm);
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterModel model)
     {
-      var recaptcha = await _recaptcha.Validate(Request);
-      if (!recaptcha.success)
-      {
-        ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
-        return View(model);
-      }
 
+      //var recaptcha = await _recaptcha.Validate(Request);
+      //if (!recaptcha.success)
+      //{
+      //  ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
+      //  return View(model);
+      //}
+      if (!model.CheckUserCaptureinput())
+        ModelState.AddModelError("CaptureUserInput", "неправильно введена капча ");
       if (ModelState.IsValid)
       {
         User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login);
