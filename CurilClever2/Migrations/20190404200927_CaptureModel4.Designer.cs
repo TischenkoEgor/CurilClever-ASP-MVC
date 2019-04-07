@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CurilClever2.Migrations
 {
     [DbContext(typeof(CleverDBContext))]
-    [Migration("20190304160910_RemoveLocationType")]
-    partial class RemoveLocationType
+    [Migration("20190404200927_CaptureModel4")]
+    partial class CaptureModel4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,19 +27,24 @@ namespace CurilClever2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Age");
+                    b.Property<DateTime>("DateOfBirthday");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("PassportData");
+                    b.Property<int>("Gender");
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("PassportData")
+                        .IsRequired();
 
-                    b.Property<string>("SecondName");
+                    b.Property<string>("Phone")
+                        .IsRequired();
 
-                    b.Property<int>("Sex");
+                    b.Property<string>("SecondName")
+                        .IsRequired();
 
                     b.HasKey("id");
 
@@ -52,15 +57,13 @@ namespace CurilClever2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ClientId");
+                    b.Property<int>("Clientid");
 
-                    b.Property<int?>("Commentid");
-
-                    b.Property<int>("CommetId");
+                    b.Property<int>("Commentid");
 
                     b.HasKey("id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("Clientid");
 
                     b.HasIndex("Commentid");
 
@@ -77,11 +80,11 @@ namespace CurilClever2.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<int>("UserId");
+                    b.Property<int>("Userid");
 
                     b.HasKey("id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Userid");
 
                     b.ToTable("Comments");
                 });
@@ -98,9 +101,11 @@ namespace CurilClever2.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int>("Price");
+                    b.Property<int?>("Price")
+                        .IsRequired();
 
-                    b.Property<int>("StarsRate");
+                    b.Property<int?>("StarsRate")
+                        .IsRequired();
 
                     b.HasKey("id");
 
@@ -115,19 +120,23 @@ namespace CurilClever2.Migrations
 
                     b.Property<DateTime>("BeginTravelDate");
 
-                    b.Property<int>("ClientId");
+                    b.Property<int>("Clientid");
 
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("EndTravelDate");
 
-                    b.Property<int>("HoteId");
+                    b.Property<int>("Hotelid");
 
-                    b.Property<int?>("Hotelid");
+                    b.Property<int>("PayStatus");
+
+                    b.Property<int>("Price");
+
+                    b.Property<int>("TotalPaid");
 
                     b.HasKey("id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("Clientid");
 
                     b.HasIndex("Hotelid");
 
@@ -140,17 +149,15 @@ namespace CurilClever2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("Commentid");
+                    b.Property<int>("Commentid");
 
-                    b.Property<int>("CommetId");
-
-                    b.Property<int>("OrderId");
+                    b.Property<int>("Orderid");
 
                     b.HasKey("id");
 
                     b.HasIndex("Commentid");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("Orderid");
 
                     b.ToTable("OrderComments");
                 });
@@ -178,19 +185,20 @@ namespace CurilClever2.Migrations
                 {
                     b.HasOne("CurilClever2.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId")
+                        .HasForeignKey("Clientid")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CurilClever2.Models.Comment", "Comment")
                         .WithMany()
-                        .HasForeignKey("Commentid");
+                        .HasForeignKey("Commentid")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CurilClever2.Models.Comment", b =>
                 {
                     b.HasOne("CurilClever2.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("Userid")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -198,23 +206,25 @@ namespace CurilClever2.Migrations
                 {
                     b.HasOne("CurilClever2.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId")
+                        .HasForeignKey("Clientid")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CurilClever2.Models.Hotel", "Hotel")
                         .WithMany()
-                        .HasForeignKey("Hotelid");
+                        .HasForeignKey("Hotelid")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CurilClever2.Models.OrderComment", b =>
                 {
                     b.HasOne("CurilClever2.Models.Comment", "Comment")
                         .WithMany()
-                        .HasForeignKey("Commentid");
+                        .HasForeignKey("Commentid")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CurilClever2.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("Orderid")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

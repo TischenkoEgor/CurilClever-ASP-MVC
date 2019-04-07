@@ -1,0 +1,19 @@
+﻿@model CurilClever2.ViewModels.RegisterModel
+<div>
+  <input asp-for="CaptureHash" type="hidden" />
+</div>
+<div>
+  <label asp-for="CaptureUserInput">Введите капчу </label><br />
+  <img src="@Url.Action("GetCapturePicture", "Account", new { hash=Model.CaptureHash})">
+  <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#captureBlock" href="/Account/GetCaptureBlock/">
+    <img src="~/images/refresh.png" />
+  </a>
+  <br />
+  <input asp-for="CaptureUserInput" />
+
+  <span asp-validation-for="CaptureUserInput" />
+  @if (ViewData.ModelState["CaptureUserInput"] != null && ViewData.ModelState["CaptureUserInput"].Errors.Count > 0)
+  {
+    <p>@ViewData.ModelState["CaptureUserInput"].Errors[0].ErrorMessage.ToString()</p>
+  }
+</div>

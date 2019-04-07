@@ -19,6 +19,18 @@ namespace CurilClever2.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("CurilClever2.Models.CaptureModel", b =>
+                {
+                    b.Property<string>("hashstring")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("code");
+
+                    b.HasKey("hashstring");
+
+                    b.ToTable("CaptureModels");
+                });
+
             modelBuilder.Entity("CurilClever2.Models.Client", b =>
                 {
                     b.Property<int>("id")

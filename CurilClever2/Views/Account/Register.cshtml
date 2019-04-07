@@ -26,9 +26,18 @@
       <input asp-for="ConfirmPassword" />
       <span asp-validation-for="ConfirmPassword" />
     </div>
-    <div style="height:80px;">
+    <div id="captureBlock">
+      @await Html.PartialAsync("GetCaptureBlock", Model)
+    </div>
+   
+
+    @*дальше идет капча гугла*@
+    <br><br />
+    <div>
+      <p>Капча нормального человека</p>
       @Html.Recaptcha(RecaptchaSettings.Value, language: "ru")
     </div>
+    <br />
     <div>
       <input type="submit" value="Регистрация" />
     </div>
