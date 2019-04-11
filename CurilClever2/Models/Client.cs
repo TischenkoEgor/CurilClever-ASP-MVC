@@ -51,6 +51,14 @@ namespace CurilClever2.Models
     {
       return this.FirstName + " " + this.SecondName;
     }
+
+    public IEnumerable<ClientComment> Comments {get; set;}
+    public Client()
+    {
+      Comments = new List<ClientComment>();
+    }
+
+    
     public int GetYearsFromBirth()
     {
       if (this.DateOfBirthday.Date >= DateTime.Now.Date)

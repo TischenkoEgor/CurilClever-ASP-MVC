@@ -69,13 +69,17 @@ namespace CurilClever2.Migrations
 
                     b.Property<int>("Clientid");
 
-                    b.Property<int>("Commentid");
+                    b.Property<DateTime>("Posted");
+
+                    b.Property<string>("Text");
+
+                    b.Property<int>("Userid");
 
                     b.HasKey("id");
 
                     b.HasIndex("Clientid");
 
-                    b.HasIndex("Commentid");
+                    b.HasIndex("Userid");
 
                     b.ToTable("ClientComments");
                 });
@@ -194,13 +198,13 @@ namespace CurilClever2.Migrations
             modelBuilder.Entity("CurilClever2.Models.ClientComment", b =>
                 {
                     b.HasOne("CurilClever2.Models.Client", "Client")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("Clientid")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CurilClever2.Models.Comment", "Comment")
+                    b.HasOne("CurilClever2.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("Commentid")
+                        .HasForeignKey("Userid")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

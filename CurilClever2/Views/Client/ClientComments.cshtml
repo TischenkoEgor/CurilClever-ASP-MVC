@@ -1,0 +1,60 @@
+﻿@using CurilClever2.ViewModels
+@model ClientCommentsViewModel
+<h1>Комментарии к клиенту</h1>
+@foreach (ClientComment u in Model.Comments)
+{
+  <div class="CommentContainer">
+    <div class="CommentHeaderContainer" style="display:flex;  justify-content:flex-start">
+      <b>
+        <span>@u.Posted.ToShortDateString()</span>
+        <span>@u.Posted.ToShortTimeString() </span>
+      </b>
+      <u><span> @u.User.name </span></u>
+    </div>
+    <div class="CommentTextContainer">
+      <p>
+        @u.Text
+      </p>
+    </div>
+  </div>
+}
+@if (Model.Comments.Count() == 0)
+{
+  <p> у этого клиента еще нет комментариев, вы можете добавить один ниже</p>
+}
+
+@if (Model.PageViewModel.HasPreviousPage)
+{
+  <a asp-action="ClientComments" asp-controller="client" asp-route-id="@Model.clientid" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
+     class="btn btn-default btn">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    Назад
+  </a>
+}
+else
+{
+  <a class="btn btn-default btn">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    Назад
+  </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+  <a asp-action="ClientComments" asp-controller="client" asp-route-id="@Model.clientid" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
+     class="btn btn-default btn">
+    Вперед
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </a>
+}
+<h3>Добавить коментарий к клиенту</h3>
+<form id="NewClientComent" asp-action="AddClientComment" asp-controller="Client"
+      data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
+      method="post">
+
+  <input name="clientid" type="hidden" value="@Model.clientid" />
+  <textarea name="comment" cols="40" rows="5"></textarea>
+  <br />
+  <button name="sendbutton" type="submit">Отправить</button>
+</form>

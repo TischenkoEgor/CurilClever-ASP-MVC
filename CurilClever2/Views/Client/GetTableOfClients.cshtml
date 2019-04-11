@@ -28,9 +28,10 @@
         <td>@client.GetYearsFromBirth() лет | @client.GetGenderName()</td>
         <td>@client.Phone</td>
         <td>
+          @Html.ActionLink("подробно", "Details", "Client", new { id = client.id }, null)
+          @Html.ActionLink("Изменить", "EditClient", "Client", new { id = client.id }, null)
           <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock" href="/Client/DeleteClient?id=@client.id">Удалить</a>
 
-          @Html.ActionLink("Изменить", "EditClient", "Client", new { id = client.id }, null)
         </td>
       </tr>
     }

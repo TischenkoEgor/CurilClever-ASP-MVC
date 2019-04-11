@@ -24,7 +24,7 @@ namespace CurilClever2.ViewModels
     public string ConfirmPassword { get; set; }
 
     [DataType(DataType.Text)]
-    [Required(ErrorMessage = "не введен код капчи курильщика")]
+    [Required(ErrorMessage = "не введен код капчи ")]
     public string CaptureUserInput { get; set;}
     
     public string CaptureHash { get; set;}

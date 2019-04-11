@@ -55,11 +55,11 @@ namespace CurilClever2.Controllers
       CaptureModel cm = db.CaptureModels.Find(hash);
       if (cm == null) return null;
 
-      var img = new CaptchaImage(cm.code, 120, 50);
+      CaptchaImage img = new CaptchaImage(cm.code, 120, 50);
       MemoryStream ms = new MemoryStream();
       img.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
       return new FileContentResult(ms.GetBuffer(), "image/jpeg");
-    }
+    } 
     public IActionResult GetCaptureBlock()
     {
       RegisterModel rm = new RegisterModel();
@@ -92,12 +92,12 @@ namespace CurilClever2.Controllers
     public async Task<IActionResult> Register(RegisterModel model)
     {
 
-      //var recaptcha = await _recaptcha.Validate(Request);
-      //if (!recaptcha.success)
-      //{
-      //  ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
-      //  return View(model);
-      //}
+      var recaptcha = await _recaptcha.Validate(Request);
+      if (!recaptcha.success)
+      {
+        ModelState.AddModelError("Recaptcha", "Неопознанная ошибка при обработке запроса на сервер гугл, попробуйте позднее!");
+        return View(model);
+      }
       if (!model.CheckUserCaptureinput())
         ModelState.AddModelError("CaptureUserInput", "неправильно введена капча ");
       if (ModelState.IsValid)
