@@ -9,6 +9,8 @@ namespace CurilClever2.Models
   public class Order
   {
     public int id { get; set; }
+
+    [Display(Name = "Заявка зарегистрирована")]
     public DateTime CreationDate { get; set; }
 
     [Required]
@@ -24,11 +26,13 @@ namespace CurilClever2.Models
     [Required]
     [Display(Name = "Отель")]
     public int Hotelid { get; set; }
+    [Display(Name = "Отель")]
     public Hotel Hotel { get; set; }
 
     [Required]
     [Display(Name = "Клиент")]
     public int Clientid { get; set; }
+    [Display(Name = "Клиент")]
     public Client Client { get; set; }
 
     [Required]

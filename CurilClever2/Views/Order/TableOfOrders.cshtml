@@ -28,16 +28,12 @@
         <td>@order.Hotel.Name</td>
         <td>@order.Price</td>
         <td>
-          @*<form asp-controller="Home" asp-action="DeleteOrder" data-ajax="true" data-ajax-method="POST" data-ajax-mode="" data-ajax-update="">
-              <input type="submit" value="Удалить">
-            </form>*@
-          <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#TableOfOrdersBlock" href="/Order/DeleteOrder?id=@order.id">Удалить</a>
-
-          @*@Html.ActionLink("Удалить", "DeleteOrder", "Order", new { id = order.id }, null)*@
+          @Html.ActionLink("Изменить", "Edit", "Order", new { id = order.id }, null)
           |
-          @Html.ActionLink("Изменить", "EditOrder", "Order", new { id = order.id }, null)
+          @Html.ActionLink("Просмотр", "Details", "Order", new { id = order.id }, null)
           |
-          @Html.ActionLink("Просмотр", "ShowOrder", "Order", new { id = order.id }, null)
+          <a asp-controller="order" asp-action="delete" asp-route-id="@order.id" 
+            data-ajax="true" data-ajax-mode="replace" data-ajax-update="#TableOfOrdersBlock">Удалить</a>
         </td>
       </tr>
     }
