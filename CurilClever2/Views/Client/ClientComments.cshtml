@@ -22,31 +22,33 @@
 {
   <p> у этого клиента еще нет комментариев, вы можете добавить один ниже</p>
 }
-
-@if (Model.PageViewModel.HasPreviousPage)
-{
-  <a asp-action="ClientComments" asp-controller="client" asp-route-id="@Model.clientid" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
-     class="btn btn-default btn">
-    <i class="glyphicon glyphicon-chevron-left"></i>
-    Назад
-  </a>
-}
 else
 {
-  <a class="btn btn-default btn">
-    <i class="glyphicon glyphicon-chevron-left"></i>
-    Назад
-  </a>
-}
-@if (Model.PageViewModel.HasNextPage)
-{
-  <a asp-action="ClientComments" asp-controller="client" asp-route-id="@Model.clientid" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
-     class="btn btn-default btn">
-    Вперед
-    <i class="glyphicon glyphicon-chevron-right"></i>
-  </a>
+  @if (Model.PageViewModel.HasPreviousPage)
+  {
+    <a asp-action="ClientComments" asp-controller="client" asp-route-id="@Model.clientid" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
+       class="btn btn-default btn">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Назад
+    </a>
+  }
+  else
+  {
+    <a class="btn btn-default btn">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Назад
+    </a>
+  }
+  @if (Model.PageViewModel.HasNextPage)
+  {
+    <a asp-action="ClientComments" asp-controller="client" asp-route-id="@Model.clientid" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
+       class="btn btn-default btn">
+      Вперед
+      <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+  }
 }
 <h3>Добавить коментарий к клиенту</h3>
 <form id="NewClientComent" asp-action="AddClientComment" asp-controller="Client"
