@@ -44,6 +44,8 @@ namespace CurilClever2.Models
     [Range(0, int.MaxValue)]
     public int TotalPaid { get; set; }
 
+    public IEnumerable<OrderComment> Comments { get; set; }
+
     [Required]
     [Display(Name = "Статус оплаты")]
     public PayStatus PayStatus { get; set; }

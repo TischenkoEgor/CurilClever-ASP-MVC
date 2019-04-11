@@ -1,0 +1,62 @@
+﻿@using CurilClever2.ViewModels
+@model OrderCommentsViewModel
+<h1>Комментарии к заказу</h1>
+@foreach (OrderComment u in Model.Comments)
+{
+  <div class="CommentContainer">
+    <div class="CommentHeaderContainer" style="display:flex;  justify-content:flex-start">
+      <b>
+        <span>@u.Posted.ToShortDateString()</span>
+        <span>@u.Posted.ToShortTimeString() </span>
+      </b>
+      <u><span> @u.User.name </span></u>
+    </div>
+    <div class="CommentTextContainer">
+      <p>
+        @u.Text
+      </p>
+    </div>
+  </div>
+}
+@if (Model.Comments.Count() == 0)
+{
+  <p> у этого заказа еще нет комментариев, вы можете добавить один ниже</p>
+}
+else
+{
+  @if (Model.PageViewModel.HasPreviousPage)
+  {
+    <a asp-action="Comments" asp-controller="order" asp-route-id="@Model.orderid" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
+       class="btn btn-default btn">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Назад
+    </a>
+  }
+  else
+  {
+    <a class="btn btn-default btn">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Назад
+    </a>
+  }
+  @if (Model.PageViewModel.HasNextPage)
+  {
+    <a asp-action="Comments" asp-controller="Order" asp-route-id="@Model.orderid" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
+       class="btn btn-default btn">
+      Вперед
+      <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+  }
+}
+<h3>Добавить коментарий к заказу</h3>
+<form id="NewClientComent" asp-action="AddComment" asp-controller="Order"
+      data-ajax="true" data-ajax-mode="replace" data-ajax-update="#OrderCommentBlock"
+      method="post">
+
+  <input name="orderid" type="hidden" value="@Model.orderid" />
+  <textarea name="comment" cols="40" rows="5"></textarea>
+  <br />
+  <button name="sendbutton" type="submit">Отправить</button>
+</form>

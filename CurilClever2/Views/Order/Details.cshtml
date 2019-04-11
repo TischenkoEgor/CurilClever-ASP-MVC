@@ -1,66 +1,75 @@
 ﻿@model CurilClever2.Models.Order
 
 @{
-    ViewData["Title"] = "Details";
+  ViewData["Title"] = "Details";
 }
 
 <h2>детали заявки</h2>
 
 <div>
-    <h4>Заявка:</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreationDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.BeginTravelDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.BeginTravelDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EndTravelDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EndTravelDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Hotel)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Hotel.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Client)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Client.FIO)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalPaid)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.TotalPaid)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PayStatus)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PayStatus)
-        </dd>
-    </dl>
+  <h4>Заявка:</h4>
+  <hr />
+  <dl class="dl-horizontal">
+    <dt>
+      @Html.DisplayNameFor(model => model.CreationDate)
+    </dt>
+    <dd>
+      @Html.DisplayFor(model => model.CreationDate)
+    </dd>
+    <dt>
+      @Html.DisplayNameFor(model => model.BeginTravelDate)
+    </dt>
+    <dd>
+      @Html.DisplayFor(model => model.BeginTravelDate)
+    </dd>
+    <dt>
+      @Html.DisplayNameFor(model => model.EndTravelDate)
+    </dt>
+    <dd>
+      @Html.DisplayFor(model => model.EndTravelDate)
+    </dd>
+    <dt>
+      @Html.DisplayNameFor(model => model.Hotel)
+    </dt>
+    <dd>
+      @Html.DisplayFor(model => model.Hotel.Name)
+    </dd>
+    <dt>
+      @Html.DisplayNameFor(model => model.Client)
+    </dt>
+    <dd>
+      @Html.DisplayFor(model => model.Client.FIO)
+    </dd>
+    <dt>
+      @Html.DisplayNameFor(model => model.Price)
+    </dt>
+    <dd>
+      @Html.DisplayFor(model => model.Price)
+    </dd>
+    <dt>
+      @Html.DisplayNameFor(model => model.TotalPaid)
+    </dt>
+    <dd>
+      @Html.DisplayFor(model => model.TotalPaid)
+    </dd>
+    <dt>
+      @Html.DisplayNameFor(model => model.PayStatus)
+    </dt>
+    <dd>
+      @Html.DisplayFor(model => model.PayStatus)
+    </dd>
+  </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.id">Редактировать</a> |
-    <a asp-action="Index"> К списку</a>
+  <a asp-action="Edit" asp-route-id="@Model.id">Редактировать</a> |
+  <a asp-action="Index"> К списку</a>
 </div>
+<div id="OrderCommentBlock">
+
+</div>
+
+<script type="text/javascript">
+  $('#OrderCommentBlock').load("/Order/Comments/@Model.id?page=1",
+    function () { }
+  );
+</script>

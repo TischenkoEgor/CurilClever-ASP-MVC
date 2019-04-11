@@ -12,7 +12,7 @@ namespace CurilClever2.Models
     public DbSet<Client> Clients { get; set; }
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<Order> Orders { get; set; }
-    public DbSet<Comment> Comments { get; set; }
+    //public DbSet<Comment> Comments { get; set; }
     public DbSet<OrderComment> OrderComments { get; set; }
     public DbSet<ClientComment> ClientComments { get; set; }
     public DbSet<CaptureModel> CaptureModels { get; set; }

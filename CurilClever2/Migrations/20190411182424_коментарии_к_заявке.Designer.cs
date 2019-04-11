@@ -4,14 +4,16 @@ using CurilClever2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CurilClever2.Migrations
 {
     [DbContext(typeof(CleverDBContext))]
-    partial class CleverDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190411182424_коментарии_к_заявке")]
+    partial class коментарии_к_заявке
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,7 +211,7 @@ namespace CurilClever2.Migrations
             modelBuilder.Entity("CurilClever2.Models.OrderComment", b =>
                 {
                     b.HasOne("CurilClever2.Models.Order", "Order")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("Orderid")
                         .OnDelete(DeleteBehavior.Cascade);
 
