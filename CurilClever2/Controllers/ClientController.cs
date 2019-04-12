@@ -107,7 +107,7 @@ namespace CurilClever2.Controllers
       return View(model);
     }
 
-    public IActionResult DeleteClient(int? id)
+    public IActionResult DeleteClient(int? id, int page = 1)
     {
       if (id != null)
       {
@@ -118,11 +118,26 @@ namespace CurilClever2.Controllers
           db.SaveChanges();
         }
       }
-      return PartialView("GetTableOfClients", db.Clients.ToList());
+
+      return RedirectToAction("GetTableOfClients", new {page = page});
     }
-    public IActionResult GetTableOfClients()
+    public IActionResult GetTableOfClients(int page = 1)
     {
-      return PartialView(db.Clients.ToList());
+      int pageSize = 3;   // количество элементов на странице
+      IQueryable<Client> source = db.Clients;
+      var count = source.Count();
+      var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+      if(page > 1 && items.Count == 0)
+      {
+        items = source.Skip((page - 2) * pageSize).Take(pageSize).ToList();
+      }
+      PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+      ClientPageViewModel viewModel = new ClientPageViewModel
+      {
+        PageViewModel = pageViewModel,
+        Clients = items
+      };
+      return PartialView(viewModel);
     }
   }
 }

@@ -9,6 +9,10 @@
     @Html.ActionLink("ДОБАВИТЬ КЛИЕНТА", "CreateClient", "Client", new { @class = "create-client-link" }, null)
   </p>
   <div id="ClientsBlock">
-    @await Html.PartialAsync("GetTableOfClients", Model)
+    @*@await Html.PartialAsync("GetTableOfClients", Model)*@
   </div>
 </div>
+
+<script type="text/javascript">
+   $('#ClientsBlock').load("/Client/GetTableOfClients", function () { });
+</script>
