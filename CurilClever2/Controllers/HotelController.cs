@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CurilClever2.Models;
+using CurilClever2.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,7 +59,7 @@ namespace CurilClever2.Controllers
       db.SaveChanges();
       return RedirectToAction("Index");
     }
-    public IActionResult DeleteHotel(int? id)
+    public IActionResult DeleteHotel(int? id, int page)
     {
       if (id != null)
       {
@@ -69,11 +70,25 @@ namespace CurilClever2.Controllers
           db.SaveChanges();
         }
       }
-      return PartialView("GetTableOfHotels", db.Hotels.OrderByDescending(x => x.id).ToList());
+      return RedirectToAction("GetTableOfHotels", new { page=page});
     }
-    public IActionResult GetTableOfHotels()
+    public IActionResult GetTableOfHotels(int page = 1)
     {
-      return PartialView();
+      int pageSize = 3;   // количество элементов на странице
+      IQueryable<Hotel> source = db.Hotels;
+      var count = source.Count();
+      var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+      if (page > 1 && items.Count == 0)
+      {
+        items = source.Skip((page - 2) * pageSize).Take(pageSize).ToList();
+      }
+      PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+      HotelPageViewModel viewModel = new HotelPageViewModel
+      {
+        PageViewModel = pageViewModel,
+        Hotels = items
+      };
+      return PartialView(viewModel);
     }
   }
 }

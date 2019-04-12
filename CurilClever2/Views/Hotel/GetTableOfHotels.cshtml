@@ -1,4 +1,5 @@
-﻿@model List<Hotel>
+﻿@using CurilClever2.ViewModels
+@model HotelPageViewModel
 <h2>Все отели</h2>
 <table border="1">
 
@@ -9,16 +10,15 @@
     <td><b>Адрес</b></td>
     <td><b>Действия</b></td>
   </tr>
-  @if (Model.Count == 0)
+  @if (Model.Hotels.Count() == 0)
   {
     <tr>
       <td colspan="5">
         Отелей в базе нет!
-
       </td>
     </tr>
   }
-  @foreach (Hotel hotel in Model)
+  @foreach (Hotel hotel in Model.Hotels)
   {
     <tr>
       <td>@hotel.Name</td>
@@ -26,11 +26,37 @@
       <td>@hotel.Price</td>
       <td>@hotel.Addres</td>
       <td>
-        <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#hotelstablecontainer" href="/Hotel/DeleteHotel?id=@hotel.id">Удалить</a>
+        <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#hotelstablecontainer"
+           asp-route-page="@Model.PageViewModel.PageNumber" asp-action="DeleteHotel" asp-controller="Hotel"
+           asp-route-id="@hotel.id">Удалить</a>
         |
         @Html.ActionLink("Изменить", "EditHotel", "Hotel", new { id = hotel.id }, null)
       </td>
     </tr>
   }
-
 </table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+  <a asp-action="GetTableOfHotels" asp-controller="Hotel" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#hotelstablecontainer"
+     class="btn btn-default btn">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    сюда
+  </a>
+}
+else
+{
+  <a class="btn btn-default btn" style="opacity:.7">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    сюда
+  </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+  <a asp-action="GetTableOfHotels" asp-controller="Hotel" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#hotelstablecontainer"
+     class="btn btn-default btn">
+    туда
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </a>
+}

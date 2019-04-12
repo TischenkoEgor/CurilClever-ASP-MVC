@@ -10,5 +10,9 @@
   </p>
 </div>
 <div id='hotelstablecontainer'>
-  @await Html.PartialAsync("GetTableOfHotels", Model)
+
 </div>
+
+<script type="text/javascript">
+  $('#hotelstablecontainer').load("/Hotel/GetTableOfHotels", function () { });
+</script>
