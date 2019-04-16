@@ -30,8 +30,9 @@
         <td>
           @Html.ActionLink("подробно", "Details", "Client", new { id = client.id }, null)
           @Html.ActionLink("Изменить", "EditClient", "Client", new { id = client.id }, null)
-          <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock" 
-            asp-route-page="@Model.PageViewModel.PageNumber" asp-action="DeleteClient" asp-controller="Client" asp-route-id="@client.id">Удалить</a>
+          <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
+             asp-route-page="@Model.PageViewModel.PageNumber" asp-route-id="@client.id"
+             asp-action="DeleteClient" asp-controller="Client" >Удалить</a>
         </td>
       </tr>
     }
@@ -58,6 +59,13 @@ else
   <a asp-action="GetTableOfClients" asp-controller="client" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
      data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
      class="btn btn-default btn">
+    туда
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </a>
+}
+else
+{
+  <a class="btn btn-default btn" style="opacity:.7">
     туда
     <i class="glyphicon glyphicon-chevron-right"></i>
   </a>

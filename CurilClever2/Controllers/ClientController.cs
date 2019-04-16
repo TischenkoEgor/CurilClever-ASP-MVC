@@ -18,7 +18,7 @@ namespace CurilClever2.Controllers
     }
     public IActionResult Index()
     {
-      return View(db.Clients.ToList());
+      return View();
     }
     [HttpPost]
     public IActionResult AddClientComment(AddClientComment model)
@@ -123,20 +123,36 @@ namespace CurilClever2.Controllers
     }
     public IActionResult GetTableOfClients(int page = 1)
     {
-      int pageSize = 3;   // количество элементов на странице
+      // 0. Фиксируем количество элементов на странице
+      int pageSize = 3;   
+      // 1. Получаем данные о всех клиентах (коллекцию клиентов) из базы данных
       IQueryable<Client> source = db.Clients;
-      var count = source.Count();
-      var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+      // 1.1 Получаем общее количество клиентов
+      int count = source.Count();
+      // 2. Получаем обрезанную выборку клиентов :
+      // Для этого в оргинальной коллекции пропускаем (функция Skip) Page-1  страниц по PageSize клиентов на каждой
+      // и из оставшихся берем (функция take) pageSize элементов
+      List<Client> items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+      // 3. Если так получилось что на последней странице 0 элементов и при этом страниц больше одной
+      // такое произойдет, если удалить единственного клиента на последней странице
       if(page > 1 && items.Count == 0)
       {
-        items = source.Skip((page - 2) * pageSize).Take(pageSize).ToList();
+        // 3.1 Уменьшаем номер страницы на 1
+        page--;
+        // 3.2 Заново формируем набор клиентов на страницу
+        items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
       }
+      // После того, как выборка клиентов сформирована
+      // 4. Создаем PageViewModel 
       PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+      // 5. Создаем CientPageViewModel используя pageViewModel и список 
       ClientPageViewModel viewModel = new ClientPageViewModel
       {
         PageViewModel = pageViewModel,
         Clients = items
       };
+      // 6. Возвращаем частичное представление сформированное из viewModel
       return PartialView(viewModel);
     }
   }
