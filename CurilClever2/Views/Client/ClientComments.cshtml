@@ -3,20 +3,16 @@
 <h1>Комментарии к клиенту</h1>
 @foreach (ClientComment u in Model.Comments)
 {
-  <div class="CommentContainer">
-    <div class="CommentHeaderContainer" style="display:flex;  justify-content:flex-start">
-      <b>
-        <span>@u.Posted.ToShortDateString()</span>
-        <span>@u.Posted.ToShortTimeString() </span>
-      </b>
-      <u><span> @u.User.name </span></u>
+  <div class="media">
+    <div class="media-left">
+      <img src="~/images/std_avatar.png" class="media-object" style="width:60px">
     </div>
-    <div class="CommentTextContainer">
-      <p>
-        @u.Text
-      </p>
+    <div class="media-body">
+      <h4 class="media-heading"> @u.User.name<small><i> @u.Posted.ToShortDateString() @u.Posted.ToShortTimeString() </i></small></h4>
+      <p> @u.Text</p>
     </div>
   </div>
+  
 }
 @if (Model.Comments.Count() == 0)
 {
