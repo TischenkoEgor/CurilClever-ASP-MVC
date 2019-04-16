@@ -6,5 +6,8 @@
 <h2>Управление заявками</h2>
 @Html.ActionLink("ДОБАВИТЬ ЗАЯВКУ", "CreateOrder", "Order", new { @class = "create-hotel-link" }, null)
 <div id="TableOfOrdersBlock">
-  @await Html.PartialAsync("TableOfOrders.cshtml", Model)
+ 
 </div>
+<script type="text/javascript">
+  $('#TableOfOrdersBlock').load("/Order/GetTableOfOrders?page=1");
+</script>

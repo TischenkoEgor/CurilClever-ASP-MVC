@@ -19,13 +19,7 @@ namespace CurilClever2.Controllers
     }
     public IActionResult Index()
     {
-      var list = db.Orders.Include((o) => o.Client).Include((o) => o.Hotel).ToList();
-      return View(list);
-    }
-    public IActionResult TableOfOrders()
-    {
-      var list = db.Orders.Include((o) => o.Client).Include((o) => o.Hotel).ToList();
-      return PartialView(list);
+      return View();
     }
 
     [HttpPost]
@@ -96,7 +90,7 @@ namespace CurilClever2.Controllers
         db.Orders.Add(order);
         order.CreationDate = DateTime.Now;
         db.SaveChanges();
-        return RedirectToAction("Details", new { id=order.id});
+        return RedirectToAction("Details", new { id = order.id });
       }
       ViewBag.Hotels = new SelectList(db.Hotels, "id", "Name");
       ViewBag.Clients = new SelectList(db.Clients, "id", "FIO");
@@ -148,6 +142,41 @@ namespace CurilClever2.Controllers
       }
       var list = db.Orders.Include((o) => o.Client).Include((o) => o.Hotel).ToList();
       return PartialView("TableOfOrders", list);
+    }
+
+    public IActionResult GetTableOfOrders(int page = 1)
+    {
+      // 0. Фиксируем количество элементов на странице
+      int pageSize = 3;
+      // 1. Получаем данные о всех заявках (коллекцию заявок) из базы данных
+      IQueryable<Order> source = db.Orders.Include(o => o.Client).Include(o => o.Hotel);
+      // 1.1 Получаем общее количество заявок
+      int count = source.Count();
+      // 2. Получаем обрезанную выборку заявок :
+      // Для этого в оргинальной коллекции пропускаем (функция Skip) Page-1  страниц по PageSize заявок на каждой
+      // и из оставшихся берем (функция take) pageSize элементов
+      List<Order> items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+      // 3. Если так получилось что на последней странице 0 элементов и при этом страниц больше одной
+      // такое произойдет, если удалить единственную заявку на последней странице
+      if (page > 1 && items.Count == 0)
+      {
+        // 3.1 Уменьшаем номер страницы на 1
+        page--;
+        // 3.2 Заново формируем набор клиентов на страницу
+        items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+      }
+      // После того, как выборка заявок сформирована:
+      // 4. Создаем PageViewModel 
+      PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+      // 5. Создаем CientPageViewModel используя pageViewModel и список 
+      OrderPageViewModel viewModel = new OrderPageViewModel
+      {
+        PageViewModel = pageViewModel,
+        Orders = items
+      };
+      // 6. Возвращаем частичное представление сформированное из viewModel
+      return PartialView(viewModel);
     }
   }
 }
