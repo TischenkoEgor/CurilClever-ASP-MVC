@@ -25,33 +25,37 @@
 </head>
 <body>
   <header>
-    <div class="header_container">
-      <div class="site_logo">
-        <img id="logoimg" src="~/pic/logo.png" alt="логотип">
+    <div class="navbar navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Curil Clever</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Главная</a></li>
+            <li><a asp-area="" asp-controller="Order" asp-action="Index">Управение заявками</a></li>
+            <li><a asp-area="" asp-controller="Client" asp-action="index">Управление клиентами</a></li>
+            <li><a asp-area="" asp-controller="Hotel" asp-action="Index">Управление отелями</a></li>
+            <li><a asp-area="" asp-controller="Order" asp-action="CreateOrder"><div id="accountblock"></div></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
-      <div class="menucontainer">
-        <h1> Эксклюзивное турагенство Курил Клевер </h1>
-        <ul class="menulist">
-          <li><a asp-area="" asp-controller="Home" asp-action="Index">Главная</a></li>
-          <li><a asp-area="" asp-controller="Order" asp-action="Index">Управение заявками</a></li>
-          <li><a asp-area="" asp-controller="Client" asp-action="index">Управление клиентами</a></li>
-          <li><a asp-area="" asp-controller="Hotel" asp-action="Index">Управление отелями</a></li>
-          <li><a asp-area="" asp-controller="Order" asp-action="CreateOrder">Добавить заявку</a></li>
-        </ul>
-      </div>
-      <div class="contact_container" id="accountblock"></div>
-
     </div>
   </header>
 
 
   <div class="container body-content">
-    <div class="page">
       @RenderBody()
-    </div>
+ 
     <hr />
     <footer>
-      <div class="footer_container">
+      <div class="blog-footer" >
         <p>Все права защищены (c) 2018. Разработчик сайта креативная веб Студия "<a href="http://vk.com/night_mare_218">Cretin Development"</a></p>
       </div>
     </footer>

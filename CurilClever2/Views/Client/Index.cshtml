@@ -1,13 +1,18 @@
 ﻿@{
   ViewData["Title"] = "Index";
 }
-
-<h2>Управление клиентами агенства</h2>
-<div>
-  <p>
-    @Html.ActionLink("ДОБАВИТЬ КЛИЕНТА", "CreateClient", "Client", new { @class = "create-client-link" }, null)
-  </p>
-  <div id="ClientsBlock">
+<div class="jumbotron text-center">
+  <h2>Управление клиентами агенства</h2>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <p>
+      @Html.ActionLink("ДОБАВИТЬ КЛИЕНТА", "CreateClient", "Client", new { @class = "create-client-link" }, null)
+    </p>
+  </div>
+ </div>
+<div class="row">
+  <div id="ClientsBlock" class="col-md-12">
 
   </div>
 </div>
