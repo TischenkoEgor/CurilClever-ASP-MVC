@@ -1,7 +1,7 @@
 ﻿@using CurilClever2.ViewModels
 @model HotelPageViewModel
 <h2>Все отели</h2>
-<table border="1">
+<table class="table table-striped table-hover">
 
   <tr>
     <td><b>Отель</b></td>
@@ -46,7 +46,7 @@
 }
 else
 {
-  <a class="btn btn-default btn" style="opacity:.7">
+  <a class="btn btn-default btn" style="opacity:.5">
     <i class="glyphicon glyphicon-chevron-left"></i>
     сюда
   </a>
@@ -56,6 +56,13 @@ else
   <a asp-action="GetTableOfHotels" asp-controller="Hotel" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
      data-ajax="true" data-ajax-mode="replace" data-ajax-update="#hotelstablecontainer"
      class="btn btn-default btn">
+    туда
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </a>
+}
+else
+{
+  <a class="btn btn-default btn" style="opacity:.5">
     туда
     <i class="glyphicon glyphicon-chevron-right"></i>
   </a>
