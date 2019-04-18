@@ -2,11 +2,19 @@
 @{
   ViewData["Title"] = "Index";
 }
+<div class="jumbotron text-center">
+  <h2>Управление заявками</h2>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <p>
+      @Html.ActionLink("ДОБАВИТЬ ЗАЯВКУ", "CreateOrder", "Order", new { @class = "create-hotel-link" }, null)
+      </p>
+  </div>
+</div>
 
-<h2>Управление заявками</h2>
-@Html.ActionLink("ДОБАВИТЬ ЗАЯВКУ", "CreateOrder", "Order", new { @class = "create-hotel-link" }, null)
 <div id="TableOfOrdersBlock">
- 
+
 </div>
 <script type="text/javascript">
   $('#TableOfOrdersBlock').load("/Order/GetTableOfOrders?page=1");

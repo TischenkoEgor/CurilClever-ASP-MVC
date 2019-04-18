@@ -3,18 +3,13 @@
 <h1>Комментарии к заказу</h1>
 @foreach (OrderComment u in Model.Comments)
 {
-  <div class="CommentContainer">
-    <div class="CommentHeaderContainer" style="display:flex;  justify-content:flex-start">
-      <b>
-        <span>@u.Posted.ToShortDateString()</span>
-        <span>@u.Posted.ToShortTimeString() </span>
-      </b>
-      <u><span> @u.User.name </span></u>
+  <div class="media">
+    <div class="media-left">
+      <img src="~/images/std_avatar.png" class="media-object" style="width:60px">
     </div>
-    <div class="CommentTextContainer">
-      <p>
-        @u.Text
-      </p>
+    <div class="media-body">
+      <h4 class="media-heading"> @u.User.name<small><i> @u.Posted.ToShortDateString() @u.Posted.ToShortTimeString() </i></small></h4>
+      <p> @u.Text</p>
     </div>
   </div>
 }
@@ -27,7 +22,7 @@ else
   @if (Model.PageViewModel.HasPreviousPage)
   {
     <a asp-action="Comments" asp-controller="order" asp-route-id="@Model.orderid" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
+       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#OrderCommentBlock"
        class="btn btn-default btn">
       <i class="glyphicon glyphicon-chevron-left"></i>
       Назад
@@ -35,7 +30,7 @@ else
   }
   else
   {
-    <a class="btn btn-default btn">
+    <a class="btn btn-default btn" style="opacity:.5">
       <i class="glyphicon glyphicon-chevron-left"></i>
       Назад
     </a>
@@ -43,12 +38,20 @@ else
   @if (Model.PageViewModel.HasNextPage)
   {
     <a asp-action="Comments" asp-controller="Order" asp-route-id="@Model.orderid" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
+       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#OrderCommentBlock"
        class="btn btn-default btn">
-      Вперед
+      Дальше
       <i class="glyphicon glyphicon-chevron-right"></i>
     </a>
   }
+  else
+  {
+    <a class="btn btn-default btn" style="opacity:.5">
+      Дальше
+      <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+  }
+
 }
 <h3>Добавить коментарий к заказу</h3>
 <form id="NewClientComent" asp-action="AddComment" asp-controller="Order"
