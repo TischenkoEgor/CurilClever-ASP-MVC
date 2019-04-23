@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CurilClever2.Models;
 using Microsoft.AspNetCore.Authorization;
+using CurilClever2.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace CurilClever2.Controllers
 {
@@ -20,7 +22,22 @@ namespace CurilClever2.Controllers
     }
     public IActionResult Index()
     {
-      return View();
+      HomePageViewModel hpVM = new HomePageViewModel();
+      hpVM.Clients = db.Clients.OrderByDescending(x=>x.id).Take(10);
+      hpVM.Orders = db.Orders
+                      .Include(x=>x.Hotel)
+                      .Include(x=>x.Client)
+                      .OrderByDescending(x=>x.CreationDate)
+                      .Take(10);
+      hpVM.Hotels = db.Hotels.OrderByDescending(x => x.id).Take(10);
+
+      hpVM.ActiveOrders = from o in db.Orders
+                          where o.PayStatus == PayStatus.Paid &&
+                                o.BeginTravelDate <= DateTime.Now &&
+                                o.EndTravelDate >= DateTime.Now
+                          select o;
+
+      return View(hpVM);
     }
 
     public IActionResult Clients()
