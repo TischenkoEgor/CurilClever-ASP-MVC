@@ -53,7 +53,7 @@ namespace CurilClever2.Controllers
     public IActionResult ClientComments(int id, int page = 1)
     {
 
-      int pageSize = 3;   // количество элементов на странице
+      int pageSize = 8;   // количество элементов на странице
       Client client = db.Clients
         .Include(x => x.Comments)
         .AsQueryable().Where(x => x.id == id)

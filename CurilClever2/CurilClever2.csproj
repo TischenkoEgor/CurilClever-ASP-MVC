@@ -5,6 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="RandomAdresses.txt" />
+    <None Remove="RandomHotels.txt" />
+    <None Remove="RandomText.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="RandomAdresses.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RandomText.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
@@ -17,6 +32,12 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\lib\jquery-ajax-unobtrusive\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="RandomHotels.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
