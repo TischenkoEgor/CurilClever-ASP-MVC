@@ -17,7 +17,9 @@ namespace CurilClever2
     public static void Main(string[] args)
     {
       //CreateWebHostBuilder(args).Build().Run();
+      // создается хост приложения 
       var host = CreateWebHostBuilder(args).Build();
+
 
       using (var scope = host.Services.CreateScope())
       {
