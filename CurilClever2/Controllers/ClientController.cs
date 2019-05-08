@@ -126,34 +126,34 @@ namespace CurilClever2.Controllers
       // 0. Фиксируем количество элементов на странице
       int pageSize = 3;   
       // 1. Получаем данные о всех клиентах (коллекцию клиентов) из базы данных
-      IQueryable<Client> source = db.Clients;
+      IQueryable<Client> clients = db.Clients;
       // 1.1 Получаем общее количество клиентов
-      int count = source.Count();
-      // 2. Получаем обрезанную выборку клиентов :
+      int count = clients.Count();
+      // 2. Получаем обрезанную выборку клиентов для текущей страницы :
       // Для этого в оргинальной коллекции пропускаем (функция Skip) Page-1  страниц по PageSize клиентов на каждой
       // и из оставшихся берем (функция take) pageSize элементов
-      List<Client> items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+      List<Client> items = clients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
       // 3. Если так получилось что на последней странице 0 элементов и при этом страниц больше одной
-      // такое произойдет, если удалить единственного клиента на последней странице
+      // -----> такое произойдет, если удалить единственного клиента на последней странице
       if(page > 1 && items.Count == 0)
       {
         // 3.1 Уменьшаем номер страницы на 1
         page--;
         // 3.2 Заново формируем набор клиентов на страницу
-        items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        items = clients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
       }
       // После того, как выборка клиентов сформирована
-      // 4. Создаем PageViewModel 
+      // 4. Создаем объект классса PageViewModel 
       PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
       // 5. Создаем CientPageViewModel используя pageViewModel и список 
-      ClientPageViewModel viewModel = new ClientPageViewModel
+      ClientPageViewModel clientPageviewModel = new ClientPageViewModel
       {
         PageViewModel = pageViewModel,
         Clients = items
       };
       // 6. Возвращаем частичное представление сформированное из viewModel
-      return PartialView(viewModel);
+      return PartialView(clientPageviewModel);
     }
   }
 }
