@@ -12,6 +12,9 @@ namespace CurilClever2.Models
     public string Login { get; set; }
     public string PasswordHash { get; set; }
 
+    public int? RoleId { get; set; }
+    public Role Role { get; set; }
+
     public bool checkPassword(string pass)
     {
       if (CryptoHelper.GetMD5(pass) == PasswordHash)
@@ -21,5 +24,15 @@ namespace CurilClever2.Models
     }
 
     public int AccessLevel { get; set; }
+  }
+  public class Role
+  {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public List<User> Users { get; set; }
+    public Role()
+    {
+      Users = new List<User>();
+    }
   }
 }
