@@ -53,7 +53,7 @@ namespace CurilClever2.Controllers
     public IActionResult ClientComments(int id, int page = 1)
     {
 
-      int pageSize = 3;   // количество элементов на странице
+      int pageSize = 8;   // количество элементов на странице
       Client client = db.Clients
         .Include(x => x.Comments)
         .AsQueryable().Where(x => x.id == id)
@@ -124,7 +124,7 @@ namespace CurilClever2.Controllers
     public IActionResult GetTableOfClients(int page = 1)
     {
       // 0. Фиксируем количество элементов на странице
-      int pageSize = 3;   
+      int pageSize = 12;   
       // 1. Получаем данные о всех клиентах (коллекцию клиентов) из базы данных
       IQueryable<Client> clients = db.Clients;
       // 1.1 Получаем общее количество клиентов

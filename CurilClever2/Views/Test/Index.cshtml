@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<a asp-route-action="AddRandomClients" asp-route-controller="Test" 
+   ajax-data="true" ajax-method="replace"> Добавить рандомных пользователей
+</a>
+<br />
+<a asp-route-action="AddRandomCommetsForClients" asp-route-controller="Test"
+   ajax-data="true" ajax-method="replace">
+  Добавить рандомных коментариев всем пользователям
+</a>
+<br />
+<a asp-route-action="AddRandomHotels" asp-route-controller="Test" 
+   ajax-data="true" ajax-method="replace"> Добавить рандомных отелей
+</a>
+<br />
+<a asp-route-action="AddRandomOrders" asp-route-controller="Test" 
+   ajax-data="true" ajax-method="replace"> Добавить рандомных заявок
+</a>

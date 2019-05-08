@@ -74,7 +74,7 @@ namespace CurilClever2.Controllers
     }
     public IActionResult GetTableOfHotels(int page = 1)
     {
-      int pageSize = 3;   // количество элементов на странице
+      int pageSize = 10;   // количество элементов на странице
       IQueryable<Hotel> source = db.Hotels;
       var count = source.Count();
       var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
