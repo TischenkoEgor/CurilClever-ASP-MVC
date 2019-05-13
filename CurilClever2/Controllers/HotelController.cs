@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CurilClever2.Controllers
 {
-  [Authorize]
+  [Authorize(Roles = "Admin, Moderator, Manager")]
   public class HotelController : Controller
   {
     private CleverDBContext db;

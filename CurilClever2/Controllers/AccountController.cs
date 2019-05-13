@@ -17,6 +17,7 @@ using System.IO;
 
 namespace CurilClever2.Controllers
 {
+
   public class AccountController : Controller
   {
     private CleverDBContext db;
@@ -26,6 +27,10 @@ namespace CurilClever2.Controllers
     {
       db = context;
       _recaptcha = recaptcha;
+    }
+    public IActionResult AccessDenied()
+    {
+      return View();
     }
     [HttpGet]
     public IActionResult Login()
@@ -38,10 +43,10 @@ namespace CurilClever2.Controllers
     {
       if (ModelState.IsValid)
       {
-        User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.checkPassword(model.Password));
+        User user = await db.Users.Include(u=>u.Role).FirstOrDefaultAsync(u => u.Login == model.Login && u.checkPassword(model.Password));
         if (user != null)
         {
-          await Authenticate(model.Login); // аутентификация
+          await Authenticate(user); // аутентификация
 
           return RedirectToAction("Index", "Home");
         }
@@ -59,7 +64,7 @@ namespace CurilClever2.Controllers
       MemoryStream ms = new MemoryStream();
       img.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
       return new FileContentResult(ms.GetBuffer(), "image/jpeg");
-    } 
+    }
     public IActionResult GetCaptureBlock()
     {
       RegisterModel rm = new RegisterModel();
@@ -105,11 +110,20 @@ namespace CurilClever2.Controllers
         User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login);
         if (user == null)
         {
+          Role role = db.Roles.Where(r => r.Name.Contains("DefaultUser")).FirstOrDefault();
           // добавляем пользователя в бд
-          db.Users.Add(new User { name = model.Name, Login = model.Login, PasswordHash = CryptoHelper.GetMD5(model.Password), AccessLevel = 9000 });
+          User newUser = new User {
+            name = model.Name,
+            Login = model.Login,
+            PasswordHash = CryptoHelper.GetMD5(model.Password),
+            AccessLevel = 9000,
+            Role = role
+          };
+
+          db.Users.Add(newUser);
           await db.SaveChangesAsync();
 
-          await Authenticate(model.Login); // аутентификация
+          await Authenticate(newUser); // аутентификация
 
           return RedirectToAction("Index", "Home");
         }
@@ -119,13 +133,14 @@ namespace CurilClever2.Controllers
       return View(model);
     }
 
-    private async Task Authenticate(string userName)
+    private async Task Authenticate(User user)
     {
       // создаем один claim
       var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
-            };
+        {
+            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+            new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name)
+        };
       // создаем объект ClaimsIdentity
       ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
       // установка аутентификационных куки

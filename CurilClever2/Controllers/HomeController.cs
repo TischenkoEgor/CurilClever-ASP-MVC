@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CurilClever2.Controllers
 {
-  [Authorize]
+  [Authorize(Roles = "Admin, Moderator, Manager, DefaultUser")]
   public class HomeController : Controller
   {
     private CleverDBContext db;
@@ -20,14 +20,15 @@ namespace CurilClever2.Controllers
     {
       db = _db;
     }
+   
     public IActionResult Index()
     {
       HomePageViewModel hpVM = new HomePageViewModel();
-      hpVM.Clients = db.Clients.OrderByDescending(x=>x.id).Take(10);
+      hpVM.Clients = db.Clients.OrderByDescending(x => x.id).Take(10);
       hpVM.Orders = db.Orders
-                      .Include(x=>x.Hotel)
-                      .Include(x=>x.Client)
-                      .OrderByDescending(x=>x.CreationDate)
+                      .Include(x => x.Hotel)
+                      .Include(x => x.Client)
+                      .OrderByDescending(x => x.CreationDate)
                       .Take(10);
       hpVM.Hotels = db.Hotels.OrderByDescending(x => x.id).Take(10);
 

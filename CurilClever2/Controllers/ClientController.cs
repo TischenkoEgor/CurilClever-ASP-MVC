@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using CurilClever2.Models;
 using CurilClever2.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CurilClever2.Controllers
 {
+  [Authorize(Roles = "Admin, Moderator, Manager")]
   public class ClientController : Controller
   {
     private CleverDBContext db;

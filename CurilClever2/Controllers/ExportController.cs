@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CurilClever2.Controllers
 {
+  [Authorize(Roles = "Admin, Moderator, Manager")]
   public class ExportController : Controller
   {
     private CleverDBContext db;

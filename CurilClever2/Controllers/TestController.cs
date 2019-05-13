@@ -6,9 +6,11 @@ using CurilClever2.Models;
 using CurilClever2.Utils;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CurilClever2.Controllers
 {
+  [Authorize(Roles = "Admin")]
   public class TestController : Controller
   {
     private CleverDBContext db;
