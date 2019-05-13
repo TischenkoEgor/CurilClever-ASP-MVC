@@ -1,7 +1,21 @@
-﻿
+﻿@using System.Security.Claims;
 @if (User.Identity.Name != null)
 {
-  <p> вы вошли как @User.Identity.Name @Html.ActionLink("Выход", "Logout", "Account", new {  }, null) </p>
+  string role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown"> вы вошли как @User.Identity.Name  <span class="caret"></span></a>
+  <ul class="dropdown-menu">
+    @if (role == "Admin")
+    {
+      <li><a asp-area="admin" asp-controller="Account" asp-action="index">Админка</a></li>
+    }
+    else
+    {
+      <li><a href="#">Админка недоступна</a></li>
+    }
+    <li role="separator" class="divider"></li>
+    <li>@Html.ActionLink("Выход", "Logout", "Account", new { }, null)</li>
+  </ul>
+
 }
 else
 {

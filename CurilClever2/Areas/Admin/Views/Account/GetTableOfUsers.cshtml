@@ -1,0 +1,82 @@
+﻿@using CurilClever2.ViewModels
+@using CurilClever2.Models
+@model UserPageViewModel
+@{
+  ViewData["Title"] = "GetTableOfUsers";
+}
+
+<H2>Сотрудники агенства</H2>
+<br>
+<table class="table table-striped table-hover">
+  <tr>
+    <td>ИД</td>
+    <td>Имя</td>
+    <td>почта</td>
+    <td>Управление</td>
+  </tr>
+  @if (Model.Users.Count() == 0)
+  {
+    <tr>
+      <td colspan="5">
+        Клиентов в базе нет!
+      </td>
+    </tr>
+  }
+  else
+  {
+    foreach (User user in Model.Users)
+    {
+      <tr>
+        <td>@user.id </td>
+        <td>@user.name</td>
+        <td>@user.Login</td>
+        <td>
+          @if (user.name != User.Identity.Name)
+          {
+            <a asp-area="Admin" asp-controller="Account" asp-action="Edit"
+               asp-route-page="@Model.PageViewModel.PageNumber" asp-route-id="@user.id">Управление</a>
+            <a asp-area="Admin" asp-controller="Account" asp-action="Details"
+               asp-route-page="@Model.PageViewModel.PageNumber" asp-route-id="@user.id">Подробно</a>
+          }
+          else
+          {
+            <p>свои права менять нельзя</p>
+          }
+
+        </td>
+      </tr>
+    }
+  }
+</table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+  <a asp-area="Admin" asp-controller="Account" asp-action="GetTableOfUsers"  asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
+     class="btn btn-default btn">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    сюда
+  </a>
+}
+else
+{
+  <a class="btn btn-default btn" style="opacity:.5">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    сюда
+  </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+  <a asp-area="Admin" asp-controller="Account" asp-action="GetTableOfUsers"   asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
+     class="btn btn-default btn">
+    туда
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </a>
+}
+else
+{
+  <a class="btn btn-default btn" style="opacity:.5">
+    туда
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </a>
+}

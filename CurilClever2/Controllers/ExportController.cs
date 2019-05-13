@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CurilClever2.Helpers;
 using CurilClever2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

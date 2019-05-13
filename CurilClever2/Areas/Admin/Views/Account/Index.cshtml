@@ -1,0 +1,16 @@
+﻿@{
+  ViewData["Title"] = "Index";
+  Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="jumbotron text-center">
+  <h2>Управление аккаунтами сотрудников агенства</h2>
+</div>
+<div class="row">
+  <div id="UsersBlock" class="col-md-12">
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#UsersBlock').load("/Admin/Account/GetTableOfUsers?page=1");
+</script>
