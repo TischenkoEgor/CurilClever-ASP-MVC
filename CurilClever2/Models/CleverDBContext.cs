@@ -17,6 +17,7 @@ namespace CurilClever2.Models
     public DbSet<ClientComment> ClientComments { get; set; }
     public DbSet<CaptureModel> CaptureModels { get; set; }
     public DbSet<Role> Roles { get; set; }
+    public DbSet<News> News { get; set; }
 
     public CleverDBContext(DbContextOptions<CleverDBContext> options)
            : base(options)

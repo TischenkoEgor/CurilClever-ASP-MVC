@@ -49,6 +49,22 @@ namespace CurilClever2.Controllers
     {
       db.Clients.Add(client);
       db.SaveChanges();
+
+      News news = new News();
+      news.TextShort = "добавлен новый клиент";
+      news.TextFull = "В базу данных добавлен новый клиент!Его параметры: <br>";
+      news.TextFull += "Имя " + client.FIO + "<br>";
+      news.TextFull += "Почта " + client.Email + "<br>";
+      news.TextFull += "пол " + client.Gender + "<br>";
+      news.TextFull += "телефон " + client.Phone + "<br>";
+      news.TextFull += "Дата добавления " + news.Created.ToLongDateString() + " " + news.Created.ToLongTimeString() + "<br>";
+      news.ObjectUrl = "/Client/Details/" + client.id.ToString();
+
+      news.User = db.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefault();
+
+      db.News.Add(news);
+      db.SaveChanges();
+
       return RedirectToAction("index");
     }
 

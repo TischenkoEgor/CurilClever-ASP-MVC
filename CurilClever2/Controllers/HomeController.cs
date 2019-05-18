@@ -37,7 +37,7 @@ namespace CurilClever2.Controllers
                                 o.BeginTravelDate <= DateTime.Now &&
                                 o.EndTravelDate >= DateTime.Now
                           select o;
-
+      hpVM.News = db.News.OrderByDescending(n => n.Created).Take(10);
       return View(hpVM);
     }
 

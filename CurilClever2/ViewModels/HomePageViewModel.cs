@@ -12,13 +12,14 @@ namespace CurilClever2.ViewModels
     public IEnumerable<Hotel> Hotels;
     public IEnumerable<Order> Orders;
     public IEnumerable<Order> ActiveOrders;
+    public IEnumerable<News> News;
     public HomePageViewModel()
     {
       Clients = new List<Client>();
       Hotels = new List<Hotel>();
       Orders = new List<Order>();
       ActiveOrders = new List<Order>();
+      News = new List<News>();
     }
-
   }
 }
