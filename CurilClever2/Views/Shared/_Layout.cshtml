@@ -4,6 +4,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <script src="~/lib/jquery/dist/jquery.js"></script>
   <script src="~/lib/jquery-ajax-unobtrusive/jquery.ajax.unobtrusive.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+  <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+  <script src="~/js/jquery.cookie.js"></script>
+
+  <script src="~/js/site.js" asp-append-version="true"></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"]</title>
@@ -49,23 +55,22 @@
 
 
   <div class="container body-content">
-      @RenderBody()
- 
+    @RenderBody()
+
     <hr />
     <footer>
-      <div class="blog-footer" >
+      <div class="blog-footer">
         <p>Все права защищены (c) 2018. Разработчик сайта креативная веб Студия "<a href="http://vk.com/night_mare_218">Cretin Development"</a></p>
+        <a id="print_view_btn" >версия для печати</a>
+        <a id="default_view_btn" >обычная версия</a>
+
       </div>
     </footer>
   </div>
 
   <environment include="Development">
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="~/lib/jquery-ajax-unobtrusive/jquery.ajax.unobtrusive.js"></script>
+
+
 
   </environment>
   <environment exclude="Development">
@@ -87,11 +92,31 @@
   </environment>
   @RenderSection("Scripts", required: false)
   <script type="text/javascript">
+    // ajax загрузка блока с данными аккаунта и элемента меню
     var loaded = 0;
     $('#accountblock').load(
       "/home/accountinfo",
       function () { }
     );
+    // обработка версии для печати
+
+    // если в куках нет настройки на режим вывода для печати
+    if ($.cookie('print_view') != '1') {
+      $('#print_view_btn').css('display', 'block');
+      $('#default_view_btn').css('display', 'none');
+      SwitchToDefaultView();
+    }
+    else {
+      $('#print_view_btn').css('display', 'block');
+      $('#default_view_btn').css('display', 'none');
+      SwitchToPrintView();
+    }
+    $('#print_view_btn').click(function () {
+      SwitchToPrintView();
+    });
+    $('#default_view_btn').click(function () {
+      SwitchToDefaultView();
+    });
   </script>
 </body>
 </html>
