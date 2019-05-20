@@ -92,6 +92,24 @@ namespace CurilClever2.Controllers
         db.Orders.Add(order);
         order.CreationDate = DateTime.Now;
         db.SaveChanges();
+
+        order = db.Orders.Include(o => o.Client).Include(o => o.Hotel).FirstOrDefault(o => o.id == order.id);
+
+        News news = new News();
+        news.TextShort = "добавлена новая заявка";
+        news.TextFull = "В базу данных добавлена новая заявка!Ее параметры: <br>";
+        news.TextFull += "Клиент " + order.Client.FIO + "<br>";
+        news.TextFull += "Отель " + order.Hotel.Name + "<br>";
+        news.TextFull += "Со стоимостью " + order.Price + "<br>";
+        news.TextFull += "Дата добавления " + news.Created.ToLongDateString() + " " + news.Created.ToLongTimeString() + "<br>";
+        news.ObjectUrl = "/Order/Details/" + order.id.ToString();
+
+        news.User = db.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefault();
+
+        db.News.Add(news);
+        db.SaveChanges();
+
+
         return RedirectToAction("Details", new { id = order.id });
       }
       ViewBag.Hotels = new SelectList(db.Hotels, "id", "Name");

@@ -33,6 +33,21 @@ namespace CurilClever2.Controllers
       {
         db.Hotels.Add(hotel);
         db.SaveChanges();
+        News news = new News();
+        news.TextShort = "добавлен новый отель";
+        news.TextFull = "В базу данных добавлен новый отель!Его параметры: <br>";
+        news.TextFull += "Название " + hotel.Name + "<br>";
+        news.TextFull += "Адрес " + hotel.Addres + "<br>";
+        news.TextFull += "Звезд " + hotel.StarsRate + "<br>";
+        news.TextFull += "Стоимость ночи " + hotel.Price + "<br>";
+        news.TextFull += "Дата добавления " + news.Created.ToLongDateString() + " " + news.Created.ToLongTimeString() + "<br>";
+        news.ObjectUrl = "/Hotel/EditHotel/" + hotel.id.ToString();
+
+        news.User = db.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefault();
+
+        db.News.Add(news);
+        db.SaveChanges();
+
         return RedirectToAction("Index");
       }
       catch (Exception ex)
