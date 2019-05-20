@@ -25,5 +25,12 @@ namespace CurilClever2.Controllers
       Byte[] exportdata = XLSExport.BuildClientsXLS(db.Clients.ToList());
       return File(exportdata, "application/xlsx", "clients.xlsx");
     }
+    public FileResult DBStats()
+    {
+      Response.Clear();
+      Byte[] exportdata = XLSExport.GetDbStatsCSV(db);
+
+      return File(exportdata, "text/csv", "data.csv");
+    }
   }
 }

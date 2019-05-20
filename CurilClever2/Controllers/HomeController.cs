@@ -38,6 +38,14 @@ namespace CurilClever2.Controllers
                                 o.EndTravelDate >= DateTime.Now
                           select o;
       hpVM.News = db.News.OrderByDescending(n => n.Created).Take(10);
+
+
+      hpVM.CountOfClientComments = db.ClientComments.Count();
+      hpVM.CountOfClients = db.Clients.Count();
+      hpVM.CountOfHotels = db.Hotels.Count();
+      hpVM.CountOfOrderComments = db.OrderComments.Count();
+      hpVM.CountOfOrders = db.Orders.Count();
+
       return View(hpVM);
     }
 

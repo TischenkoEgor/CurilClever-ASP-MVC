@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using CurilClever2.Models;
 using OfficeOpenXml.Style;
+using CsvHelper;
 
 namespace CurilClever2.Helpers
 {
@@ -81,6 +82,28 @@ namespace CurilClever2.Helpers
       wsSheet.Column(8).Width = 26;
       wsSheet.Cells[2, 8].Value = "контактный емейл клиента";
 
+    }
+
+    public static Byte[] GetDbStatsCSV(CleverDBContext db)
+    {
+      List<Tuple<string, string>> stats = new List<Tuple<string, string>>();
+      stats.Add(new Tuple<string, string>("type", "count"));
+      stats.Add(new Tuple<string, string>("отели", db.Hotels.Count().ToString()));
+      stats.Add(new Tuple<string, string>("клиенты", db.Clients.Count().ToString()));
+      stats.Add(new Tuple<string, string>("заявки", db.Orders.Count().ToString()));
+      stats.Add(new Tuple<string, string>("коментарии к клиентам", db.ClientComments.Count().ToString()));
+      stats.Add(new Tuple<string, string>("коментарии к заявкам", db.OrderComments.Count().ToString()));
+
+
+      MemoryStream ms = new MemoryStream();
+
+      using (var writer = new StreamWriter(ms))
+      using (var csv = new CsvWriter(writer))
+      {
+        csv.WriteRecords(stats);
+      }
+
+      return ms.ToArray();
     }
   }
 }
