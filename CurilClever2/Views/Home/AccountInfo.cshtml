@@ -12,6 +12,7 @@
     {
       <li><a href="#">Админка недоступна</a></li>
     }
+    <li><a asp-controller="Account" asp-action="Manage">Управление аккаунтом</a></li>
     <li role="separator" class="divider"></li>
     <li>@Html.ActionLink("Выход", "Logout", "Account", new { }, null)</li>
   </ul>

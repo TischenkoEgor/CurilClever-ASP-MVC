@@ -152,5 +152,74 @@ namespace CurilClever2.Controllers
       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
       return RedirectToAction("Index", "Home");
     }
+
+    [HttpGet]
+    public IActionResult Manage()
+    {
+      // получаем текущего пользователя
+      User currentuser = db.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefault();
+      // получаем подписку
+      Subscribe sub;
+      // если для пользователя еще нет настроек подписки
+      if (db.Subscribes.Where(s => s.Userid == currentuser.id).Count() == 0)
+      {
+        // создаем новую
+        sub = new Subscribe();
+        sub.User = currentuser;
+        sub.SendNews = false;
+        // добавляем в базу
+        db.Add(sub);
+        db.SaveChanges();
+      }
+      else
+        // в противном случае (если подписка у пользователя есть) загружаем ее из базы данных
+        sub = db.Subscribes.Include(s=>s.User).FirstOrDefault(s => s.Userid == currentuser.id);
+      // создаем вьюмодель для текущего юзера и подписки
+      ManageAccountViewModel maVM = new ManageAccountViewModel(currentuser, sub);
+
+      return View(maVM);
+    }
+    [HttpPost]
+    public IActionResult Manage(ManageAccountViewModel model)
+    {
+      // получаем текущего пользователя
+      User currentuser = db.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefault();
+      // получаем подписку
+      Subscribe sub;
+      // если для пользователя еще нет настроек подписки
+      if (db.Subscribes.Where(s => s.Userid == currentuser.id).Count() == 0)
+      {
+        // создаем новую
+        sub = new Subscribe();
+        sub.User = currentuser;
+        sub.SendNews = false;
+        // добавляем в базу
+        db.Add(sub);
+        db.SaveChanges();
+      }
+      else
+        // в противном случае (если подписка у пользователя есть) загружаем ее из базы данных
+        sub = db.Subscribes.Include(s => s.User).FirstOrDefault(s => s.Userid == currentuser.id);
+      
+
+      //обновляем настройки подписки у пользователя
+      sub.SendNews = model.EMailNewsSubscribe;
+
+      db.Subscribes.Update(sub);
+      db.SaveChanges();
+
+      if(model.Password != null && model.Password == model.ConfirmPassword && model.Password.Length >= 3)
+      {
+        currentuser.PasswordHash = CryptoHelper.GetMD5(model.Password);
+      }
+      currentuser.Login = model.Login;
+      currentuser.name = model.Name;
+      db.Users.Update(currentuser);
+      db.SaveChanges();
+
+      // создаем вьюмодель для текущего юзера и подписки
+      ManageAccountViewModel maVM = new ManageAccountViewModel(currentuser, sub);
+      return View(maVM);
+    }
   }
 }

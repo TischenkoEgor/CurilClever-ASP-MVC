@@ -25,6 +25,5 @@ namespace CurilClever2.Models
     {
       Database.EnsureCreated();
     }
-
   }
 }
