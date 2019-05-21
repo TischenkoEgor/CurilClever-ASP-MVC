@@ -7,7 +7,6 @@ function SwitchToPrintView() {
     $.cookie('print_view', '1');
     $('header').css('display', 'none');
     $('.jumbotron').css('display', 'none')
-    $('.container').css('max-width', '600px')
     
     $('#print_view_btn').css('display', 'none');
     $('#default_view_btn').css('display', 'block');

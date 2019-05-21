@@ -9,7 +9,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <h3>Последние новости</h3>
+      <h3 class="text-center">Последние новости</h3>
       <table class="table table-striped table-hover">
         <tr>
           <td>Дата</td>
@@ -20,9 +20,9 @@
         @foreach (News news in Model.News)
         {
           <tr>
-            <td><a asp-controller="News" asp-action="Details" asp-route-id="@news.id">@news.Created.ToUniversalTime()</a></td>
+            <td>@news.Created.ToUniversalTime()</td>
 
-            <td><p>@news.TextShort</p></td>
+            <td><a asp-controller="News" asp-action="Details" asp-route-id="@news.id">@news.TextShort</a></td>
 
             <td><a href="@news.ObjectUrl">перейти к объекту</a></td>
           </tr>
@@ -30,7 +30,7 @@
       </table>
     </div>
     <div class="col-md-6">
-      <h3>Состояние базы данных</h3>
+      <h3 class="text-center">Состояние базы данных</h3>
       <div id="barcontainer">
         <svg id="mainbar" />
       </div>
@@ -293,7 +293,31 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-12"><p>Column 5</p></div>
+    <div class="col-md-12">
+
+      <h3 class="text-center">Последние заявки</h3>
+      <table class="table table-striped table-hover">
+        <tr>
+          <td>Клиент</td>
+          <td>Отель</td>
+          <td>Даты</td>
+          <td>Стомость</td>
+          <td></td>
+
+        </tr>
+
+        @foreach (Order order in Model.Orders)
+        {
+          <tr>
+            <td>@order.Client.FIO</td>
+            <td>@order.Hotel.Name</td>
+            <td>@order.BeginTravelDate.ToShortDateString() - @order.EndTravelDate.ToShortDateString()</td>
+            <td>@order.Price</td>
+            <td><a asp-controller="Order" asp-action="Details" asp-route-id="@order.id">просмотр</a> </td>
+          </tr>
+        }
+      </table>
+    </div>
   </div>
 </div>
 
