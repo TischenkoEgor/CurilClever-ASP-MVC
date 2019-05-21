@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CurilClever2.Models;
+using CurilClever2.Utils;
 using CurilClever2.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -64,7 +65,13 @@ namespace CurilClever2.Controllers
 
       db.News.Add(news);
       db.SaveChanges();
-
+      // запускаем рассылку в паралельном потоке
+      
+      new Task( (x)=> 
+      {
+        MailSender.SendNewsToSubscribers(news, (List<Subscribe>)x);
+      },db.Subscribes.Include(x => x.User).ToList()).Start();
+      
       return RedirectToAction("index");
     }
 
