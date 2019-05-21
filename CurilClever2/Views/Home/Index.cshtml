@@ -221,14 +221,13 @@
                 .attr('x', (a) => xScale(a.language) + xScale.bandwidth() / 2)
                 .attr('y', (a) => yScale(a.value) + 30)
                 .attr('fill', 'white')
-                .attr('transform', 'rotate(45)')
                 .attr('text-anchor', 'middle')
                 .text((a, idx) => {
                     const divergence = (a.value - actual.value).toFixed(1)
 
                     let text = ''
                     if (divergence > 0) text += '+'
-                    text += `${divergence}%`
+                    text += `${divergence}`
 
                     return idx !== i ? text : '';
                 })
