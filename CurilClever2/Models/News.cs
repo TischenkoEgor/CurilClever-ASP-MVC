@@ -7,12 +7,16 @@ namespace CurilClever2.Models
 {
   public class News
   {
+    // первичный ключ в базе
     public int id { get; set; }
+   
     // Краткое описание
     public string TextShort { get; set; }
+   
     // Подробное описание
     public string TextFull { get; set; }
-    // ссылка на объект новости, если есть
+  
+    //  текст ссылки на объект новости, если есть
     public string ObjectUrl { get; set; }
 
     // Автор новости
@@ -22,8 +26,10 @@ namespace CurilClever2.Models
     // Время создания новости
     public DateTime Created { get; set; }
 
+    // конструктор по умолчанию
     public News()
     {
+      // при создании объекта записываем время создания новости из текущего времени
       Created = DateTime.Now;
     }
   }

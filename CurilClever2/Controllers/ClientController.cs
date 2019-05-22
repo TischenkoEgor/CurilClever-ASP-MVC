@@ -48,30 +48,44 @@ namespace CurilClever2.Controllers
     [HttpPost]
     public IActionResult CreateClient(Client client)
     {
+      // добавляем клиента в базу
       db.Clients.Add(client);
       db.SaveChanges();
-
+      
+      //создаем новость о новом клиенте
       News news = new News();
+
+      // краткое описание
       news.TextShort = "добавлен новый клиент";
+      // формируем полный текст
       news.TextFull = "В базу данных добавлен новый клиент!Его параметры: <br>";
       news.TextFull += "Имя " + client.FIO + "<br>";
       news.TextFull += "Почта " + client.Email + "<br>";
       news.TextFull += "пол " + client.Gender + "<br>";
       news.TextFull += "телефон " + client.Phone + "<br>";
       news.TextFull += "Дата добавления " + news.Created.ToLongDateString() + " " + news.Created.ToLongTimeString() + "<br>";
+      
+      // ссылка на созданного клиента
       news.ObjectUrl = "/Client/Details/" + client.id.ToString();
 
-      news.User = db.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefault();
-
+      // сохраняем "автора" новости
+      news.User = db.Users // из всех пользователей в базе
+        .Where(u => u.Login == User.Identity.Name) // отсеиваем тех, у кого Login такой же как и у ТЕКУЩЕГО АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ (User.Identity)
+        .FirstOrDefault(); // из них берем первого
+      
+      //добавляем новость в базу
       db.News.Add(news);
       db.SaveChanges();
-      // запускаем рассылку в паралельном потоке
+
+
+      // запускаем рассылку
+      // для этого 
+     
+      // запускаем метод расслки у класа для отправки почты
+      MailSender.SendNewsToSubscribers(news, db.Subscribes.Include(s => s.User).ToList());
+
       
-      new Task( (x)=> 
-      {
-        MailSender.SendNewsToSubscribers(news, (List<Subscribe>)x);
-      },db.Subscribes.Include(x => x.User).ToList()).Start();
-      
+      // перенаправляем к списку со всеми пользователями
       return RedirectToAction("index");
     }
 
