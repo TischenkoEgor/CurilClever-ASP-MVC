@@ -35,10 +35,10 @@
         <td>
           @if (user.Login != User.Identity.Name)
           {
-            <a asp-area="Admin" asp-controller="Account" asp-action="Edit"
-               asp-route-page="@Model.PageViewModel.PageNumber" asp-route-id="@user.id">Управление</a>
-            <a asp-area="Admin" asp-controller="Account" asp-action="Details"
-               asp-route-page="@Model.PageViewModel.PageNumber" asp-route-id="@user.id">Подробно</a>
+            <a asp-area="Admin" asp-controller="Account" asp-action="Edit" asp-route-id="@user.id"
+               asp-route-page="@Model.PageViewModel.PageNumber" >Управление</a>
+            <a asp-area="Admin" asp-controller="Account" asp-action="Details" asp-route-id="@user.id"
+               asp-route-page="@Model.PageViewModel.PageNumber" >Подробно</a>
           }
           else
           {

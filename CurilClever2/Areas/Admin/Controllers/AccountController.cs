@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CurilClever2.Models;
 using CurilClever2.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CurilClever2.Areas.Admin.Controllers
 {
   [Area("Admin")]
+  [Authorize(Roles ="Admin")]
   public class AccountController : Controller
   {
     private CleverDBContext db;
@@ -60,26 +62,40 @@ namespace CurilClever2.Areas.Admin.Controllers
     [HttpGet]
     public IActionResult Edit(int id)
     {
+      // проверяем есть ли пользователь с тамким ID в базе
       if (!(from u in db.Users select u.id).Contains(id))
       {
+        // если нет, то перенаправляем запрос на главную страницу управления аккаунтами в админке
         return RedirectToAction("Index");
       }
-
+      // формируем вью-модель для редактирования параметров пользователя:
       EditUserViewModel model = new EditUserViewModel();
+
+      //заполняем список ролей из всех ролей какие есть в базе
       model.roles = new SelectList(db.Roles, "Id", "Name");
 
-      model.User = db.Users.Include(u => u.Role).FirstOrDefault(u => u.id == id);
+      //заполняем поьзоватля во вью-моделе 
+      model.User = db.Users // загружаем из всех пользователей
+        .Include(u => u.Role) // включая вложенный в них объект Роль (с описанием роли)
+        .FirstOrDefault(u => u.id == id); // из них всех выбираем первый, у которого id равняется тому, которое мы ищем
+
+      //заполняем значение роли пользователя 
       model.newRole = model.User.RoleId;
+
       return View(model);
     }
     [HttpPost]
     public IActionResult Edit(EditUserViewModel model)
     {
+      // получаем пользователя и записываем в него новую роль
       User user = db.Users.Find(model.User.id);
       user.Role = db.Roles.Find(model.newRole);
+      
+      // обновляем пользователя в базе и сохраняем изменения в базе
       db.Users.Update(user);
       db.SaveChanges();
 
+      // заново формируем вью-модель
       model.User = user;
       model.roles = new SelectList(db.Roles, "Id", "Name");
       model.newRole = model.User.RoleId;
