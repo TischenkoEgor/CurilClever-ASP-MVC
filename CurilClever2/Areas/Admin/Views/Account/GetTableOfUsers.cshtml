@@ -12,6 +12,7 @@
     <td>ИД</td>
     <td>Имя</td>
     <td>почта</td>
+    <td>Уровень прав</td>
     <td>Управление</td>
   </tr>
   @if (Model.Users.Count() == 0)
@@ -30,6 +31,7 @@
         <td>@user.id </td>
         <td>@user.name</td>
         <td>@user.Login</td>
+        <td>@user.Role.Name</td>
         <td>
           @if (user.Login != User.Identity.Name)
           {
@@ -50,7 +52,7 @@
 </table>
 @if (Model.PageViewModel.HasPreviousPage)
 {
-  <a asp-area="Admin" asp-controller="Account" asp-action="GetTableOfUsers"  asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+  <a asp-area="Admin" asp-controller="Account" asp-action="GetTableOfUsers" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
      data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
      class="btn btn-default btn">
     <i class="glyphicon glyphicon-chevron-left"></i>
@@ -66,7 +68,7 @@ else
 }
 @if (Model.PageViewModel.HasNextPage)
 {
-  <a asp-area="Admin" asp-controller="Account" asp-action="GetTableOfUsers"   asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+  <a asp-area="Admin" asp-controller="Account" asp-action="GetTableOfUsers" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
      data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
      class="btn btn-default btn">
     туда

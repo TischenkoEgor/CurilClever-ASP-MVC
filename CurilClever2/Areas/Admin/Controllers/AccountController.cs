@@ -27,7 +27,7 @@ namespace CurilClever2.Areas.Admin.Controllers
       // 0. Фиксируем количество элементов на странице
       int pageSize = 12;
       // 1. Получаем данные о всех клиентах (коллекцию клиентов) из базы данных
-      IQueryable<User> users = db.Users;
+      IQueryable<User> users = db.Users.Include(u => u.Role);
       // 1.1 Получаем общее количество клиентов
       int count = users.Count();
       // 2. Получаем обрезанную выборку клиентов для текущей страницы :
@@ -85,6 +85,15 @@ namespace CurilClever2.Areas.Admin.Controllers
       model.newRole = model.User.RoleId;
 
       return View(model);
+    }
+
+    public IActionResult Details(int id)
+    {
+      User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.id == id);
+      if (user == null)
+        RedirectToAction("index");
+
+      return View(user);
     }
   }
 }
