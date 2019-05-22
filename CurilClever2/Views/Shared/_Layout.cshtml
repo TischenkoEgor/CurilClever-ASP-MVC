@@ -9,6 +9,7 @@
   <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
   <script src="~/lib/jquery-ui/jquery-ui.js"></script>
   <script src="~/js/jquery.cookie.js"></script>
+  <script src="~/js/printview.js" ></script>
 
   <script src="~/js/site.js" asp-append-version="true"></script>
 
@@ -129,6 +130,7 @@
     <footer>
       <div class="blog-footer">
         <p>Все права защищены (c) 2018. Разработчик сайта креативная веб Студия "<a href="http://vk.com/night_mare_218">Cretin Development"</a></p>
+       <!-- кнопки переключения-->
         <a id="print_view_btn" >версия для печати</a>
         <a id="default_view_btn" >обычная версия</a>
 
@@ -159,32 +161,40 @@
 
   </environment>
   @RenderSection("Scripts", required: false)
+
   <script type="text/javascript">
     // ajax загрузка блока с данными аккаунта и элемента меню
-    var loaded = 0;
     $('#accountblock').load(
       "/home/accountinfo",
-      function () { }
+      function () {}
     );
-    // обработка версии для печати
 
+
+    // обработка версии для печати
     // если в куках нет настройки на режим вывода для печати
     if ($.cookie('print_view') != '1') {
-      $('#print_view_btn').css('display', 'block');
-      $('#default_view_btn').css('display', 'none');
+
+      // вызываем переключение страницы в стандартный режим
       SwitchToDefaultView();
     }
     else {
-      $('#print_view_btn').css('display', 'block');
-      $('#default_view_btn').css('display', 'none');
+      // Если кука есть и равна 1,(значит что страница должна быть в виде для печати) то мы
+      // вызываем переключение страницы в режим для печати
       SwitchToPrintView();
     }
+
+    // добавляем обработку клика на кнопку переключение в вид для печати
     $('#print_view_btn').click(function () {
+      // в обработчике просто вызываем функцию переключения
       SwitchToPrintView();
     });
+
+    // добавляем обработку клика на кнопку переключение в стандартный вид
     $('#default_view_btn').click(function () {
+      // в обработчике просто вызываем функцию переключения
       SwitchToDefaultView();
     });
+
   </script>
 </body>
 </html>
