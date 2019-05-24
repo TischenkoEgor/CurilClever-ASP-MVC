@@ -73,7 +73,7 @@ namespace CurilClever2.Utils
         //если у подписки отправка новостей отключена, пропускаем ее
         if (!sub.SendNews) continue;
         // для сохранения результата отправки
-        string result;
+        string result = "";
         // отправляем новость на отправку на почту
         SendTo(news.TextFull, news.TextShort, sub.User.Login, out result);
       }
