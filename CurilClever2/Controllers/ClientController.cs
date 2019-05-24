@@ -21,6 +21,19 @@ namespace CurilClever2.Controllers
     }
     public IActionResult Index()
     {
+      // УЧЕТ СТАТИСТИКИ ПОСЕЩЕНИЯ СТРАНИЦЫ
+      // получаем имя пользователя
+      string Username = "anonim";
+      // если есть авторизованный пользователь используем его имя
+      if (User.Identity.IsAuthenticated) Username = User.Identity.Name;
+      // создаем новую запись с этим пользователем
+      Visit visit = new Visit(HttpContext.Request.Path, DateTime.Now, Username);
+      //добавляем в базу и сохраняем изменения
+      db.Visits.Add(visit);
+      db.SaveChanges();
+      // КОНЕЦ УЧЕТА СТАТИСТИКИ
+
+
       return View();
     }
     [HttpPost]
@@ -141,6 +154,18 @@ namespace CurilClever2.Controllers
     }
     public IActionResult Details(int id)
     {
+      // УЧЕТ СТАТИСТИКИ ПОСЕЩЕНИЯ СТРАНИЦЫ
+      // получаем имя пользователя
+      string Username = "anonim";
+      // если есть авторизованный пользователь используем его имя
+      if (User.Identity.IsAuthenticated) Username = User.Identity.Name;
+      // создаем новую запись с этим пользователем
+      Visit visit = new Visit(HttpContext.Request.Path, DateTime.Now, Username);
+      //добавляем в базу и сохраняем изменения
+      db.Visits.Add(visit);
+      db.SaveChanges();
+      // КОНЕЦ УЧЕТА СТАТИСТИКИ
+
       Client model = db.Clients.Find(id);
 
       return View(model);

@@ -23,6 +23,20 @@ namespace CurilClever2.Controllers
    
     public IActionResult Index()
     {
+      // УЧЕТ СТАТИСТИКИ ПОСЕЩЕНИЯ СТРАНИЦЫ
+      // получаем имя пользователя
+      string Username = "anonim";
+      // если есть авторизованный пользователь используем его имя
+      if (User.Identity.IsAuthenticated) Username = User.Identity.Name;
+      // создаем новую запись с этим пользователем
+      Visit visit = new Visit(HttpContext.Request.Path, DateTime.Now, Username);
+      //добавляем в базу и сохраняем изменения
+      db.Visits.Add(visit);
+      db.SaveChanges();
+      // КОНЕЦ УЧЕТА СТАТИСТИКИ
+
+
+
       HomePageViewModel hpVM = new HomePageViewModel();
       hpVM.Clients = db.Clients.OrderByDescending(x => x.id).Take(10);
       hpVM.Orders = db.Orders
@@ -61,6 +75,7 @@ namespace CurilClever2.Controllers
 
     public IActionResult Login()
     {
+
       return View();
     }
     [AllowAnonymous]

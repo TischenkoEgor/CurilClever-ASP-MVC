@@ -19,6 +19,7 @@ namespace CurilClever2.Models
     public DbSet<Role> Roles { get; set; }
     public DbSet<News> News { get; set; }
     public DbSet<Subscribe> Subscribes { get; set; }
+    public DbSet<Visit> Visits { get; set; }
 
     public CleverDBContext(DbContextOptions<CleverDBContext> options)
            : base(options)
