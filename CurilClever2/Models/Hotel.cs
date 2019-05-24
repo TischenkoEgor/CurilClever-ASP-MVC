@@ -29,5 +29,9 @@ namespace CurilClever2.Models
     [Required(ErrorMessage = "Укажите цену в отеле")]
     [Display(Name = "Стоимость ночи")]
     public int? Price { get; set; }
+
+    public double X { get; set; }
+    public double Y { get; set; }
+    public int Zoom { get; set; }
   }
 }

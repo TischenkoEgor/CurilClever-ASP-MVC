@@ -1,44 +1,112 @@
 ﻿@model CurilClever2.Models.Hotel
 
 @{
-    ViewData["Title"] = "CreateHotel";
+  ViewData["Title"] = "CreateHotel";
 }
 
 <h2>Добавление отеля</h2>
 <hr />
 
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateHotel">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Addres" class="control-label"></label>
-                <input asp-for="Addres" class="form-control" />
-                <span asp-validation-for="Addres" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StarsRate" class="control-label"></label>
-                <input asp-for="StarsRate" class="form-control" />
-                <span asp-validation-for="StarsRate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
+  <div class="col-md-4">
+    <form asp-action="CreateHotel">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="Addres" class="control-label"></label>
+        <input asp-for="Addres" class="form-control" />
+        <span asp-validation-for="Addres" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="StarsRate" class="control-label"></label>
+        <input asp-for="StarsRate" class="form-control" />
+        <span asp-validation-for="StarsRate" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-default" />
+      </div>
+
+      <input type="hidden" asp-for="X" />
+      <input type="hidden" asp-for="Y" />
+      <input type="hidden" asp-for="Zoom" />
+    </form>
+  </div>
+  <div class="col-md-4">
+    <script src="http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&apikey=781dfc83-488b-4172-9d87-ccf75cf16987" type="text/javascript"></script>
+    <div id="map" style="width: 400px; height: 300px"></div>
+    <p>нажмите на объект на карте для установки координат отеля</p>
+    <script type="text/javascript">
+      ymaps.ready(init);
+      var myMap;
+
+      function init() {
+        myMap = new ymaps.Map("map", {
+          center: [55.76, 37.64],
+          zoom: 10
+        }, {
+            balloonMaxWidth: 200
+          });
+        myMap.controls
+          // Кнопка изменения масштаба.
+          .add('zoomControl', { left: 5, top: 5 })
+
+        $('#X').val(55.76 * 100000);
+        $('#Y').val(37.64 * 100000);
+
+        myMap.geoObjects.add(new ymaps.Placemark([55.76, 37.64],
+          {
+            balloonContent: 'отель',
+            iconCaption: 'расположение отеля'
+          }));
+        // Обработка события, возникающего при щелчке
+        // левой кнопкой мыши в любой точке карты.
+        // При возникновении такого события создадим метку и удалим предыдущую.
+        myMap.events.add('click', function (e) {
+          if (!myMap.balloon.isOpen()) {
+            var coords = e.get('coords');
+
+            var c_x = coords[0].toPrecision(6);
+            var c_y = coords[1].toPrecision(6);
+
+            $('#X').val(coords[0].toPrecision(6) * 100000);
+            $('#Y').val(coords[1].toPrecision(6) * 100000);
+
+            $('#Zoom').val(myMap.getZoom());
+            myMap.geoObjects.removeAll();
+
+            myMap.geoObjects.add(new ymaps.Placemark([c_x, c_y],
+              {
+                balloonContent: 'расположение отеля',
+                iconCaption: 'расположение отеля'
+              }));
+
+          }
+          else {
+            myMap.balloon.close();
+          }
+        });
+
+        // Обработка события, возникающего при щелчке
+        // правой кнопки мыши в любой точке карты.
+        // При возникновении такого события покажем всплывающую подсказку
+        // в точке щелчка.
+        //myMap.events.add('contextmenu', function (e) {
+        //    myMap.hint.show(e.get('coordPosition'), 'Кто-то щелкнул правой кнопкой');
+        //});
+      }</script>
+  </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+  <a asp-action="Index">Back to List</a>
 </div>
 

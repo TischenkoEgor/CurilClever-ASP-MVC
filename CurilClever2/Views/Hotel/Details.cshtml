@@ -1,0 +1,75 @@
+﻿@model CurilClever2.Models.Hotel
+
+@{
+  ViewData["Title"] = "Details";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div class="row">
+  <div class="col-md-4">
+    <h4>Hotel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+      <dt>
+        @Html.DisplayNameFor(model => model.Name)
+      </dt>
+      <dd>
+        @Html.DisplayFor(model => model.Name)
+      </dd>
+      <dt>
+        @Html.DisplayNameFor(model => model.Addres)
+      </dt>
+      <dd>
+        @Html.DisplayFor(model => model.Addres)
+      </dd>
+      <dt>
+        @Html.DisplayNameFor(model => model.StarsRate)
+      </dt>
+      <dd>
+        @Html.DisplayFor(model => model.StarsRate)
+      </dd>
+      <dt>
+        @Html.DisplayNameFor(model => model.Price)
+      </dt>
+      <dd>
+        @Html.DisplayFor(model => model.Price)
+      </dd>
+
+    </dl>
+  </div>
+
+  <div class="col-md-4">
+    <script src="http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&apikey=781dfc83-488b-4172-9d87-ccf75cf16987" type="text/javascript"></script>
+    <div id="map" style="width: 400px; height: 300px"></div>
+    <script type="text/javascript">
+      ymaps.ready(init);
+      var myMap;
+
+      function init() {
+        myMap = new ymaps.Map("map", {
+          center:[@((Model.X/100000.0).ToString().Replace(",", ".")), @((Model.Y/100000.0).ToString().Replace(",", "."))],
+          zoom: @Model.Zoom
+        }, {
+            balloonMaxWidth: 200
+          });
+        myMap.controls
+          // Кнопка изменения масштаба.
+          .add('zoomControl', { left: 5, top: 5 })
+
+         myMap.geoObjects.add(new ymaps.Placemark([@((Model.X/100000.0).ToString().Replace(",", ".")), @((Model.Y/100000.0).ToString().Replace(",", "."))],
+              {
+                balloonContent: '@Model.Name',
+                iconCaption: 'расположение отеля'
+           }));
+
+      }</script>
+
+  </div>
+</div>
+<div>
+  <a asp-action="EditHotel" asp-route-id="@Model.id">Edit</a> |
+  <a asp-action="Index">Back to List</a>
+</div>
+

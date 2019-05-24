@@ -105,6 +105,7 @@ namespace CurilClever2.Controllers
       db.SaveChanges();
       return RedirectToAction("index");
     }
+
     public IActionResult AddRandomHotels()
     {
       if (!System.IO.File.Exists("RandomAdresses.txt"))
@@ -123,6 +124,9 @@ namespace CurilClever2.Controllers
         hotel.Name = hotelName;
         hotel.Price = rand.Next(10, 110);
         hotel.StarsRate = rand.Next(1, 5);
+        hotel.X = rand.Next(5548090, 5596680);
+        hotel.Y = rand.Next(3724600, 3832289);
+        hotel.Zoom = 10;
         hotel.Addres = RandHelper<string>.RandomItem(hotelAdrs.ToList(), rand);
         db.Hotels.Add(hotel);
       }

@@ -26,11 +26,12 @@
       <td>@hotel.Price</td>
       <td>@hotel.Addres</td>
       <td>
+        @Html.ActionLink("Просмотр", "Details", "Hotel", new { id = hotel.id }, null)
+        |
+        @Html.ActionLink("Изменить", "EditHotel", "Hotel", new { id = hotel.id }, null)
         <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#hotelstablecontainer"
            asp-route-page="@Model.PageViewModel.PageNumber" asp-action="DeleteHotel" asp-controller="Hotel"
            asp-route-id="@hotel.id">Удалить</a>
-        |
-        @Html.ActionLink("Изменить", "EditHotel", "Hotel", new { id = hotel.id }, null)
       </td>
     </tr>
   }

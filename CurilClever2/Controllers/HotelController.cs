@@ -43,7 +43,7 @@ namespace CurilClever2.Controllers
         news.TextFull += "Звезд " + hotel.StarsRate + "<br>";
         news.TextFull += "Стоимость ночи " + hotel.Price + "<br>";
         news.TextFull += "Дата добавления " + news.Created.ToLongDateString() + " " + news.Created.ToLongTimeString() + "<br>";
-        news.ObjectUrl = "/Hotel/EditHotel/" + hotel.id.ToString();
+        news.ObjectUrl = "/Hotel/Details/" + hotel.id.ToString();
 
         news.User = db.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefault();
 
@@ -81,6 +81,13 @@ namespace CurilClever2.Controllers
       db.SaveChanges();
       return RedirectToAction("Index");
     }
+
+    public IActionResult Details(int id)
+    {
+      Hotel hotel = db.Hotels.Find(id);
+      return View(hotel);
+    }
+
     public IActionResult DeleteHotel(int? id, int page)
     {
       if (id != null)
