@@ -1,8 +1,76 @@
-﻿
+﻿@model CurilClever2.ViewModels.AdminHomePageViewModel
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+  ViewData["Title"] = "Index";
+  Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Index</h2>
+<div class="jumbotron text-center">
+  <h2>Index</h2>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <h3 class="text-center">Общая статистика</h3>
+    <ul class="list-group">
+      <li class="list-group-item">
+        посещений главной страницы
+        <span class="badge">@Model.CountHomePageVisits</span>
+      </li>
+      <li class="list-group-item">
+        посещений страницы управления клиентами
+        <span class="badge">@Model.CountManageClientsPageVisits</span>
+      </li>
+      <li class="list-group-item">
+        посещений страницы управления отелями
+        <span class="badge">@Model.CountManageHotelpageVisits</span>
+      </li>
+      <li class="list-group-item">
+        посещений страницы управления заявками
+        <span class="badge">@Model.CountManageOrderPageVisits</span>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <h3 class="text-center">Cтатистика посещения страниц клиентов</h3>
+    <ul class="list-group">
+      @{
+        foreach (var v in Model.ClientVisits)
+        {
+          <li class="list-group-item">
+            <a asp-area="" asp-controller="client" asp-action="details" asp-route-id="@v.Key.id">@v.Key.FIO</a>
+            <span class="badge">@v.Value</span>
+          </li>
+        }
+      }
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <h3 class="text-center">Cтатистика посещения страниц отелей</h3>
+    <ul class="list-group">
+      @{
+        foreach (var v in Model.HotelVisits)
+        {
+          <li class="list-group-item">
+            <a asp-area="" asp-controller="hotel" asp-action="details" asp-route-id="@v.Key.id"> @v.Key.Name </a>
+            <span class="badge">@v.Value</span>
+          </li>
+        }
+      }
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <h3 class="text-center">Cтатистика посещения страниц заявок</h3>
+    <ul class="list-group">
+      @{
+        foreach (var v in Model.OrderVisits)
+        {
+          <li class="list-group-item">
+            <a asp-area="" asp-controller="order" asp-action="details" asp-route-id="@v.Key.id">заявка #@v.Key.id </a>
+            <span class="badge">@v.Value</span>
+          </li>
+        }
+      }
+    </ul>
+  </div>
+</div>
 
