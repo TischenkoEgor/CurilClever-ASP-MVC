@@ -2,6 +2,15 @@
 <html lang="ru">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>@ViewData["Title"]</title>
+
+  <meta name="description" content="@ViewData["PageDescription"]">
+  <meta name="keywords" content="тур Агентство, система управления заявками, курил клевер">
+  <meta name="robots" content="index, follow">
+
+
+
+
   <script src="~/lib/jquery/dist/jquery.js"></script>
   <script src="~/lib/jquery-ajax-unobtrusive/jquery.ajax.unobtrusive.js"></script>
   <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -9,12 +18,12 @@
   <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
   <script src="~/lib/jquery-ui/jquery-ui.js"></script>
   <script src="~/js/jquery.cookie.js"></script>
-  <script src="~/js/printview.js" ></script>
+  <script src="~/js/printview.js"></script>
 
   <script src="~/js/site.js" asp-append-version="true"></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>@ViewData["Title"]</title>
+
 
   <environment include="Development">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -195,6 +204,74 @@
       SwitchToDefaultView();
     });
 
+  </script>
+
+  <!--тут скрипт со снежинками на нг-->
+  <script type="text/javascript">
+    
+    // фиксируем день и месяц когда скрипт должен работать
+    var month = 5; // май
+    var day = 30; // день месяца
+    var today = new Date();
+
+
+    //Картинка снежинки
+    snow_img = "/pic/snow.gif";                                        
+    //Число снежинок
+    snow_no = 56;   
+
+    if (typeof (window.pageYOffset) == "number") {
+      snow_browser_width = window.innerWidth;
+      snow_browser_height = window.innerHeight;
+    }
+    else if (document.body && (document.body.scrollLeft || document.body.scrollTop)) {
+      snow_browser_width = document.body.offsetWidth;
+      snow_browser_height = document.body.offsetHeight;
+    }
+    else if (document.documentElement && (document.documentElement.scrollLeft || document.documentElement.scrollTop)) {
+      snow_browser_width = document.documentElement.offsetWidth;
+      snow_browser_height = document.documentElement.offsetHeight;
+    }
+    else {
+      snow_browser_width = 500;
+      snow_browser_height = 500;
+    }
+    snow_dx = [];
+    snow_xp = [];
+    snow_yp = [];
+    snow_am = [];
+    snow_stx = [];
+    snow_sty = [];
+
+    if (today.getDate() == day && today.getMonth() + 1 == month) {
+      for (i = 0; i < snow_no; i++) {
+        snow_dx[i] = 0;
+        snow_xp[i] = Math.random() * (snow_browser_width - 50);
+        snow_yp[i] = Math.random() * snow_browser_height;
+        snow_am[i] = Math.random() * 20;
+        snow_stx[i] = 0.02 + Math.random() / 10;
+        snow_sty[i] = 0.7 + Math.random();
+        //Здесь задается позиция снежинок за счет z-index
+        if (i == 0) document.write("<\div id=\"snow_flake0\" style=\"position:absolute;z-index:0\"><a href=\"#\" target=\"_blank\"><\img src=\"" + snow_img + "\" border=\"0\"></a><\/div>");
+        else document.write("<\div id=\"snow_flake" + i + "\" style=\"position:absolute;z-index:10000" + i + "\"><\img src=\"" + snow_img + "\" border=\"0\"><\/div>");
+      }
+    }
+    function SnowStart() {
+      for (i = 0; i < snow_no; i++) {
+        snow_yp[i] += snow_sty[i];
+        if (snow_yp[i] > snow_browser_height - 50) {
+          snow_xp[i] = Math.random() * (snow_browser_width - snow_am[i] - 30);
+          snow_yp[i] = 0;
+          snow_stx[i] = 0.02 + Math.random() / 10;
+          snow_sty[i] = 0.7 + Math.random();
+        }
+        snow_dx[i] += snow_stx[i];
+        document.getElementById("snow_flake" + i).style.top = snow_yp[i] + "px";
+        document.getElementById("snow_flake" + i).style.left = snow_xp[i] + snow_am[i] * Math.sin(snow_dx[i]) + "px";
+      }
+      snow_time = setTimeout("SnowStart()", 10);
+    }
+    if (today.getDate() == day && today.getMonth() + 1 == month) { SnowStart(); }
   </script>
 </body>
 </html>

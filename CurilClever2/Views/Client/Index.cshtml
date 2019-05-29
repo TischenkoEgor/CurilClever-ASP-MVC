@@ -1,5 +1,6 @@
 ﻿@{
   ViewData["Title"] = "Index";
+  ViewData["PageDescription"] = "Страница управления клиентами, тут статистика, новости, карты с офисами и что то еще";
 }
 <div class="jumbotron text-center">
   <h2>Управление клиентами агенства</h2>
@@ -13,7 +14,7 @@
       @Html.ActionLink("СКАЧАТЬ ТАБЛИЦУ КЛИЕНТОВ", "Clients", "Export", new { @class = "create-client-link" }, null)
     </p>
   </div>
- </div>
+</div>
 <div class="row">
   <div id="ClientsBlock" class="col-md-12">
 
@@ -21,5 +22,5 @@
 </div>
 
 <script type="text/javascript">
-   $('#ClientsBlock').load("/Client/GetTableOfClients?page=1");
+  $('#ClientsBlock').load("/Client/GetTableOfClients?page=1");
 </script>
