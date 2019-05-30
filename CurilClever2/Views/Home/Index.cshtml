@@ -1,21 +1,23 @@
 ﻿@using CurilClever2.ViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model HomePageViewModel
 @{
-  ViewData["Title"] = " Home Fucking Page";
-  ViewData["PageDescription"] = "Главная страница сайта, тут статистика, новости, карты с офисами и что то еще";
+  ViewData["Title"] = @Localizer["Title"];
+  ViewData["PageDescription"] = @Localizer["PageDesc"];
 }
 <div class="jumbotron text-center">
-  <h2>Index</h2>
+  <h2>@Localizer["Header"]</h2>
 </div>
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <h3 class="text-center">Последние новости</h3>
+      <h3 class="text-center">@Localizer["LastNewsHeader"]</h3>
       <table class="table table-striped table-hover" id="lastnewstable">
         <tr>
-          <td>Дата</td>
-          <td>Описание</td>
-          <td>Ссылка</td>
+          <td>@Localizer["Date"]</td>
+          <td>@Localizer["Description"]</td>
+          <td>@Localizer["link"]</td>
           <td></td>
         </tr>
 
@@ -26,8 +28,8 @@
 
             <td><a asp-controller="News" asp-action="Details" asp-route-id="@news.id">@news.TextShort</a></td>
 
-            <td><a href="@news.ObjectUrl">перейти к объекту</a></td>
-            <td></td>
+            <td><a href="@news.ObjectUrl">@Localizer["Follow"]</a></td>
+<td></td>
           </tr>
         }
       </table>
@@ -133,27 +135,27 @@
         window.onload = function () {
           const sample = [
               {
-                  language: 'Клиенты',
+                  language: '@Localizer["Clients"]',
                   value: @Model.CountOfClients,
                   color: '#000000'
               },
               {
-                  language: 'Заказы',
+                  language: '@Localizer["Orders"]',
                   value: @Model.CountOfOrders,
                   color: '#000000'
               },
               {
-                  language: 'Отели',
+                  language: '@Localizer["Hotels"]',
                   value: @Model.CountOfHotels,
                   color: '#000000'
               },
               {
-                  language: 'Коментарии\n к клиентам',
+                  language: '@Localizer["Clients Comments"]',
                   value: @Model.CountOfClientComments,
                   color: '#000000'
               },
               {
-                  language: 'Коментарии к заказам',
+                  language: '@Localizer["Orders Comments"]',
                   value: @Model.CountOfOrders,
                   color: '#000000'
               }
@@ -319,13 +321,13 @@
   <div class="row">
     <div class="col-md-12">
 
-      <h3 class="text-center">Последние заявки</h3>
+      <h3 class="text-center">@Localizer["Last Orders"]</h3>
       <table class="table table-striped table-hover">
         <tr>
-          <td>Клиент</td>
-          <td>Отель</td>
-          <td>Даты</td>
-          <td>Стомость</td>
+          <td>@Localizer["Client"]</td>
+          <td>@Localizer["Hotel"]</td>
+          <td>@Localizer["Dates"]</td>
+          <td>@Localizer["Price"]</td>
           <td></td>
 
         </tr>
@@ -337,7 +339,7 @@
             <td>@order.Hotel.Name</td>
             <td>@order.BeginTravelDate.ToShortDateString() - @order.EndTravelDate.ToShortDateString()</td>
             <td>@order.Price</td>
-            <td><a asp-controller="Order" asp-action="Details" asp-route-id="@order.id">просмотр</a> </td>
+            <td><a asp-controller="Order" asp-action="Details" asp-route-id="@order.id">@Localizer["FollowTravel"]</a> </td>
           </tr>
         }
       </table>
@@ -345,7 +347,7 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <h3 class="text-center">Карта офисов и филиалов</h3>
+      <h3 class="text-center">@Localizer["Office Map"]</h3>
       <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A69fa2248f649805644331e718546179bae791afe52f2bc89406d38086ab5c279&amp;width=100%25&amp;height=679&amp;lang=ru_RU&amp;scroll=true"></script>
     </div>
   </div>

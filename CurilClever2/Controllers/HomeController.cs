@@ -8,6 +8,9 @@ using CurilClever2.Models;
 using Microsoft.AspNetCore.Authorization;
 using CurilClever2.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace CurilClever2.Controllers
 {
@@ -94,6 +97,21 @@ namespace CurilClever2.Controllers
     public IActionResult Privacy()
     {
       return View();
+    }
+    public string GetCulture()
+    {
+      return $"CurrentCulture:{CultureInfo.CurrentCulture.Name}, CurrentUICulture:{CultureInfo.CurrentUICulture.Name}";
+    }
+    [HttpPost]
+    public IActionResult SetLanguage(string culture, string returnUrl)
+    {
+      Response.Cookies.Append(
+          CookieRequestCultureProvider.DefaultCookieName,
+          CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+          new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+      );
+
+      return LocalRedirect(returnUrl);
     }
   }
 }

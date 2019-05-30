@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Resources\Views\Home\AccountInfo - Копировать.ru.resx" />
+    <EmbeddedResource Remove="Resources\Views\Home\AccountInfo.ru.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="RandomAdresses.txt" />
     <None Remove="RandomHotels.txt" />
     <None Remove="RandomText.txt" />
@@ -42,6 +47,11 @@
     <EmbeddedResource Include="RandomHotels.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\Views\Home\AccountInfo - Копировать.ru.resx" />
+    <None Include="Resources\Views\Home\AccountInfo.ru.resx" />
   </ItemGroup>
 
   <ItemGroup>

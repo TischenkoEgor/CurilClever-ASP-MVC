@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>@ViewData["Title"]</title>
 
   <meta name="description" content="@ViewData["PageDescription"]">
-  <meta name="keywords" content="тур Агентство, система управления заявками, курил клевер">
+  <meta name="keywords" content=" @Localizer["Keywords"]">
   <meta name="robots" content="index, follow">
 
 
@@ -120,10 +122,10 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Главная</a></li>
-            <li><a asp-area="" asp-controller="Order" asp-action="Index">Управение заявками</a></li>
-            <li><a asp-area="" asp-controller="Client" asp-action="index">Управление клиентами</a></li>
-            <li><a asp-area="" asp-controller="Hotel" asp-action="Index">Управление отелями</a></li>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a></li>
+            <li><a asp-area="" asp-controller="Order" asp-action="Index">@Localizer["Order managment"]</a></li>
+            <li><a asp-area="" asp-controller="Client" asp-action="index">@Localizer["Client managment"]</a></li>
+            <li><a asp-area="" asp-controller="Hotel" asp-action="Index">@Localizer["Hotel manager"]</a></li>
             <li id="accountblock" class="dropdown"> </li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -133,15 +135,32 @@
   <partial name="_CookieConsentPartial" />
 
   <div class="container body-content">
+
     @RenderBody()
 
     <hr />
     <footer>
       <div class="blog-footer">
-        <p>Все права защищены (c) 2018. Разработчик сайта креативная веб Студия "<a href="http://vk.com/night_mare_218">Cretin Development"</a></p>
-        <!-- кнопки переключения-->
-        <a id="print_view_btn">версия для печати</a>
-        <a id="default_view_btn">обычная версия</a>
+        <div class="row">
+          <p>@Localizer["copyright"] "<a href="http://vk.com/night_mare_218">Cretin Development"</a></p>
+
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <!-- кнопки переключения-->
+            <a id="print_view_btn">@Localizer["printview"]</a>
+            <a id="default_view_btn">@Localizer["defaultview"]</a>
+          </div>
+          <div class="col-md-4">
+            @await Html.PartialAsync("_SelectLanguagePartial")
+          </div>
+        </div>
+
+        <span>
+
+
+        </span>
+
 
       </div>
     </footer>
@@ -208,17 +227,17 @@
 
   <!--тут скрипт со снежинками на нг-->
   <script type="text/javascript">
-    
+
     // фиксируем день и месяц когда скрипт должен работать
-    var month = 5; // май
-    var day = 30; // день месяца
+    var month = 01; // май
+    var day = 01; // день месяца
     var today = new Date();
 
 
     //Картинка снежинки
-    snow_img = "/pic/snow.gif";                                        
+    snow_img = "/pic/snow.gif";
     //Число снежинок
-    snow_no = 56;   
+    snow_no = 56;
 
     if (typeof (window.pageYOffset) == "number") {
       snow_browser_width = window.innerWidth;
