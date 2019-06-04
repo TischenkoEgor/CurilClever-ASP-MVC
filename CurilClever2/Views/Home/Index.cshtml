@@ -23,14 +23,14 @@
 
         @foreach (News news in Model.News)
         {
-          <tr>
-            <td>@news.Created.ToUniversalTime()</td>
+        <tr>
+          <td>@news.Created.ToUniversalTime()</td>
 
-            <td><a asp-controller="News" asp-action="Details" asp-route-id="@news.id">@news.TextShort</a></td>
+          <td><a asp-controller="News" asp-action="Details" asp-route-id="@news.id">@news.TextShort</a></td>
 
-            <td><a href="@news.ObjectUrl">@Localizer["Follow"]</a></td>
-<td></td>
-          </tr>
+          <td><a href="@news.ObjectUrl">@Localizer["Follow"]</a></td>
+          <td></td>
+        </tr>
         }
       </table>
       <script type="text/javascript">
@@ -278,42 +278,6 @@
         .attr("transform", function(d) {
           return "translate(" + this.getBBox().height * -2 + "," + this.getBBox().height + ")rotate(-20)";
         });
-          //barGroups
-          //    .append('text')
-          //    .attr('class', 'value')
-          //    .attr('x', (a) => xScale(a.language) + xScale.bandwidth() / 2)
-          //    .attr('y', (a) => yScale(a.value) + 30)
-          //    .attr('text-anchor', 'middle')
-          //    .text((a) => `${a.value}%`)
-
-          //svg.append('text')
-            //  .attr('class', 'label')
-           //   .attr('x', -(height / 2) - margin)
-           //   .attr('y', margin / 2.4)
-           //   .attr('transform', 'rotate(-90)')
-           //   .attr('text-anchor', 'middle')
-           //   .text('Количество ()')
-
-          //svg.append('text')
-          //    .attr('class', 'label')
-          //    .attr('x', width / 2 + margin)
-          //    .attr('y', height + margin * 1.7)
-          //    .attr('text-anchor', 'middle')
-          //    .text('Languages')
-
-          //svg.append('text')
-          //    .attr('class', 'title')
-          //    .attr('x', width / 2 + margin)
-          //    .attr('y', 40)
-          //    .attr('text-anchor', 'middle')
-          //    .text('Most loved programming languages in 2018')
-
-          //svg.append('text')
-          //    .attr('class', 'source')
-          //    .attr('x', width - margin / 2)
-          //    .attr('y', height + margin * 1.7)
-          //    .attr('text-anchor', 'start')
-          //    .text('Source: Stack Overflow, 2018')
       }
       </script>
     </div>
@@ -334,13 +298,13 @@
 
         @foreach (Order order in Model.Orders)
         {
-          <tr>
-            <td>@order.Client.FIO</td>
-            <td>@order.Hotel.Name</td>
-            <td>@order.BeginTravelDate.ToShortDateString() - @order.EndTravelDate.ToShortDateString()</td>
-            <td>@order.Price</td>
-            <td><a asp-controller="Order" asp-action="Details" asp-route-id="@order.id">@Localizer["FollowTravel"]</a> </td>
-          </tr>
+        <tr>
+          <td>@order.Client.FIO</td>
+          <td>@order.Hotel.Name</td>
+          <td>@order.BeginTravelDate.ToShortDateString() - @order.EndTravelDate.ToShortDateString()</td>
+          <td>@order.Price</td>
+          <td><a asp-controller="Order" asp-action="Details" asp-route-id="@order.id">@Localizer["FollowTravel"]</a> </td>
+        </tr>
         }
       </table>
     </div>
@@ -348,7 +312,71 @@
   <div class="row">
     <div class="col-md-12">
       <h3 class="text-center">@Localizer["Office Map"]</h3>
-      <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A69fa2248f649805644331e718546179bae791afe52f2bc89406d38086ab5c279&amp;width=100%25&amp;height=679&amp;lang=ru_RU&amp;scroll=true"></script>
+
+      <!-- загружаем яндекс карты через апи  -->
+      <script src="http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&apikey=781dfc83-488b-4172-9d87-ccf75cf16987" type="text/javascript"></script>
+      <div id="map" style="width: 100%; height: 300px"></div>
+
+      <!-- скрипт добавления балунов-->
+      <script type="text/javascript">
+       
+        ymaps.ready(init);
+        var myMap;
+
+        function init() {
+          // позиционируем центр карты
+          myMap = new ymaps.Map("map", {
+            center: [55.76, 37.64],
+            zoom: 10
+          }, {
+              balloonMaxWidth: 200
+            });
+          //добавляем масштаб
+          myMap.controls
+            // Кнопка изменения масштаба.
+            .add('zoomControl', { left: 5, top: 5 })
+
+          // запрашиваем  у бразуера возможность получения координат
+          if (navigator.geolocation) {
+            // если есть получаем координаты в функцию обработкчик
+            navigator.geolocation.getCurrentPosition(showPosition);
+          } else {
+            // в противном случае выводим сообщение об ошибке
+            alert("Геолокация в вашем браузере отключена");
+          }
+
+          // функция обработчик получения координат от браузера
+          // в качетсве аргумета - информация о местоположении
+          function showPosition(position) {
+            // alert("Обработка координат");
+            // добавлеям в нашу карту новый плейсмарк с координатами широты и долготы положения нашего юзера
+            myMap.geoObjects
+              .add(new ymaps.Placemark([position.coords.latitude, position.coords.longitude],
+                {
+                  iconCaption: 'Ваше текущее положение'
+                }, {
+                  preset: 'islands#redCircleDotIcon'
+                }))
+            //x.innerHTML = "Latitude: " + position.coords.latitude +
+            //  "<br>Longitude: " + position.coords.longitude;
+          }
+          // добавляем балуны офисов
+          myMap.geoObjects
+            .add(new ymaps.Placemark([55.76, 37.74],
+              {
+                iconCaption: 'новый офис (головной)'
+              }, {
+                preset: 'islands#blueBeachIcon'
+              }))
+            .add(new ymaps.Placemark([55.826479, 37.487208], {
+              iconCaption: 'старый офис (филиал)'
+            }, {
+                preset: 'islands#blueAirportIcon'
+              }))
+
+
+        }
+      </script>
     </div>
   </div>
 </div>
