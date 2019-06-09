@@ -1,0 +1,87 @@
+﻿@using CurilClever2.ViewModels
+@model HotelPageViewModel
+@{
+  ViewData["Title"] = "Отели";
+}
+@* тэг noscript срабатывает только если JS в браузере отключен *@
+
+<div class="jumbotron text-center">
+  <h2>Управление отелями</h2>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <p>
+      @Html.ActionLink("ДОБАВИТЬ ОТЕЛЬ", "CreateHotel", "Hotel", new { @class = "create-hotel-link" }, null)
+    </p>
+  </div>
+</div>
+
+<div id='hotelstablecontainer' class="row">
+  <h2>Все отели</h2>
+  <table class="table table-striped table-hover">
+
+    <tr>
+      <td><b>Отель</b></td>
+      <td><b>Звезды</b></td>
+      <td><b>Стоимость одного дня</b></td>
+      <td><b>Адрес</b></td>
+      <td><b>Действия</b></td>
+    </tr>
+    @if (Model.Hotels.Count() == 0)
+    {
+      <tr>
+        <td colspan="5">
+          Отелей в базе нет!
+        </td>
+      </tr>
+    }
+    @foreach (Hotel hotel in Model.Hotels)
+    {
+      <tr>
+        <td>@hotel.Name</td>
+        <td>@hotel.StarsRate *</td>
+        <td>@hotel.Price</td>
+        <td>@hotel.Addres</td>
+        <td>
+          @Html.ActionLink("Просмотр", "Details", "Hotel", new { id = hotel.id }, null)
+          |
+          @Html.ActionLink("Изменить", "EditHotel", "Hotel", new { id = hotel.id }, null)
+          <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#hotelstablecontainer"
+             asp-route-page="@Model.PageViewModel.PageNumber" asp-action="DeleteHotel" asp-controller="Hotel"
+             asp-route-id="@hotel.id">Удалить</a>
+        </td>
+      </tr>
+    }
+  </table>
+  @if (Model.PageViewModel.HasPreviousPage)
+  {
+    <a asp-action="index" asp-controller="Hotel" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" asp-route-noscript="1"
+       class="btn btn-default btn">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      сюда
+    </a>
+  }
+  else
+  {
+    <a class="btn btn-default btn" style="opacity:.5">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      сюда
+    </a>
+  }
+  @if (Model.PageViewModel.HasNextPage)
+  {
+    <a asp-action="index" asp-controller="Hotel" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" asp-route-noscript="1"
+       class="btn btn-default btn">
+      туда
+      <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+  }
+  else
+  {
+    <a class="btn btn-default btn" style="opacity:.5">
+      туда
+      <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+  }
+</div>
+

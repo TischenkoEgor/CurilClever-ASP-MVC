@@ -19,7 +19,7 @@ namespace CurilClever2.Controllers
     {
       db = _db;
     }
-    public IActionResult Index()
+    public IActionResult Index(int page = 1, int noscript = 0)
     {
       // УЧЕТ СТАТИСТИКИ ПОСЕЩЕНИЯ СТРАНИЦЫ
       // получаем имя пользователя
@@ -33,7 +33,33 @@ namespace CurilClever2.Controllers
       db.SaveChanges();
       // КОНЕЦ УЧЕТА СТАТИСТИКИ
 
-      return View(db.Hotels.OrderByDescending(x => x.id).ToList());
+      // если в ссылке стоит параметр noscript  в позиции не 1 (JS включен), то
+      if (noscript != 1)
+      {
+        // просто как обычно возвращаем стандартное вью
+        return View();
+      }
+      else
+      {
+        // если  noscript в позиции  1 (JS отключен), то формируем набор клиентов в соотвествии с параметром page
+        int pageSize = 10;   // количество элементов на странице
+        IQueryable<Hotel> source = db.Hotels;
+        var count = source.Count();
+        var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        if (page > 1 && items.Count == 0)
+        {
+          items = source.Skip((page - 2) * pageSize).Take(pageSize).ToList();
+        }
+        PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+        HotelPageViewModel viewModel = new HotelPageViewModel
+        {
+          PageViewModel = pageViewModel,
+          Hotels = items
+        };
+
+        // возвращаем специальное вью цельной страницы без поддержки JS
+        return View("index_noscript", viewModel);
+      }
     }
     [HttpGet]
     public IActionResult CreateHotel()
@@ -81,7 +107,7 @@ namespace CurilClever2.Controllers
       if (id == null)
         return RedirectToAction("index");
       Hotel hotel = db.Hotels.Where(h => h.id == id).FirstOrDefault();
-      if(hotel == null)
+      if (hotel == null)
         return RedirectToAction("index");
 
       return View(hotel);
@@ -123,7 +149,7 @@ namespace CurilClever2.Controllers
           db.SaveChanges();
         }
       }
-      return RedirectToAction("GetTableOfHotels", new { page=page});
+      return RedirectToAction("GetTableOfHotels", new { page = page });
     }
     public IActionResult GetTableOfHotels(int page = 1)
     {

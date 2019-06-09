@@ -20,7 +20,7 @@ namespace CurilClever2.Controllers
     {
       db = _db;
     }
-    public IActionResult Index()
+    public IActionResult Index(int page = 1, int noscript = 0)
     {
       // УЧЕТ СТАТИСТИКИ ПОСЕЩЕНИЯ СТРАНИЦЫ
       // получаем имя пользователя
@@ -34,7 +34,48 @@ namespace CurilClever2.Controllers
       db.SaveChanges();
       // КОНЕЦ УЧЕТА СТАТИСТИКИ
 
-      return View();
+      // если в ссылке стоит параметр noscript в позиции не 1 (JS включен), то
+      if (noscript != 1)
+      {
+        // просто как обычно возвращаем стандартное вью
+        return View();
+      }
+      else
+      {
+        // если  noscript в позиции  1 (JS отключен), то формируем набор клиентов в соотвествии с параметром page
+        // 0. Фиксируем количество элементов на странице
+        int pageSize = 1;
+        // 1. Получаем данные о всех заявках (коллекцию заявок) из базы данных
+        IQueryable<Order> source = db.Orders.Include(o => o.Client).Include(o => o.Hotel);
+        // 1.1 Получаем общее количество заявок
+        int count = source.Count();
+        // 2. Получаем обрезанную выборку заявок :
+        // Для этого в оргинальной коллекции пропускаем (функция Skip) Page-1  страниц по PageSize заявок на каждой
+        // и из оставшихся берем (функция take) pageSize элементов
+        List<Order> items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+        // 3. Если так получилось что на последней странице 0 элементов и при этом страниц больше одной
+        // такое произойдет, если удалить единственную заявку на последней странице
+        if (page > 1 && items.Count == 0)
+        {
+          // 3.1 Уменьшаем номер страницы на 1
+          page--;
+          // 3.2 Заново формируем набор клиентов на страницу
+          items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        }
+        // После того, как выборка заявок сформирована:
+        // 4. Создаем PageViewModel 
+        PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+        // 5. Создаем CientPageViewModel используя pageViewModel и список 
+        OrderPageViewModel viewModel = new OrderPageViewModel
+        {
+          PageViewModel = pageViewModel,
+          Orders = items
+        };
+
+        // возвращаем специальное вью цельной страницы без поддержки JS
+        return View("index_noscript", viewModel);
+      }
     }
 
     [HttpPost]
