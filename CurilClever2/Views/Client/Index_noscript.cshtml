@@ -1,0 +1,91 @@
+﻿@using CurilClever2.ViewModels
+@model ClientPageViewModel
+@{
+  ViewData["Title"] = "Index";
+  ViewData["PageDescription"] = "Страница управления клиентами, тут статистика, новости, карты с офисами и что то еще";
+}
+<div class="jumbotron text-center">
+  <h2>Управление клиентами агенства</h2>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <p>
+      @Html.ActionLink("ДОБАВИТЬ КЛИЕНТА", "CreateClient", "Client", new { @class = "create-client-link" }, null)
+    </p>
+    <p>
+      @Html.ActionLink("СКАЧАТЬ ТАБЛИЦУ КЛИЕНТОВ", "Clients", "Export", new { @class = "create-client-link" }, null)
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div id="ClientsBlock" class="col-md-12">
+    <H2>Клиенты агенства</H2>
+    <br>
+    <table class="table table-striped table-hover">
+      <tr>
+        <td>ИД</td>
+        <td>ФИО</td>
+        <td>Возраст/Пол</td>
+        <td>Телефон</td>
+        <td>Управление</td>
+      </tr>
+      @if (Model.Clients.Count() == 0)
+      {
+        <tr>
+          <td colspan="5">
+            Клиентов в базе нет!
+          </td>
+        </tr>
+      }
+      else
+      {
+        foreach (Client client in Model.Clients)
+        {
+          <tr>
+            <td>@client.id </td>
+            <td>@client.GetFullName()</td>
+            <td>@client.GetYearsFromBirth() лет | @client.GetGenderName()</td>
+            <td>@client.Phone</td>
+            <td>
+              @Html.ActionLink("подробно", "Details", "Client", new { id = client.id }, null)
+              @Html.ActionLink("Изменить", "EditClient", "Client", new { id = client.id }, null)
+              <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
+                 asp-action="DeleteClient" asp-controller="Client"
+                 asp-route-page="@Model.PageViewModel.PageNumber" asp-route-id="@client.id">Удалить</a>
+            </td>
+          </tr>
+        }
+      }
+    </table>
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+      <a asp-action="index" asp-controller="client" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" asp-route-noscript="1"
+         class="btn btn-default btn">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        сюда
+      </a>
+    }
+    else
+    {
+      <a class="btn btn-default btn" style="opacity:.5">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        сюда
+      </a>
+    }
+    @if (Model.PageViewModel.HasNextPage)
+    {
+      <a asp-action="index" asp-controller="client" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" asp-route-noscript="1"
+         class="btn btn-default btn">
+        туда
+        <i class="glyphicon glyphicon-chevron-right"></i>
+      </a>
+    }
+    else
+    {
+      <a class="btn btn-default btn" style="opacity:.5">
+        туда
+        <i class="glyphicon glyphicon-chevron-right"></i>
+      </a>
+    }
+  </div>
+</div>

@@ -19,7 +19,7 @@ namespace CurilClever2.Controllers
     {
       db = _db;
     }
-    public IActionResult Index()
+    public IActionResult Index(int page=1, int noscript = 0)
     {
       // УЧЕТ СТАТИСТИКИ ПОСЕЩЕНИЯ СТРАНИЦЫ
       // получаем имя пользователя
@@ -32,9 +32,46 @@ namespace CurilClever2.Controllers
       db.Visits.Add(visit);
       db.SaveChanges();
       // КОНЕЦ УЧЕТА СТАТИСТИКИ
+      if (noscript == 0)
+      {
+        return View();
+      }
+      else
+      {
+        // 0. Фиксируем количество элементов на странице
+        int pageSize = 12;
+        // 1. Получаем данные о всех клиентах (коллекцию клиентов) из базы данных
+        IQueryable<Client> clients = db.Clients;
+        // 1.1 Получаем общее количество клиентов
+        int count = clients.Count();
+        // 2. Получаем обрезанную выборку клиентов для текущей страницы :
+        // Для этого в оргинальной коллекции пропускаем (функция Skip) Page-1  страниц по PageSize клиентов на каждой
+        // и из оставшихся берем (функция take) pageSize элементов
+        List<Client> items = clients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
+        // 3. Если так получилось что на последней странице 0 элементов и при этом страниц больше одной
+        // -----> такое произойдет, если удалить единственного клиента на последней странице
+        if (page > 1 && items.Count == 0)
+        {
+          // 3.1 Уменьшаем номер страницы на 1
+          page--;
+          // 3.2 Заново формируем набор клиентов на страницу
+          items = clients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        }
+        // После того, как выборка клиентов сформирована
+        // 4. Создаем объект классса PageViewModel 
+        PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+        // 5. Создаем CientPageViewModel используя pageViewModel и список 
+        ClientPageViewModel clientPageviewModel = new ClientPageViewModel
+        {
+          PageViewModel = pageViewModel,
+          Clients = items
+        };
+        ViewBag["clientsListView"] = clientPageviewModel;
 
-      return View();
+        return View("index_noscript", clientPageviewModel);
+      }
+
     }
     [HttpPost]
     public IActionResult AddClientComment(AddClientComment model)

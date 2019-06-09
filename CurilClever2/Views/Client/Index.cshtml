@@ -2,6 +2,26 @@
   ViewData["Title"] = "Index";
   ViewData["PageDescription"] = "Страница управления клиентами, тут статистика, новости, карты с офисами и что то еще";
 }
+
+<noscript>
+  @if (Context.Request.Path.ToString().ToLower().Contains("noscript=1"))
+  {
+
+  }
+  else
+  {
+    string ss = Context.Request.Path.ToString();
+    if (ss.Contains("?"))
+    {
+      ss += "&noscript=1";
+    }
+    else
+    {
+      ss += "?noscript=1";
+    }
+    <meta http-equiv="refresh" content="0;URL=@ss" />
+  }
+</noscript>
 <div class="jumbotron text-center">
   <h2>Управление клиентами агенства</h2>
 </div>
