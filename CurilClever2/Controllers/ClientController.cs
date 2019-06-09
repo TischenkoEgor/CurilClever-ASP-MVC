@@ -32,10 +32,15 @@ namespace CurilClever2.Controllers
       db.Visits.Add(visit);
       db.SaveChanges();
       // КОНЕЦ УЧЕТА СТАТИСТИКИ
-      if (noscript == 0)
+
+
+      // если в ссылке стоит параметр noscript  в позиции не 1 (JS включен), то
+      if (noscript != 1)
       {
+        // просто как обычно возвращаем стандартное вью
         return View();
       }
+      // если  noscript в позиции  1 (JS отключен), то формируем набор клиентов в соотвествии с параметром page
       else
       {
         // 0. Фиксируем количество элементов на странице
@@ -67,8 +72,7 @@ namespace CurilClever2.Controllers
           PageViewModel = pageViewModel,
           Clients = items
         };
-        ViewBag["clientsListView"] = clientPageviewModel;
-
+        // возвращаем специальное вью цельной страницы без поддержки JS
         return View("index_noscript", clientPageviewModel);
       }
 

@@ -2,24 +2,31 @@
   ViewData["Title"] = "Index";
   ViewData["PageDescription"] = "Страница управления клиентами, тут статистика, новости, карты с офисами и что то еще";
 }
-
+@* тэг noscript срабатывает только если JS в браузере отключен *@
 <noscript>
+  @* если в ссылке есть параметр noscript в положении 1, то ничего не делаем, сайт и так в режиме работы без JS  *@
   @if (Context.Request.Path.ToString().ToLower().Contains("noscript=1"))
   {
 
   }
   else
   {
-    string ss = Context.Request.Path.ToString();
-    if (ss.Contains("?"))
+    // если нет параметра noscript в ссылке, а JS у нас отключен, то его надо добавать
+    // получаем текущую строку запроса
+    string url = Context.Request.Path.ToString();
+    // если в строке есть знак вопроса - есть другие параметры в запросе
+    if (url.Contains("?"))
     {
-      ss += "&noscript=1";
+      // добавляем к строке еще один параметр
+      url += "&noscript=1";
     }
     else
     {
-      ss += "?noscript=1";
+      // если нету других параметров(в строке нет ?), добавляем параметр начиная с знака?
+      url += "?noscript=1";
     }
-    <meta http-equiv="refresh" content="0;URL=@ss" />
+    // мета тег для автоматического перехода на эту же страницу с параметром noscript
+    <meta http-equiv="refresh" content="0;URL=@url" />
   }
 </noscript>
 <div class="jumbotron text-center">
