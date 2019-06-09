@@ -14,11 +14,13 @@ namespace CurilClever2.Models
     [Required(ErrorMessage = "Укажите имя")]
     [MinLength(1, ErrorMessage = "не может быть короче 1 символа")]
     [Display(Name = "Имя")]
+    [RegularExpression(@"^[a-zA-Zа-яА-Я]{1,}$", ErrorMessage = "Неправильное имя")]
     public string FirstName { get; set; }
 
     [Required(ErrorMessage = "Укажите фамилию")]
-    [MinLength(1, ErrorMessage = "не может быть короче 3 символа")]
+    [MinLength(2, ErrorMessage = "не может быть короче чем 2 символа")]
     [Display(Name = "Фамилия")]
+    [RegularExpression(@"^[a-zA-Zа-яА-Я]{2,}$", ErrorMessage = "Неправильная фамилия")]
     public string SecondName { get; set; }
 
     [NotMapped]
@@ -34,7 +36,8 @@ namespace CurilClever2.Models
     public Gender Gender { get; set; }
 
     [Required(ErrorMessage = "Укажите телефон")]
-    [Phone]
+    [DataType(DataType.PhoneNumber, ErrorMessage ="Это не номер телефона")]
+    [RegularExpression(@"^((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10}$", ErrorMessage = "Not a valid phone number")]
     [Display(Name = "Телефон")]
     public string Phone { get; set; }
 
