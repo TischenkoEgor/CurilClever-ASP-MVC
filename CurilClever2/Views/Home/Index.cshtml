@@ -336,7 +336,7 @@
             // Кнопка изменения масштаба.
             .add('zoomControl', { left: 5, top: 5 })
 
-          // запрашиваем  у бразуера возможность получения координат
+          // запрашиваем  у бразуера возможность получения гео-координат
           if (navigator.geolocation) {
             // если есть получаем координаты в функцию-обработчик
             navigator.geolocation.getCurrentPosition(showPosition);
@@ -357,8 +357,6 @@
                 }, {
                   preset: 'islands#redCircleDotIcon'
                 }))
-            //x.innerHTML = "Latitude: " + position.coords.latitude +
-            //  "<br>Longitude: " + position.coords.longitude;
           }
           // добавляем балуны офисов
           myMap.geoObjects
