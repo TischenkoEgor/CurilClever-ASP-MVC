@@ -14,6 +14,10 @@ using CurilClever2.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using System.IO;
+using System.Text;
+using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CurilClever2.Controllers
 {
@@ -43,7 +47,7 @@ namespace CurilClever2.Controllers
     {
       if (ModelState.IsValid)
       {
-        User user = await db.Users.Include(u=>u.Role).FirstOrDefaultAsync(u => u.Login == model.Login && u.checkPassword(model.Password));
+        User user = await db.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Login == model.Login && u.checkPassword(model.Password));
         if (user != null)
         {
           await Authenticate(user); // аутентификация
@@ -53,6 +57,85 @@ namespace CurilClever2.Controllers
         ModelState.AddModelError("", "Некорректные логин и(или) пароль");
       }
       return View(model);
+    }
+
+    public async Task<IActionResult> VkAuth(string code = "", string access_token = "", string expires_in = "", string user_id = "", string email = "")
+    {
+
+      
+
+      string secret_key = "ftOs39sriOsLSZEhTOSd";
+      string API_ID = "7020055";
+
+      var x = HttpContext.Request;
+
+      // авторизация в два этапа сначала получаем код доступа
+      // потом получаем токен
+
+
+      string request = "https://oauth.vk.com/access_token?client_id=7020055&client_secret=ftOs39sriOsLSZEhTOSd&redirect_uri=http://localhost/account/vkauth&code=" + code;
+
+
+      var json_string = new WebClient().DownloadString(request);
+      var data = JsonConvert.DeserializeObject<Rootobject2>(json_string);
+      access_token = data.access_token;
+      expires_in = data.expires_in.ToString();
+      user_id = data.user_id.ToString();
+      email = data.email;
+      int vk_uid;
+
+      if (!int.TryParse(user_id, out vk_uid))
+      {
+        return RedirectToAction("login");
+      }
+
+      
+
+      // проверяем регался ли у нас пользователь с таким vk_uid
+      VkUserID vkUserID = db.vkUserIDs.Where(v => v.vk_id == vk_uid).FirstOrDefault();
+
+      if (vkUserID != null)
+      {
+        // если такая запись есть, то загружаем соответствуюшего пользователя из базы
+        User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.id == vkUserID.user_id);
+        // и авторизуем пользователя
+        await Authenticate(user); // аутентификация
+        // отправляем его домой
+        return RedirectToAction("Index", "Home");
+      }
+
+      //получаем остальнгые даные пользователя (имя)
+
+      string first_name = "";
+      string last_name = "";
+
+      string api_url = "https://api.vk.com/method/users.get?user_id=" + user_id + "&v=5.52&access_token=" + access_token;
+      json_string = new WebClient().DownloadString(api_url);
+
+      var json = JsonConvert.DeserializeObject<Rootobject>(json_string);
+      first_name = json.response[0].first_name;
+      last_name = json.response[0].last_name;
+
+      User newuser = new User
+      {
+        name = first_name + " " + last_name,
+        Login = email,
+        AccessLevel = 9000,
+        PasswordHash = CryptoHelper.GetMD5(user_id),
+        Role = db.Roles.Where(r => r.Name.Contains("DefaultUser")).FirstOrDefault()
+      };
+
+      db.Users.Add(newuser);
+      db.SaveChanges();
+
+      vkUserID = new VkUserID { user_id = newuser.id, vk_id = vk_uid };
+      db.vkUserIDs.Add(vkUserID);
+      db.SaveChanges();
+
+      newuser = db.Users.Include(u => u.Role).FirstOrDefault(u=>u.id == vkUserID.user_id);
+      await Authenticate(newuser); // аутентификация
+
+      return RedirectToAction("Index", "Home");
     }
 
     public FileContentResult GetCapturePicture(string hash)
@@ -112,7 +195,8 @@ namespace CurilClever2.Controllers
         {
           Role role = db.Roles.Where(r => r.Name.Contains("DefaultUser")).FirstOrDefault();
           // добавляем пользователя в бд
-          User newUser = new User {
+          User newUser = new User
+          {
             name = model.Name,
             Login = model.Login,
             PasswordHash = CryptoHelper.GetMD5(model.Password),
@@ -173,7 +257,7 @@ namespace CurilClever2.Controllers
       }
       else
         // в противном случае (если подписка у пользователя есть) загружаем ее из базы данных
-        sub = db.Subscribes.Include(s=>s.User).FirstOrDefault(s => s.Userid == currentuser.id);
+        sub = db.Subscribes.Include(s => s.User).FirstOrDefault(s => s.Userid == currentuser.id);
       // создаем вьюмодель для текущего юзера и подписки
       ManageAccountViewModel maVM = new ManageAccountViewModel(currentuser, sub);
 
@@ -200,7 +284,7 @@ namespace CurilClever2.Controllers
       else
         // в противном случае (если подписка у пользователя есть) загружаем ее из базы данных
         sub = db.Subscribes.Include(s => s.User).FirstOrDefault(s => s.Userid == currentuser.id);
-      
+
 
       //обновляем настройки подписки у пользователя
       sub.SendNews = model.EMailNewsSubscribe;
@@ -208,7 +292,7 @@ namespace CurilClever2.Controllers
       db.Subscribes.Update(sub);
       db.SaveChanges();
 
-      if(model.Password != null && model.Password == model.ConfirmPassword && model.Password.Length >= 3)
+      if (model.Password != null && model.Password == model.ConfirmPassword && model.Password.Length >= 3)
       {
         currentuser.PasswordHash = CryptoHelper.GetMD5(model.Password);
       }

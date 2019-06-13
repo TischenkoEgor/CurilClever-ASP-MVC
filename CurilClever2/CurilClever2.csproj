@@ -30,6 +30,7 @@
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
     <PackageReference Include="jQuery.Cookie" Version="1.4.1" />
     <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
+    <PackageReference Include="Json.Net" Version="1.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
