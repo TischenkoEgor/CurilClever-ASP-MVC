@@ -1,6 +1,9 @@
 ﻿@{
-  ViewData["Title"] = "Отели";
+  ViewData["Title"] = Localizer["Title"];// "";
 }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @* тэг noscript срабатывает только если JS в браузере отключен *@
 <noscript>
   @* если в ссылке есть параметр noscript в положении 1, то ничего не делаем, сайт и так в режиме работы без JS  *@
@@ -29,12 +32,12 @@
   }
 </noscript>
 <div class="jumbotron text-center">
-  <h2>Управление отелями</h2>
+  <h2>@Localizer["Hotel Managment"]</h2>
 </div>
 <div class="row">
   <div class="col-md-12">
     <p>
-      @Html.ActionLink("ДОБАВИТЬ ОТЕЛЬ", "CreateHotel", "Hotel", new { @class = "create-hotel-link" }, null)
+      @Html.ActionLink(Localizer["Add Hotel"].Value, "CreateHotel", "Hotel", new { @class = "create-hotel-link" }, null)
     </p>
   </div>
 </div>

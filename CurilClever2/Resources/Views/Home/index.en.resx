@@ -118,66 +118,66 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Date" xml:space="preserve">
-    <value>Дата</value>
+    <value>Date</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Описание</value>
+    <value>Description</value>
   </data>
   <data name="Follow" xml:space="preserve">
-    <value>перейти к объекту</value>
+    <value>Follow</value>
   </data>
   <data name="Header" xml:space="preserve">
-    <value>Главная страница </value>
+    <value>Main Page</value>
   </data>
   <data name="LastNewsHeader" xml:space="preserve">
-    <value>Последние новости</value>
+    <value>Last News </value>
   </data>
   <data name="link" xml:space="preserve">
-    <value>Ссылка</value>
+    <value>link</value>
   </data>
   <data name="PageDesc" xml:space="preserve">
-    <value>Отели, лучшие отели, замечательные отели большой страны, дешево и недорого без потери в качестве отдыха, всегда большой выбор и телочки на любой вкус</value>
+    <value>Nice hotel, service etc...</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>главная страница</value>
+    <value>Home page</value>
   </data>
   <data name="Client" xml:space="preserve">
-    <value>Клиент</value>
+    <value>Client</value>
   </data>
   <data name="Clients" xml:space="preserve">
-    <value>Клиенты</value>
+    <value>Clients</value>
   </data>
   <data name="Clients Comments" xml:space="preserve">
-    <value>Коментарии\n к клиентам</value>
+    <value>Clients Comments</value>
   </data>
   <data name="Dates" xml:space="preserve">
-    <value>Даты</value>
+    <value>Dates</value>
   </data>
   <data name="FollowTravel" xml:space="preserve">
-    <value>просмотр</value>
+    <value>Follow Travel</value>
   </data>
   <data name="Hotel" xml:space="preserve">
-    <value>Отель</value>
+    <value>Hotel</value>
   </data>
   <data name="Hotels" xml:space="preserve">
-    <value>Отели</value>
+    <value>Hotels</value>
   </data>
   <data name="Last Orders" xml:space="preserve">
-    <value>Последние заявки</value>
+    <value>Last Orders</value>
   </data>
   <data name="Office Map" xml:space="preserve">
-    <value>Карта офисов и филиалов</value>
+    <value>Office &amp; filials Map</value>
   </data>
   <data name="Orders" xml:space="preserve">
-    <value>Заказы</value>
+    <value>Orders</value>
   </data>
   <data name="Orders Comments" xml:space="preserve">
-    <value>Коментарии к заказам</value>
+    <value>Orders Comments</value>
   </data>
   <data name="Price" xml:space="preserve">
-    <value>Стомость</value>
+    <value>Price</value>
   </data>
   <data name="DbStatus" xml:space="preserve">
-    <value>Состояние базы данных</value>
+    <value>Data Base Satus Graph</value>
   </data>
 </root>

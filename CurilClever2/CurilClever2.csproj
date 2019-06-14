@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Remove="Resources\Views\Home\AccountInfo - Копировать.ru.resx" />
+    <EmbeddedResource Remove="Resources\Views\Home\AccountInfo.en.resx" />
     <EmbeddedResource Remove="Resources\Views\Home\AccountInfo.ru.resx" />
   </ItemGroup>
 
@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Resources\Views\Home\AccountInfo - Копировать.ru.resx" />
+    <None Include="Resources\Views\Home\AccountInfo.en.resx" />
     <None Include="Resources\Views\Home\AccountInfo.ru.resx" />
   </ItemGroup>
 

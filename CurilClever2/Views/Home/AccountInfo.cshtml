@@ -5,6 +5,8 @@
 
 @if (User.Identity.Name != null)
 {
+  var xol = Localizer["You login as"];
+
   string role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
   <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Localizer["You login as"] @User.Identity.Name  <span class="caret"></span></a>
   <ul class="dropdown-menu">
@@ -20,7 +22,6 @@
     <li role="separator" class="divider"></li>
     <li>@Html.ActionLink(Localizer["Log Out"].Value, "Logout", "Account", new { }, null)</li>
   </ul>
-
 }
 else
 {

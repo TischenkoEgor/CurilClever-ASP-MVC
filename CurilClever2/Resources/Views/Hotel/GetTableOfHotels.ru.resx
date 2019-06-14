@@ -117,25 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Account managment" xml:space="preserve">
-    <value>Управление аккаунтом</value>
+  <data name="Actions" xml:space="preserve">
+    <value>Действия</value>
   </data>
-  <data name="Admin Page Unavalible" xml:space="preserve">
-    <value>Админка недоступна</value>
+  <data name="Adres" xml:space="preserve">
+    <value>Адрес</value>
   </data>
-  <data name="AdminPage" xml:space="preserve">
-    <value>Админка</value>
+  <data name="All hotels" xml:space="preserve">
+    <value>Все отели</value>
   </data>
-  <data name="For work with portal" xml:space="preserve">
-    <value>Для работы с порталом</value>
+  <data name="Edit" xml:space="preserve">
+    <value>Изменить</value>
   </data>
-  <data name="Log Out" xml:space="preserve">
-    <value>Выход</value>
+  <data name="Explore" xml:space="preserve">
+    <value>Просмотр</value>
   </data>
-  <data name="Sign In" xml:space="preserve">
-    <value>Авторизуйтесь</value>
+  <data name="Hotel" xml:space="preserve">
+    <value>Отель</value>
   </data>
-  <data name="You login as" xml:space="preserve">
-    <value>Вы вошли как</value>
+  <data name="next" xml:space="preserve">
+    <value>туда</value>
+  </data>
+  <data name="prev" xml:space="preserve">
+    <value>сюда</value>
+  </data>
+  <data name="Price per day" xml:space="preserve">
+    <value>Стоимость одного дня</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Stars Rate" xml:space="preserve">
+    <value>Звезды</value>
   </data>
 </root>

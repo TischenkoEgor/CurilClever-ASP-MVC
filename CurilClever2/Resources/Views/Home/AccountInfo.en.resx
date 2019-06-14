@@ -117,67 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Date" xml:space="preserve">
-    <value>Дата</value>
+  <data name="Account managment" xml:space="preserve">
+    <value>Для работы с порталом</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Описание</value>
+  <data name="Admin Page Unavalible" xml:space="preserve">
+    <value>Админка</value>
   </data>
-  <data name="Follow" xml:space="preserve">
-    <value>перейти к объекту</value>
+  <data name="AdminPage" xml:space="preserve">
+    <value>Админка недоступна</value>
   </data>
-  <data name="Header" xml:space="preserve">
-    <value>Главная страница </value>
+  <data name="For work with portal" xml:space="preserve">
+    <value>Авторизуйтесь</value>
   </data>
-  <data name="LastNewsHeader" xml:space="preserve">
-    <value>Последние новости</value>
+  <data name="Log Out" xml:space="preserve">
+    <value>Выход</value>
   </data>
-  <data name="link" xml:space="preserve">
-    <value>Ссылка</value>
+  <data name="Sign In" xml:space="preserve">
+    <value>Вы вошли как</value>
   </data>
-  <data name="PageDesc" xml:space="preserve">
-    <value>Отели, лучшие отели, замечательные отели большой страны, дешево и недорого без потери в качестве отдыха, всегда большой выбор и телочки на любой вкус</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>главная страница</value>
-  </data>
-  <data name="Client" xml:space="preserve">
-    <value>Клиент</value>
-  </data>
-  <data name="Clients" xml:space="preserve">
-    <value>Клиенты</value>
-  </data>
-  <data name="Clients Comments" xml:space="preserve">
-    <value>Коментарии\n к клиентам</value>
-  </data>
-  <data name="Dates" xml:space="preserve">
-    <value>Даты</value>
-  </data>
-  <data name="FollowTravel" xml:space="preserve">
-    <value>просмотр</value>
-  </data>
-  <data name="Hotel" xml:space="preserve">
-    <value>Отель</value>
-  </data>
-  <data name="Hotels" xml:space="preserve">
-    <value>Отели</value>
-  </data>
-  <data name="Last Orders" xml:space="preserve">
-    <value>Последние заявки</value>
-  </data>
-  <data name="Office Map" xml:space="preserve">
-    <value>Карта офисов и филиалов</value>
-  </data>
-  <data name="Orders" xml:space="preserve">
-    <value>Заказы</value>
-  </data>
-  <data name="Orders Comments" xml:space="preserve">
-    <value>Коментарии к заказам</value>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Стомость</value>
-  </data>
-  <data name="DbStatus" xml:space="preserve">
-    <value>Состояние базы данных</value>
+  <data name="You login as" xml:space="preserve">
+    <value>Ololo as</value>
   </data>
 </root>
