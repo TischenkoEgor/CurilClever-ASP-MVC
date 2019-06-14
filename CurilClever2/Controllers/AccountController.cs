@@ -61,35 +61,42 @@ namespace CurilClever2.Controllers
 
     public async Task<IActionResult> VkAuth(string code = "", string access_token = "", string expires_in = "", string user_id = "", string email = "")
     {
-
-      
-
       string secret_key = "ftOs39sriOsLSZEhTOSd";
       string API_ID = "7020055";
-
-      var x = HttpContext.Request;
 
       // авторизация в два этапа сначала получаем код доступа
       // потом получаем токен
 
-
+      // урл для запроса токена доступа из API Vkontakte 
       string request = "https://oauth.vk.com/access_token?client_id=7020055&client_secret=ftOs39sriOsLSZEhTOSd&redirect_uri=http://localhost/account/vkauth&code=" + code;
 
-
+      // загружаем коментарии в формате JSON
       var json_string = new WebClient().DownloadString(request);
+      // парсим JSON в объект
       var data = JsonConvert.DeserializeObject<Rootobject2>(json_string);
+      // получаем данные из JSON объекта
       access_token = data.access_token;
       expires_in = data.expires_in.ToString();
       user_id = data.user_id.ToString();
       email = data.email;
+      
       int vk_uid;
+
+      // проверяем есть ли уже в базе пользователь с такой почтой
+      User existuser = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Login == email);
+      if(existuser != null)
+      {
+        // если такой пользователь нашелся
+        // авторизуем пользователя
+        await Authenticate(existuser); 
+        // отправляем его домой
+        return RedirectToAction("Index", "Home");
+      }
 
       if (!int.TryParse(user_id, out vk_uid))
       {
         return RedirectToAction("login");
       }
-
-      
 
       // проверяем регался ли у нас пользователь с таким vk_uid
       VkUserID vkUserID = db.vkUserIDs.Where(v => v.vk_id == vk_uid).FirstOrDefault();
@@ -109,13 +116,18 @@ namespace CurilClever2.Controllers
       string first_name = "";
       string last_name = "";
 
+      // урл для запроса данных из API Vkontakte 
       string api_url = "https://api.vk.com/method/users.get?user_id=" + user_id + "&v=5.52&access_token=" + access_token;
+      // загружаем коментарии в формате JSON
       json_string = new WebClient().DownloadString(api_url);
-
+      // парсим JSON в объект
       var json = JsonConvert.DeserializeObject<Rootobject>(json_string);
+
+      // получаем данные из JSON объекта
       first_name = json.response[0].first_name;
       last_name = json.response[0].last_name;
 
+      // создаем нового юзера и заполняем его поля
       User newuser = new User
       {
         name = first_name + " " + last_name,
@@ -125,14 +137,21 @@ namespace CurilClever2.Controllers
         Role = db.Roles.Where(r => r.Name.Contains("DefaultUser")).FirstOrDefault()
       };
 
+      // добавлчем его в базу
       db.Users.Add(newuser);
+      // сохраняем изменения в базе
       db.SaveChanges();
 
+      // добавляем новую запись соответствия аккаунта вк и нашего аккаунта
       vkUserID = new VkUserID { user_id = newuser.id, vk_id = vk_uid };
+      // добавлчем его в базу
       db.vkUserIDs.Add(vkUserID);
+      // сохраняем изменения в базе
       db.SaveChanges();
 
+      // получаем пользователя по ID
       newuser = db.Users.Include(u => u.Role).FirstOrDefault(u=>u.id == vkUserID.user_id);
+      // и авторизуем пользователя
       await Authenticate(newuser); // аутентификация
 
       return RedirectToAction("Index", "Home");
@@ -240,6 +259,7 @@ namespace CurilClever2.Controllers
     [HttpGet]
     public IActionResult Manage()
     {
+      var x = User.Identity;
       // получаем текущего пользователя
       User currentuser = db.Users.Where(u => u.Login == User.Identity.Name).FirstOrDefault();
       // получаем подписку
