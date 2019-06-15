@@ -11,44 +11,44 @@ namespace CurilClever2.Models
   {
     public int id { get; set; }
 
-    [Required(ErrorMessage = "Укажите имя")]
-    [MinLength(1, ErrorMessage = "не может быть короче 1 символа")]
-    [Display(Name = "Имя")]
-    [RegularExpression(@"^[a-zA-Zа-яА-Я]{1,}$", ErrorMessage = "Неправильное имя")]
+    [Required(ErrorMessage = "FirstNameRequired")]
+    [MinLength(1, ErrorMessage = "FirstNameMinLength")]
+    [Display(Name = "FirstName")]
+    [RegularExpression(@"^[a-zA-Zа-яА-Я]{1,}$", ErrorMessage = "FirstNameWrongName")]
     public string FirstName { get; set; }
 
-    [Required(ErrorMessage = "Укажите фамилию")]
-    [MinLength(2, ErrorMessage = "не может быть короче чем 2 символа")]
-    [Display(Name = "Фамилия")]
-    [RegularExpression(@"^[a-zA-Zа-яА-Я]{2,}$", ErrorMessage = "Неправильная фамилия")]
+    [Required(ErrorMessage = "SecondNameRequred")]
+    [MinLength(2, ErrorMessage = "SecondNameMinLength")]
+    [Display(Name = "SecondName")]
+    [RegularExpression(@"^[a-zA-Zа-яА-Я]{2,}$", ErrorMessage = "SecondNameWrongName")]
     public string SecondName { get; set; }
 
     [NotMapped]
     public string FIO { get { return GetFullName();} }
 
-    [Required(ErrorMessage = "Укажите дату рождения")]
+    [Required(ErrorMessage = "DateOfBirthdayReqired")]
     [DataType(DataType.Date)]
-    [Display(Name = "Дата рождения")]
+    [Display(Name = "DateOfBirthday")]
     public DateTime DateOfBirthday { get; set; }
 
-    [Required(ErrorMessage = "Укажите пол")]
-    [Display(Name = "Пол")]
+    [Required(ErrorMessage = "GenderRequired")]
+    [Display(Name = "Gender")]
     public Gender Gender { get; set; }
 
-    [Required(ErrorMessage = "Укажите телефон")]
-    [DataType(DataType.PhoneNumber, ErrorMessage ="Это не номер телефона")]
-    [RegularExpression(@"^((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10}$", ErrorMessage = "Not a valid phone number")]
-    [Display(Name = "Телефон")]
+    [Required(ErrorMessage = "PhoneRequired")]
+    [DataType(DataType.PhoneNumber, ErrorMessage = "PhoneWrong")]
+    [RegularExpression(@"^((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10}$", ErrorMessage = "PhoneInvalid")]
+    [Display(Name = "PhoneТелефон")]
     public string Phone { get; set; }
 
-    [Required(ErrorMessage = "Укажите адрес емейл")]
+    [Required(ErrorMessage = "EmailRequired")]
     [EmailAddress]
-    [Display(Name = "Электронная почта")]
+    [Display(Name = "Email")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Укажите пасспорт")]
-    [MinLength(3, ErrorMessage = "имя отеля не может быть короче 3 символов")]
-    [Display(Name = "Паспорт (серия, номер кем и когда выдан)")]
+    [Required(ErrorMessage = "PassportDataRequired")]
+    [MinLength(8, ErrorMessage = "PassportDataMinLength")]
+    [Display(Name = "PassportData")]
     public string PassportData { get; set; }
     public string GetFullName()
     {
@@ -79,9 +79,9 @@ namespace CurilClever2.Models
 
   public enum Gender
   {
-    [Display(Name = "Муж.")]
+    [Display(Name = "Male")]
     Male,
-    [Display(Name = "Жен.")]
+    [Display(Name = "Female")]
     Female
   }
 }
