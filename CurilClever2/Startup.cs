@@ -37,6 +37,7 @@ namespace CurilClever2
 
       services.AddLocalization(options => options.ResourcesPath = "Resources");
 
+
       services.AddDbContext<CleverDBContext>(options => options.UseSqlServer(connection));
       services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
               .AddCookie(options => //CookieAuthenticationOptions
@@ -65,6 +66,7 @@ namespace CurilClever2
 
       services.AddMvc()
         .AddViewLocalization() // добавляем локализацию представлений
+        .AddDataAnnotationsLocalization() // добавляем локализацию аннотаций к данным
         .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     }
 
