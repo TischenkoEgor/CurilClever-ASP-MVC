@@ -27,10 +27,13 @@ namespace CurilClever2.Controllers
     private CleverDBContext db;
     private IRecaptchaService _recaptcha;
 
+    private string VkAuthCallBackUrl = "";
+
     public AccountController(CleverDBContext context, IRecaptchaService recaptcha)
     {
       db = context;
       _recaptcha = recaptcha;
+     
     }
     public IActionResult AccessDenied()
     {
@@ -39,12 +42,21 @@ namespace CurilClever2.Controllers
     [HttpGet]
     public IActionResult Login()
     {
+      VkAuthCallBackUrl = "http://";
+      VkAuthCallBackUrl += HttpContext.Request.Host;
+      VkAuthCallBackUrl += "/account/vkauth";
+      ViewData["callbackurl"] = VkAuthCallBackUrl;
       return View();
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginModel model)
     {
+      VkAuthCallBackUrl = "http://";
+      VkAuthCallBackUrl += HttpContext.Request.Host;
+      VkAuthCallBackUrl += "/account/vkauth";
+      ViewData["callbackurl"] = VkAuthCallBackUrl;
+
       if (ModelState.IsValid)
       {
         User user = await db.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Login == model.Login && u.checkPassword(model.Password));
@@ -59,16 +71,28 @@ namespace CurilClever2.Controllers
       return View(model);
     }
 
-    public async Task<IActionResult> VkAuth(string code = "", string access_token = "", string expires_in = "", string user_id = "", string email = "")
+    public async Task<IActionResult> VkAuth(string code = "")
     {
+      VkAuthCallBackUrl = "http://";
+      VkAuthCallBackUrl += HttpContext.Request.Host;
+      VkAuthCallBackUrl += "/account/vkauth";
+
       string secret_key = "ftOs39sriOsLSZEhTOSd";
       string API_ID = "7020055";
+      string access_token = "";
+      string expires_in = "";
+      string user_id = "";
+      string email = "";
 
       // авторизация в два этапа сначала получаем код доступа
       // потом получаем токен
 
       // урл для запроса токена доступа из API Vkontakte 
-      string request = "https://oauth.vk.com/access_token?client_id=7020055&client_secret=ftOs39sriOsLSZEhTOSd&redirect_uri=http://localhost/account/vkauth&code=" + code;
+      string request = "https://oauth.vk.com/access_token";
+      request += "?client_id=" + API_ID;
+      request += "&client_secret=" + secret_key;
+      request += "&redirect_uri=" + VkAuthCallBackUrl;
+      request += "&code=" + code;
 
       // загружаем коментарии в формате JSON
       var json_string = new WebClient().DownloadString(request);
