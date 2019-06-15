@@ -1,4 +1,4 @@
-﻿  @using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 <!DOCTYPE html>
 <html lang="ru">
@@ -141,12 +141,12 @@
     <hr />
     <footer>
       <div class="blog-footer">
-        <div class="row">
+        <div class="row text-center">
           <p>@Localizer["copyright"] "<a href="http://vk.com/night_mare_218">Cretin Development"</a></p>
 
         </div>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-6 text-right">
             <!-- кнопки переключения-->
             <a id="print_view_btn">@Localizer["printview"]</a>
             <a id="default_view_btn">@Localizer["defaultview"]</a>
@@ -163,7 +163,11 @@
 
 
       </div>
+      <hr />
     </footer>
+    <br />
+    <br />
+    <br />
   </div>
 
   <environment include="Development">
