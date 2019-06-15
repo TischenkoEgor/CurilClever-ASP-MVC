@@ -1,15 +1,17 @@
 ﻿@model CurilClever2.Models.Hotel
 
 @{
-  ViewData["Title"] = "Details";
+  ViewData["Title"] = @Localizer["Title"];
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
-<h2>Details</h2>
+<h2>@Localizer["HotelDetails"]</h2>
 
 <div class="row">
   <div class="col-md-4">
-    <h4>Hotel</h4>
+    <h4>@Localizer["Hotel"]</h4>
     <hr />
     <dl class="dl-horizontal">
       <dt>
@@ -61,7 +63,7 @@
          myMap.geoObjects.add(new ymaps.Placemark([@((Model.X/100000.0).ToString().Replace(",", ".")), @((Model.Y/100000.0).ToString().Replace(",", "."))],
               {
                 balloonContent: '@Model.Name',
-                iconCaption: 'расположение отеля'
+                iconCaption: '@Localizer["Hotel location"]'
            }));
 
       }</script>
@@ -69,7 +71,7 @@
   </div>
 </div>
 <div>
-  <a asp-action="EditHotel" asp-route-id="@Model.id">Edit</a> |
-  <a asp-action="Index">Back to List</a>
+  <a asp-action="EditHotel" asp-route-id="@Model.id">@Localizer["Edit"]</a> |
+  <a asp-action="Index">@Localizer["Back to list"]</a>
 </div>
 
