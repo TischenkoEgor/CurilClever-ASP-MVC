@@ -1,12 +1,15 @@
 ﻿@model CurilClever2.Models.Hotel
 
 @{
-  ViewData["Title"] = "EditHotel";
+  ViewData["Title"] = Localizer["Title"];
 }
 
-<h2>Редактирование отеля</h2>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
-<h4>Hotel</h4>
+<h2>@Localizer["Edit Hotel"]</h2>
+
+<h4>@Localizer["Hotel"]</h4>
 <hr />
 <div class="row">
   <div class="col-md-4">
@@ -34,7 +37,7 @@
         <span asp-validation-for="Price" class="text-danger"></span>
       </div>
       <div class="form-group">
-        <input type="submit" value="Сохранить" class="btn btn-default" />
+        <input type="submit" value="@Localizer["Save Hotel"]" class="btn btn-default" />
       </div>
       <input type="hidden" asp-for="X" />
       <input type="hidden" asp-for="Y" />
@@ -44,7 +47,7 @@
   <div class="col-md-4">
     <script src="http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&apikey=781dfc83-488b-4172-9d87-ccf75cf16987" type="text/javascript"></script>
     <div id="map" style="width: 400px; height: 300px"></div>
-    <p>нажмите на объект на карте для установки координат отеля</p>
+    <p>@Localizer["Map Manual"]</p>
     <script type="text/javascript">
       ymaps.ready(init);
       var myMap;
@@ -62,7 +65,7 @@
          myMap.geoObjects.add(new ymaps.Placemark([@((Model.X/100000.0).ToString().Replace(",", ".")), @((Model.Y/100000.0).ToString().Replace(",", "."))],
               {
                 balloonContent: '@Model.Name',
-                iconCaption: 'расположение отеля'
+                iconCaption: '@Localizer["Hotel location"]'
               }));
         // Обработка события, возникающего при щелчке
         // левой кнопкой мыши в любой точке карты.
@@ -83,7 +86,7 @@
             myMap.geoObjects.add(new ymaps.Placemark([c_x, c_y],
               {
                 balloonContent: '@Model.Name',
-                iconCaption: 'расположение отеля'
+                iconCaption: '@Localizer["Hotel location"]'
               }));
 
           }
@@ -91,19 +94,12 @@
             myMap.balloon.close();
           }
         });
-
-        // Обработка события, возникающего при щелчке
-        // правой кнопки мыши в любой точке карты.
-        // При возникновении такого события покажем всплывающую подсказку
-        // в точке щелчка.
-        //myMap.events.add('contextmenu', function (e) {
-        //    myMap.hint.show(e.get('coordPosition'), 'Кто-то щелкнул правой кнопкой');
-        //});
-      }</script>
+      }
+    </script>
   </div>
 </div>
 
 <div>
-  <a asp-action="Index">Back to List</a>
+  <a asp-action="Index">@Localizer["Back to list"]</a>
 </div>
 
