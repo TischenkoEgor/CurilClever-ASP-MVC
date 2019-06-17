@@ -38,7 +38,7 @@ namespace CurilClever2.Models
     [Required(ErrorMessage = "PhoneRequired")]
     [DataType(DataType.PhoneNumber, ErrorMessage = "PhoneWrong")]
     [RegularExpression(@"^((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10}$", ErrorMessage = "PhoneInvalid")]
-    [Display(Name = "PhoneТелефон")]
+    [Display(Name = "Phone")]
     public string Phone { get; set; }
 
     [Required(ErrorMessage = "EmailRequired")]

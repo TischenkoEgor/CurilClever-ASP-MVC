@@ -1,6 +1,10 @@
 ﻿@using CurilClever2.ViewModels
 @model ClientCommentsViewModel
-<h1>Комментарии к клиенту</h1>
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<h1>@Localizer["ClientComments"]</h1>
 @foreach (ClientComment u in Model.Comments)
 {
   <div class="media">
@@ -12,11 +16,11 @@
       <p> @u.Text</p>
     </div>
   </div>
-  
+
 }
 @if (Model.Comments.Count() == 0)
 {
-  <p> у этого клиента еще нет комментариев, вы можете добавить один ниже</p>
+  <p>@Localizer["noonecomments"] </p>
 }
 else
 {
@@ -26,14 +30,14 @@ else
        data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
        class="btn btn-default btn">
       <i class="glyphicon glyphicon-chevron-left"></i>
-      Назад
+      @Localizer["prev"]
     </a>
   }
   else
   {
     <a class="btn btn-default btn">
       <i class="glyphicon glyphicon-chevron-left"></i>
-      Назад
+      @Localizer["prev"]
     </a>
   }
   @if (Model.PageViewModel.HasNextPage)
@@ -41,12 +45,12 @@ else
     <a asp-action="ClientComments" asp-controller="client" asp-route-id="@Model.clientid" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
        data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
        class="btn btn-default btn">
-      Вперед
+      @Localizer["next"]
       <i class="glyphicon glyphicon-chevron-right"></i>
     </a>
   }
 }
-<h3>Добавить коментарий к клиенту</h3>
+<h3>@Localizer["AddComment"]</h3>
 <form id="NewClientComent" asp-action="AddClientComment" asp-controller="Client"
       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientCommentBlock"
       method="post">
@@ -54,5 +58,5 @@ else
   <input name="clientid" type="hidden" value="@Model.clientid" />
   <textarea name="comment" cols="40" rows="5"></textarea>
   <br />
-  <button name="sendbutton" type="submit">Отправить</button>
+  <button name="sendbutton" type="submit">@Localizer["Send"]</button>
 </form>

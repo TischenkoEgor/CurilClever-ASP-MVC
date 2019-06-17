@@ -1,10 +1,13 @@
 ﻿@model CurilClever2.Models.Client
 
 @{
-  ViewData["Title"] = "EditClient";
+  ViewData["Title"] = @Localizer["Title"];// "EditClient";
 }
 
-<h2>Редактирование клиента</h2>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<h2>@Localizer["ClientEditing"]</h2>
 
 <hr />
 <div class="row">
@@ -48,7 +51,7 @@
         <span asp-validation-for="PassportData" class="text-danger"></span>
       </div>
       <div class="form-group">
-        <input type="submit" value="Сохранить" class="btn btn-default" />
+        <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
       </div>
     </form>
   </div>
@@ -58,7 +61,7 @@
 </div>
 
 <div>
-  <a asp-action="Index">Обратно к списку</a>
+  <a asp-action="Index">@Localizer["Backtolist"]</a>
 </div>
 
 @section Scripts {
