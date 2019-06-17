@@ -13,6 +13,8 @@ namespace CurilClever2
     // ключи ресурсов
     const string HEADER = "Header";
     const string MESSAGE = "Message";
+    const string Male = "Male";
+    const string Female = "Female";
 
     public SiteStringLocalizer  ()
     {
@@ -20,13 +22,17 @@ namespace CurilClever2
       Dictionary<string, string> enDict = new Dictionary<string, string>
       {
         {HEADER, "Welcome" },
-        {MESSAGE, "Hello World!" }
+        {MESSAGE, "Hello World!" },
+        {Male, "Male" },
+        {Female, "Female" }
       };
       // словарь для русского языка
       Dictionary<string, string> ruDict = new Dictionary<string, string>
       {
         {HEADER, "Добо пожаловать" },
-        {MESSAGE, "Привет мир!" }
+        {MESSAGE, "Привет мир!" },
+        {Male, "Муж." },
+        {Female, "Жен." }
       };
      
       // создаем словарь ресурсов

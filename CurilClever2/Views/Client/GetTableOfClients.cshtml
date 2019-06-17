@@ -1,20 +1,26 @@
 ﻿@using CurilClever2.ViewModels
 @model ClientPageViewModel
-<H2>Клиенты агенства</H2>
+@using System.ComponentModel.DataAnnotations
+@using System.Net
+@using System.Reflection
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<H2>@Localizer["AgencyClients"]</H2>
 <br>
 <table class="table table-striped table-hover">
   <tr>
-    <td>ИД</td>
-    <td>ФИО</td>
-    <td>Возраст/Пол</td>
-    <td>Телефон</td>
-    <td>Управление</td>
+    <td>@Localizer["ID"]</td>
+    <td>@Localizer["FIO"]</td>
+    <td>@Localizer["AgeGender"]</td>
+    <td>@Localizer["Phone"]</td>
+    <td>@Localizer["Actions"]</td>
   </tr>
   @if (Model.Clients.Count() == 0)
   {
     <tr>
       <td colspan="5">
-        Клиентов в базе нет!
+        @Localizer["NoClientsInDB"]
       </td>
     </tr>
   }
@@ -25,14 +31,21 @@
       <tr>
         <td>@client.id </td>
         <td>@client.GetFullName()</td>
-        <td>@client.GetYearsFromBirth() лет | @client.GetGenderName()</td>
+        <td>
+          @client.GetYearsFromBirth() @Localizer["Age"] | 
+          @if( client.Gender == Gender.Female) {
+            @Localizer["Male"]
+          } else {
+            @Localizer["Female"]
+          }
+        </td>
         <td>@client.Phone</td>
         <td>
-          @Html.ActionLink("подробно", "Details", "Client", new { id = client.id }, null)
-          @Html.ActionLink("Изменить", "EditClient", "Client", new { id = client.id }, null)
+          @Html.ActionLink(@Localizer["Details"].Value, "Details", "Client", new { id = client.id }, null)
+          @Html.ActionLink(@Localizer["Edit"].Value, "EditClient", "Client", new { id = client.id }, null)
           <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
-             asp-action="DeleteClient" asp-controller="Client" 
-             asp-route-page="@Model.PageViewModel.PageNumber" asp-route-id="@client.id">Удалить</a>
+             asp-action="DeleteClient" asp-controller="Client"
+             asp-route-page="@Model.PageViewModel.PageNumber" asp-route-id="@client.id">@Localizer["Remove"] </a>
         </td>
       </tr>
     }
@@ -40,33 +53,33 @@
 </table>
 @if (Model.PageViewModel.HasPreviousPage)
 {
-  <a asp-action="GetTableOfClients" asp-controller="client" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
-     class="btn btn-default btn">
-    <i class="glyphicon glyphicon-chevron-left"></i>
-    сюда
-  </a>
+<a asp-action="GetTableOfClients" asp-controller="client" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+   data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
+   class="btn btn-default btn">
+  <i class="glyphicon glyphicon-chevron-left"></i>
+  @Localizer["prev"]
+</a>
 }
 else
 {
-  <a class="btn btn-default btn" style="opacity:.5">
-    <i class="glyphicon glyphicon-chevron-left"></i>
-    сюда
-  </a>
+<a class="btn btn-default btn" style="opacity:.5">
+  <i class="glyphicon glyphicon-chevron-left"></i>
+  @Localizer["prev"]
+</a>
 }
 @if (Model.PageViewModel.HasNextPage)
 {
-  <a asp-action="GetTableOfClients" asp-controller="client" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
-     class="btn btn-default btn">
-    туда
-    <i class="glyphicon glyphicon-chevron-right"></i>
-  </a>
+<a asp-action="GetTableOfClients" asp-controller="client" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+   data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
+   class="btn btn-default btn">
+  @Localizer["next"]
+  <i class="glyphicon glyphicon-chevron-right"></i>
+</a>
 }
 else
 {
-  <a class="btn btn-default btn" style="opacity:.5">
-    туда
-    <i class="glyphicon glyphicon-chevron-right"></i>
-  </a>
+<a class="btn btn-default btn" style="opacity:.5">
+  @Localizer["next"]
+  <i class="glyphicon glyphicon-chevron-right"></i>
+</a>
 }
