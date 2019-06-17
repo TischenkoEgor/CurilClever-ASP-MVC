@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Account managment" xml:space="preserve">
-    <value>Для работы с порталом</value>
+    <value>Account Managment</value>
   </data>
   <data name="Admin Page Unavalible" xml:space="preserve">
-    <value>Админка</value>
+    <value>Admin Page is unavalible</value>
   </data>
   <data name="AdminPage" xml:space="preserve">
-    <value>Админка недоступна</value>
+    <value>Admin Page</value>
   </data>
   <data name="For work with portal" xml:space="preserve">
-    <value>Авторизуйтесь</value>
+    <value>To continue work with portal</value>
   </data>
   <data name="Log Out" xml:space="preserve">
-    <value>Выход</value>
+    <value>logout</value>
   </data>
   <data name="Sign In" xml:space="preserve">
-    <value>Вы вошли как</value>
+    <value>Authorise</value>
   </data>
   <data name="You login as" xml:space="preserve">
-    <value>Ololo as</value>
+    <value>You login as</value>
   </data>
 </root>
