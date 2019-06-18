@@ -1,6 +1,9 @@
 ﻿@using CurilClever2.ViewModels
 @model OrderCommentsViewModel
-<h1>Комментарии к заказу</h1>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+  <h1>@Localizer["Comments"]</h1>
 @foreach (OrderComment u in Model.Comments)
 {
   <div class="media">
@@ -15,45 +18,45 @@
 }
 @if (Model.Comments.Count() == 0)
 {
-  <p> у этого заказа еще нет комментариев, вы можете добавить один ниже</p>
+<p>@Localizer["thisorderhasnocommentsyetyoucanaddonebelow"]</p>
 }
 else
 {
   @if (Model.PageViewModel.HasPreviousPage)
   {
-    <a asp-action="Comments" asp-controller="order" asp-route-id="@Model.orderid" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#OrderCommentBlock"
-       class="btn btn-default btn">
-      <i class="glyphicon glyphicon-chevron-left"></i>
-      Назад
-    </a>
+<a asp-action="Comments" asp-controller="order" asp-route-id="@Model.orderid" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+   data-ajax="true" data-ajax-mode="replace" data-ajax-update="#OrderCommentBlock"
+   class="btn btn-default btn">
+  <i class="glyphicon glyphicon-chevron-left"></i>
+  @Localizer["Back"] 
+</a>
   }
   else
   {
-    <a class="btn btn-default btn" style="opacity:.5">
-      <i class="glyphicon glyphicon-chevron-left"></i>
-      Назад
-    </a>
+<a class="btn btn-default btn" style="opacity:.5">
+  <i class="glyphicon glyphicon-chevron-left"></i>
+  @Localizer["Back"] 
+</a>
   }
   @if (Model.PageViewModel.HasNextPage)
   {
-    <a asp-action="Comments" asp-controller="Order" asp-route-id="@Model.orderid" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#OrderCommentBlock"
-       class="btn btn-default btn">
-      Дальше
-      <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
+<a asp-action="Comments" asp-controller="Order" asp-route-id="@Model.orderid" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+   data-ajax="true" data-ajax-mode="replace" data-ajax-update="#OrderCommentBlock"
+   class="btn btn-default btn">
+  @Localizer["Next"]
+  <i class="glyphicon glyphicon-chevron-right"></i>
+</a>
   }
   else
   {
-    <a class="btn btn-default btn" style="opacity:.5">
-      Дальше
-      <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
+<a class="btn btn-default btn" style="opacity:.5">
+  @Localizer["Next"] Дальше
+  <i class="glyphicon glyphicon-chevron-right"></i>
+</a>
   }
 
 }
-<h3>Добавить коментарий к заказу</h3>
+<h3>@Localizer["Addacommenttotheorder"]</h3>
 <form id="NewClientComent" asp-action="AddComment" asp-controller="Order"
       data-ajax="true" data-ajax-mode="replace" data-ajax-update="#OrderCommentBlock"
       method="post">
@@ -61,5 +64,5 @@ else
   <input name="orderid" type="hidden" value="@Model.orderid" />
   <textarea name="comment" cols="40" rows="5"></textarea>
   <br />
-  <button name="sendbutton" type="submit">Отправить</button>
+  <button name="sendbutton" type="submit">@Localizer["Sent"]</button>
 </form>
