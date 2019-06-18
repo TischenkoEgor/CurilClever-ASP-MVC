@@ -1,13 +1,16 @@
 ﻿@model CurilClever2.Models.Order
 
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @{
-  ViewData["Title"] = "Details";
+  ViewData["Title"] = Localizer["Details"];
 }
 
-<h2>детали заявки</h2>
+  <h2>@Localizer["DetailsOrder"]</h2>
 
 <div>
-  <h4>Заявка:</h4>
+  <h4>@Localizer["Order"]:</h4>
   <hr />
   <dl class="dl-horizontal">
     <dt>
@@ -61,8 +64,8 @@
   </dl>
 </div>
 <div>
-  <a asp-action="Edit" asp-route-id="@Model.id">Редактировать</a> |
-  <a asp-action="Index"> К списку</a>
+  <a asp-action="Edit" asp-route-id="@Model.id">@Localizer["Edit"]</a> |
+  <a asp-action="Index"> @Localizer["BackToList"]</a>
 </div>
 <div id="OrderCommentBlock">
 
