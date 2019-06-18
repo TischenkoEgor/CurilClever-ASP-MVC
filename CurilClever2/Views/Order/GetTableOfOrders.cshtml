@@ -1,19 +1,21 @@
 ﻿@using CurilClever2.ViewModels
 @model OrderPageViewModel
-<h2>Все заявки</h2>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+  <h2>@Localizer["AllOrders"]</h2>
 <table class="table table-striped table-hover">
   <tr>
-    <td>Номер</td>
-    <td>ФИО Клиента</td>
-    <td>Отель</td>
-    <td>Стоимость</td>
-    <td>Управление</td>
+    <td>@Localizer["Number"]</td>
+    <td>@Localizer["Fio"]</td>
+    <td>@Localizer["Hotel"]</td>
+    <td>@Localizer["Price"]</td>
+    <td>@Localizer["Control"]</td>
   </tr>
   @if (Model.Orders.Count() == 0)
   {
     <tr>
       <td colspan="5">
-        Заявок в базе нет!
+        @Localizer["There are no applications in the database"]
 
       </td>
     </tr>
@@ -23,17 +25,17 @@
     foreach (Order order in Model.Orders)
     {
       <tr>
-        <td>Заявка № @order.id </td>
+        <td>@Localizer["Order"] № @order.id </td>
         <td>@order.Client.FIO</td>
         <td>@order.Hotel.Name</td>
         <td>@order.Price</td>
         <td>
-          @Html.ActionLink("Изменить", "Edit", "Order", new { id = order.id }, null)
+          @Html.ActionLink(Localizer["Edit"].Value, "Edit", "Order", new { id = order.id }, null)
           |
-          @Html.ActionLink("Просмотр", "Details", "Order", new { id = order.id }, null)
+          @Html.ActionLink(Localizer["Details"].Value, "Details", "Order", new { id = order.id }, null)
           |
           <a asp-controller="order" asp-action="delete" asp-route-id="@order.id"
-             data-ajax="true" data-ajax-mode="replace" data-ajax-update="#TableOfOrdersBlock">Удалить</a>
+             data-ajax="true" data-ajax-mode="replace" data-ajax-update="#TableOfOrdersBlock">@Localizer["Remove"]</a>
         </td>
       </tr>
     }
@@ -41,33 +43,33 @@
 </table>
 @if (Model.PageViewModel.HasPreviousPage)
 {
-  <a asp-action="GetTableOfOrders" asp-controller="order" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#TableOfOrdersBlock"
-     class="btn btn-default btn">
-    <i class="glyphicon glyphicon-chevron-left"></i>
-    сюда
-  </a>
+<a asp-action="GetTableOfOrders" asp-controller="order" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+   data-ajax="true" data-ajax-mode="replace" data-ajax-update="#TableOfOrdersBlock"
+   class="btn btn-default btn">
+  <i class="glyphicon glyphicon-chevron-left"></i>
+  @Localizer["Here"]
+</a>
 }
 else
 {
-  <a class="btn btn-default btn" style="opacity:.7">
-    <i class="glyphicon glyphicon-chevron-left"></i>
-    сюда
-  </a>
+<a class="btn btn-default btn" style="opacity:.7">
+  <i class="glyphicon glyphicon-chevron-left"></i>
+  @Localizer["Here"]
+</a>
 }
 @if (Model.PageViewModel.HasNextPage)
 {
-  <a asp-action="GetTableOfOrders" asp-controller="order" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-     data-ajax="true" data-ajax-mode="replace" data-ajax-update="#TableOfOrdersBlock"
-     class="btn btn-default btn">
-    туда
-    <i class="glyphicon glyphicon-chevron-right"></i>
-  </a>
+<a asp-action="GetTableOfOrders" asp-controller="order" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+   data-ajax="true" data-ajax-mode="replace" data-ajax-update="#TableOfOrdersBlock"
+   class="btn btn-default btn">
+  @Localizer["There"]
+  <i class="glyphicon glyphicon-chevron-right"></i>
+</a>
 }
 else
 {
-  <a class="btn btn-default btn" style="opacity:.7">
-    туда
-    <i class="glyphicon glyphicon-chevron-right"></i>
-  </a>
+<a class="btn btn-default btn" style="opacity:.7">
+  @Localizer["There"]
+  <i class="glyphicon glyphicon-chevron-right"></i>
+</a>
 }
