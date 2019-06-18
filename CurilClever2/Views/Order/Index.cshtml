@@ -1,6 +1,9 @@
 ﻿
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @{
-  ViewData["Title"] = "Index";
+  ViewData["Title"] = Localizer["Title"];
 }
 @* тэг noscript срабатывает только если JS в браузере отключен *@
 <noscript>
@@ -31,12 +34,12 @@
 </noscript>
 
 <div class="jumbotron text-center">
-  <h2>Управление заявками</h2>
+  <h2>@Localizer["OrderManagment"]</h2>
 </div>
 <div class="row">
   <div class="col-md-12">
     <p>
-      @Html.ActionLink("ДОБАВИТЬ ЗАЯВКУ", "CreateOrder", "Order", new { @class = "create-hotel-link" }, null)
+      @Html.ActionLink(Localizer["AddOrder"].Value, "CreateOrder", "Order", new { @class = "create-hotel-link" }, null)
     </p>
   </div>
 </div>
