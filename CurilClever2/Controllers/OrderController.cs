@@ -15,6 +15,7 @@ namespace CurilClever2.Controllers
   [Authorize(Roles = "Admin, Moderator, Manager")]
   public class OrderController : Controller
   {
+    private const int OrdersOnPage = 3; 
     private CleverDBContext db;
     public OrderController(CleverDBContext _db)
     {
@@ -44,7 +45,7 @@ namespace CurilClever2.Controllers
       {
         // если  noscript в позиции  1 (JS отключен), то формируем набор клиентов в соотвествии с параметром page
         // 0. Фиксируем количество элементов на странице
-        int pageSize = 1;
+        int pageSize = OrdersOnPage;
         // 1. Получаем данные о всех заявках (коллекцию заявок) из базы данных
         IQueryable<Order> source = db.Orders.Include(o => o.Client).Include(o => o.Hotel);
         // 1.1 Получаем общее количество заявок
@@ -237,7 +238,7 @@ namespace CurilClever2.Controllers
     public IActionResult GetTableOfOrders(int page = 1)
     {
       // 0. Фиксируем количество элементов на странице
-      int pageSize = 3;
+      int pageSize = OrdersOnPage;
       // 1. Получаем данные о всех заявках (коллекцию заявок) из базы данных
       IQueryable<Order> source = db.Orders.Include(o => o.Client).Include(o => o.Hotel);
       // 1.1 Получаем общее количество заявок

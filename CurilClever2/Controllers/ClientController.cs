@@ -14,6 +14,7 @@ namespace CurilClever2.Controllers
   [Authorize(Roles = "Admin, Moderator, Manager")]
   public class ClientController : Controller
   {
+    private const int ClientsOnPage = 12;
     private CleverDBContext db;
     public ClientController(CleverDBContext _db)
     {
@@ -44,7 +45,7 @@ namespace CurilClever2.Controllers
       else
       {
         // 0. Фиксируем количество элементов на странице
-        int pageSize = 12;
+        int pageSize = ClientsOnPage;
         // 1. Получаем данные о всех клиентах (коллекцию клиентов) из базы данных
         IQueryable<Client> clients = db.Clients;
         // 1.1 Получаем общее количество клиентов
@@ -229,7 +230,7 @@ namespace CurilClever2.Controllers
     public IActionResult GetTableOfClients(int page = 1)
     {
       // 0. Фиксируем количество элементов на странице
-      int pageSize = 12;   
+      int pageSize = ClientsOnPage;   
       // 1. Получаем данные о всех клиентах (коллекцию клиентов) из базы данных
       IQueryable<Client> clients = db.Clients;
       // 1.1 Получаем общее количество клиентов

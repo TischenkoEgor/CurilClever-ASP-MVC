@@ -14,6 +14,7 @@ namespace CurilClever2.Controllers
   [Authorize(Roles = "Admin, Moderator, Manager")]
   public class HotelController : Controller
   {
+    private const int HotelsOnPage = 12;
     private CleverDBContext db;
     public HotelController(CleverDBContext _db)
     {
@@ -42,7 +43,7 @@ namespace CurilClever2.Controllers
       else
       {
         // если  noscript в позиции  1 (JS отключен), то формируем набор клиентов в соотвествии с параметром page
-        int pageSize = 10;   // количество элементов на странице
+        int pageSize = HotelsOnPage;   // количество элементов на странице
         IQueryable<Hotel> source = db.Hotels;
         var count = source.Count();
         var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -153,7 +154,7 @@ namespace CurilClever2.Controllers
     }
     public IActionResult GetTableOfHotels(int page = 1)
     {
-      int pageSize = 10;   // количество элементов на странице
+      int pageSize = HotelsOnPage;   // количество элементов на странице
       IQueryable<Hotel> source = db.Hotels;
       var count = source.Count();
       var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
