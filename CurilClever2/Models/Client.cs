@@ -20,7 +20,7 @@ namespace CurilClever2.Models
     [Required(ErrorMessage = "SecondNameRequred")]
     [MinLength(2, ErrorMessage = "SecondNameMinLength")]
     [Display(Name = "SecondName")]
-    [RegularExpression(@"^[a-zA-Zа-яА-Я]{2,}$", ErrorMessage = "SecondNameWrongName")]
+    [RegularExpression(@"^[a-zA-Zа-яА-Я]{1,}-?[a-zA-Zа-яА-Я]{1,}$", ErrorMessage = "SecondNameWrongName")]
     public string SecondName { get; set; }
 
     [NotMapped]
