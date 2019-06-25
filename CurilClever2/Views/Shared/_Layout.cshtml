@@ -143,6 +143,12 @@
       .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
         background-color: #4a90e2;
       }
+      .table-striped > tbody > tr:nth-child(2n){
+        background-color: transparent;
+      }
+       .table-striped > tbody > tr:hover:nth-child(2n) {
+        background-color: #022040;
+      }
 
       a {
         color: white;
@@ -191,6 +197,7 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a></li>
             <li><a asp-area="" asp-controller="Order" asp-action="Index">@Localizer["Order managment"]</a></li>
             <li><a asp-area="" asp-controller="Client" asp-action="index">@Localizer["Client managment"]</a></li>
             <li><a asp-area="" asp-controller="Hotel" asp-action="Index">@Localizer["Hotel manager"]</a></li>
