@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Client managment" xml:space="preserve">
-    <value>Управление клиентами</value>
+    <value>Клиенты</value>
   </data>
   <data name="copyright" xml:space="preserve">
     <value>Все права защищены (c) 2018. Разработчик сайта креативная веб Студия</value>
@@ -130,13 +130,13 @@
     <value>Главная страница</value>
   </data>
   <data name="Hotel manager" xml:space="preserve">
-    <value>Управление отелями</value>
+    <value>Отели</value>
   </data>
   <data name="Keywords" xml:space="preserve">
     <value>тур Агентство, система управления заявками, курил клевер</value>
   </data>
   <data name="Order managment" xml:space="preserve">
-    <value>Управение заявками</value>
+    <value>Заявки</value>
   </data>
   <data name="printview" xml:space="preserve">
     <value>версия для печати</value>

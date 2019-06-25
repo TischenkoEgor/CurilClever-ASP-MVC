@@ -8,8 +8,9 @@
   var xol = Localizer["You login as"];
 
   string role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Localizer["You login as"] @User.Identity.Name  <span class="caret"></span></a>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown"> @Localizer["Account managment"] <span class="caret"></span></a>
   <ul class="dropdown-menu">
+
     @if (role == "Admin")
     {
       <li><a asp-area="admin" asp-controller="Home" asp-action="index">@Localizer["AdminPage"]</a></li>
@@ -20,6 +21,7 @@
     }
     <li><a asp-controller="Account" asp-action="Manage">@Localizer["Account managment"]</a></li>
     <li role="separator" class="divider"></li>
+    <li><a>@Localizer["You login as"] @User.Identity.Name</a></li>
     <li>@Html.ActionLink(Localizer["Log Out"].Value, "Logout", "Account", new { }, null)</li>
   </ul>
 }

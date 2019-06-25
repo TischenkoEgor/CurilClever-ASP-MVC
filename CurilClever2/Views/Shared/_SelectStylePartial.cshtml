@@ -11,17 +11,31 @@
   // получаем сервис IRequestCultureFeature
   var requestCulture = Context.Features.Get<IRequestCultureFeature>();
   // получаем список поддерживаемых культур
+  List<SelectListItem> styles = new List<SelectListItem>();
+  styles.Add(new SelectListItem("стандарт", "default"));
+  styles.Add(new SelectListItem("аэрофлот", "aeroflot"));
+  if (Context.Request.Cookies.ContainsKey("stylename") && Context.Request.Cookies["stylename"] == "aeroflot")
+  {
+    styles[1].Selected = true;
+  }
+  else
+  {
+    styles[0].Selected = true;
+  }
+
   var cultureItems = LocOptions.Value.SupportedUICultures
       .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
       .ToList();
 }
 
-<form asp-controller="Home" asp-action="SetLanguage"  style="display: inline-block"
+<form asp-controller="Home" asp-action="SetStyle" style="display: inline-block"
       asp-route-returnUrl="@Context.Request.Path"
       method="post" class="form-horizontal">
-  <label>@Localizer["Language:"] </label>
-  <select name="culture" onchange="this.form.submit();" 
-          asp-for="@requestCulture.RequestCulture.UICulture.Name"
-          asp-items="cultureItems"></select>
+  
+    <label>@Localizer["Style"]:</label> 
+    <select name="stylename" onchange="this.form.submit();"
+                      asp-items="styles"></select>
+  
+
 </form>
 

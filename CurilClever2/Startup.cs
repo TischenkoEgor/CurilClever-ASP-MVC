@@ -95,8 +95,11 @@ namespace CurilClever2
         SupportedCultures = supportedCultures,
         SupportedUICultures = supportedCultures
       });
+
       app.UseStaticFiles();
+
       app.UseCookiePolicy();
+
       app.UseAuthentication();
 
       app.UseMvc(routes =>

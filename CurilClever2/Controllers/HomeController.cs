@@ -113,5 +113,14 @@ namespace CurilClever2.Controllers
 
       return LocalRedirect(returnUrl);
     }
+    public IActionResult SetStyle(string stylename, string returnUrl)
+    {
+      if(stylename == "aeroflot")
+          HttpContext.Response.Cookies.Append("stylename", "aeroflot");
+      if (stylename == "default")
+        HttpContext.Response.Cookies.Append("stylename", "default");
+
+      return LocalRedirect(returnUrl);
+    }
   }
 }

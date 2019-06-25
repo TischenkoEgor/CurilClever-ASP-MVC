@@ -6,8 +6,22 @@
   ViewData["Title"] = @Localizer["Title"];
   ViewData["PageDescription"] = @Localizer["PageDesc"];
 }
+@if (Context.Request.Cookies.ContainsKey("stylename") && Context.Request.Cookies["stylename"] == "aeroflot")
+{
+  <style>
+    .jumbotron {
+      background-image: url(/images/destination_offers.jpg);
+      background-size: 100%;
+    }
+
+    #header {
+      text-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.5);
+    }
+  </style>
+}
+
 <div class="jumbotron text-center">
-  <h2>@Localizer["Header"]</h2>
+  <h1 id="header">@Localizer["Header"]</h1>
 </div>
 <div class="container">
   <div class="row">
@@ -23,16 +37,17 @@
 
         @foreach (News news in Model.News)
         {
-        <tr>
-          <td>@news.Created.ToUniversalTime()</td>
+          <tr>
+            <td>@news.Created.ToUniversalTime()</td>
 
-          <td><a asp-controller="News" asp-action="Details" asp-route-id="@news.id">@news.TextShort</a></td>
+            <td><a asp-controller="News" asp-action="Details" asp-route-id="@news.id">@news.TextShort</a></td>
 
-          <td><a href="@news.ObjectUrl">@Localizer["Follow"]</a></td>
-          <td></td>
-        </tr>
+            <td><a href="@news.ObjectUrl">@Localizer["Follow"]</a></td>
+            <td></td>
+          </tr>
         }
       </table>
+      @* драг энд дроп элементов  таблицы *@
       <script type="text/javascript">
         $(function () {
           $("#lastnewstable").sortable({
@@ -298,13 +313,13 @@
 
         @foreach (Order order in Model.Orders)
         {
-        <tr>
-          <td>@order.Client.FIO</td>
-          <td>@order.Hotel.Name</td>
-          <td>@order.BeginTravelDate.ToShortDateString() - @order.EndTravelDate.ToShortDateString()</td>
-          <td>@order.Price</td>
-          <td><a asp-controller="Order" asp-action="Details" asp-route-id="@order.id">@Localizer["FollowTravel"]</a> </td>
-        </tr>
+          <tr>
+            <td>@order.Client.FIO</td>
+            <td>@order.Hotel.Name</td>
+            <td>@order.BeginTravelDate.ToShortDateString() - @order.EndTravelDate.ToShortDateString()</td>
+            <td>@order.Price</td>
+            <td><a asp-controller="Order" asp-action="Details" asp-route-id="@order.id">@Localizer["FollowTravel"]</a> </td>
+          </tr>
         }
       </table>
     </div>
@@ -319,7 +334,7 @@
 
       <!-- скрипт добавления балунов-->
       <script type="text/javascript">
-       
+
         ymaps.ready(init);
         var myMap;
 

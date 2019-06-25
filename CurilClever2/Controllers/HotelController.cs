@@ -152,6 +152,7 @@ namespace CurilClever2.Controllers
       }
       return RedirectToAction("GetTableOfHotels", new { page = page });
     }
+
     public IActionResult GetTableOfHotels(int page = 1)
     {
       int pageSize = HotelsOnPage;   // количество элементов на странице
