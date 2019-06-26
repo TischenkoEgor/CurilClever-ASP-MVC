@@ -81,7 +81,7 @@ namespace CurilClever2.Controllers
       string API_ID = "7020055";
       string access_token = "";
       string expires_in = "";
-      string user_id = "";
+      int user_id;
       string email = "";
 
       // авторизация в два этапа сначала получаем код доступа
@@ -91,17 +91,18 @@ namespace CurilClever2.Controllers
       string request = "https://oauth.vk.com/access_token";
       request += "?client_id=" + API_ID;
       request += "&client_secret=" + secret_key;
+      // адрес коллбэка нужен только для того, что бы ВК сравнил его с прошлым каллбэком и убедился что этот запрос делает не верблюд, а мы
       request += "&redirect_uri=" + VkAuthCallBackUrl;
       request += "&code=" + code;
 
       // загружаем коментарии в формате JSON
       var json_string = new WebClient().DownloadString(request);
       // парсим JSON в объект
-      var data = JsonConvert.DeserializeObject<Rootobject2>(json_string);
+      Rootobject2 data = JsonConvert.DeserializeObject<Rootobject2>(json_string);
       // получаем данные из JSON объекта
       access_token = data.access_token;
       expires_in = data.expires_in.ToString();
-      user_id = data.user_id.ToString();
+      user_id = data.user_id;
       email = data.email;
       
       int vk_uid;
@@ -117,23 +118,6 @@ namespace CurilClever2.Controllers
         return RedirectToAction("Index", "Home");
       }
 
-      if (!int.TryParse(user_id, out vk_uid))
-      {
-        return RedirectToAction("login");
-      }
-
-      // проверяем регался ли у нас пользователь с таким vk_uid
-      VkUserID vkUserID = db.vkUserIDs.Where(v => v.vk_id == vk_uid).FirstOrDefault();
-
-      if (vkUserID != null)
-      {
-        // если такая запись есть, то загружаем соответствуюшего пользователя из базы
-        User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.id == vkUserID.user_id);
-        // и авторизуем пользователя
-        await Authenticate(user); // аутентификация
-        // отправляем его домой
-        return RedirectToAction("Index", "Home");
-      }
 
       //получаем остальнгые даные пользователя (имя)
 
@@ -141,11 +125,11 @@ namespace CurilClever2.Controllers
       string last_name = "";
 
       // урл для запроса данных из API Vkontakte 
-      string api_url = "https://api.vk.com/method/users.get?user_id=" + user_id + "&v=5.52&access_token=" + access_token;
+      string api_url = "https://api.vk.com/method/users.get?user_id=" + user_id + "&v=5.59&access_token=" + access_token;
       // загружаем коментарии в формате JSON
       json_string = new WebClient().DownloadString(api_url);
       // парсим JSON в объект
-      var json = JsonConvert.DeserializeObject<Rootobject>(json_string);
+      Rootobject json = JsonConvert.DeserializeObject<Rootobject>(json_string);
 
       // получаем данные из JSON объекта
       first_name = json.response[0].first_name;
@@ -157,7 +141,7 @@ namespace CurilClever2.Controllers
         name = first_name + " " + last_name,
         Login = email,
         AccessLevel = 9000,
-        PasswordHash = CryptoHelper.GetMD5(user_id),
+        PasswordHash = CryptoHelper.GetMD5(user_id.ToString()),
         Role = db.Roles.Where(r => r.Name.Contains("DefaultUser")).FirstOrDefault()
       };
 
@@ -166,15 +150,6 @@ namespace CurilClever2.Controllers
       // сохраняем изменения в базе
       db.SaveChanges();
 
-      // добавляем новую запись соответствия аккаунта вк и нашего аккаунта
-      vkUserID = new VkUserID { user_id = newuser.id, vk_id = vk_uid };
-      // добавлчем его в базу
-      db.vkUserIDs.Add(vkUserID);
-      // сохраняем изменения в базе
-      db.SaveChanges();
-
-      // получаем пользователя по ID
-      newuser = db.Users.Include(u => u.Role).FirstOrDefault(u=>u.id == vkUserID.user_id);
       // и авторизуем пользователя
       await Authenticate(newuser); // аутентификация
 
