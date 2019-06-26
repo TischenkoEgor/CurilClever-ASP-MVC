@@ -6,32 +6,39 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @* тэг noscript срабатывает только если JS в браузере отключен *@
-<noscript>
-  @* если в ссылке есть параметр noscript в положении 1, то ничего не делаем, сайт и так в режиме работы без JS  *@
-  @if (Context.Request.Path.ToString().ToLower().Contains("noscript=1"))
-  {
-      
-  }
-  else
-  {
-    // если нет параметра noscript в ссылке, а JS у нас отключен, то его надо добавать
-    // получаем текущую строку запроса
+
+ <noscript> 
+  @{ 
+    // получаем ссылку по которой была открыта страница 
     string url = Context.Request.Path.ToString();
-    // если в строке есть знак вопроса - есть другие параметры в запросе
-    if (url.Contains("?"))
+    // переводим все буквы в прописные
+    url = url.ToLower();
+    //если в ссылке есть параметр noscript в положении 1, то ничего не делаем, сайт и так в режиме работы без JS
+    if (url.Contains("noscript=1"))
     {
-      // добавляем к строке еще один параметр
-      url += "&noscript=1";
+
     }
     else
     {
-      // если нету других параметров(в строке нет ?), добавляем параметр начиная с знака?
-      url += "?noscript=1";
+      // если нет параметра noscript в ссылке, а JS у нас отключен, то его надо добавать
+
+      // если в строке есть знак вопроса - есть другие параметры в запросе
+      if (url.Contains("?"))
+      {
+        // добавляем к строке еще один параметр
+        url += "&noscript=1";
+      }
+      else
+      {
+        // если нету других параметров(в строке нет ?), добавляем параметр начиная с знака?
+        url += "?noscript=1";
+      }
+      // мета тег для автоматического перехода на эту же страницу с параметром noscript
+      <meta http-equiv="refresh" content="0;URL=@url" />
     }
-    // мета тег для автоматического перехода на эту же страницу с параметром noscript
-    <meta http-equiv="refresh" content="0;URL=@url" />
   }
 </noscript>
+
 <div class="jumbotron text-center">
   <h2>@Localizer["AgencyClientManagment"]</h2>
 </div>

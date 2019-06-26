@@ -22,6 +22,7 @@ namespace CurilClever2.Controllers
     }
     public IActionResult Index(int page=1, int noscript = 0)
     {
+      #region учет статистики
       // УЧЕТ СТАТИСТИКИ ПОСЕЩЕНИЯ СТРАНИЦЫ
       // получаем имя пользователя
       string Username = "anonim";
@@ -33,7 +34,7 @@ namespace CurilClever2.Controllers
       db.Visits.Add(visit);
       db.SaveChanges();
       // КОНЕЦ УЧЕТА СТАТИСТИКИ
-
+      #endregion
 
       // если в ссылке стоит параметр noscript  в позиции не 1 (JS включен), то
       if (noscript != 1)
@@ -47,7 +48,7 @@ namespace CurilClever2.Controllers
         // 0. Фиксируем количество элементов на странице
         int pageSize = ClientsOnPage;
         // 1. Получаем данные о всех клиентах (коллекцию клиентов) из базы данных
-        IQueryable<Client> clients = db.Clients;
+        List<Client> clients = db.Clients.ToList();
         // 1.1 Получаем общее количество клиентов
         int count = clients.Count();
         // 2. Получаем обрезанную выборку клиентов для текущей страницы :

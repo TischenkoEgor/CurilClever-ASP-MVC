@@ -49,9 +49,7 @@
             <td>
               @Html.ActionLink("подробно", "Details", "Client", new { id = client.id }, null)
               @Html.ActionLink("Изменить", "EditClient", "Client", new { id = client.id }, null)
-              <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#ClientsBlock"
-                 asp-action="DeleteClient" asp-controller="Client"
-                 asp-route-page="@Model.PageViewModel.PageNumber" asp-route-id="@client.id">Удалить</a>
+              <a asp-action="DeleteClient" asp-controller="Client" asp-route-id="@client.id">Удалить</a>
             </td>
           </tr>
         }
