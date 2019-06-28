@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using CurilClever2.Models;
@@ -72,8 +73,17 @@ namespace CurilClever2.Controllers
     {
       try
       {
-        db.Hotels.Add(hotel);
-        db.SaveChanges();
+        // старый способ через EntityFramework
+        //var xx = db.Hotels.Add(hotel);
+        //db.SaveChanges();
+
+        // строка с запросом
+        string insertquery = "INSERT INTO [Hotels] ([Addres], [Name], [Price], [StarsRate], [X], [Y], [Zoom]) VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6})";
+
+        //у адаптера СУБД SQL Srver вызываем принудительное исполнение SQL запроса с указанными параметрами
+        db.Database.ExecuteSqlCommand(insertquery, hotel.Addres, hotel.Name, hotel.Price, hotel.StarsRate, hotel.X, hotel.Y, hotel.Zoom);
+
+        #region Создание новости
         News news = new News();
         news.TextShort = "добавлен новый отель";
         news.TextFull = "В базу данных добавлен новый отель!Его параметры: <br>";
@@ -93,6 +103,7 @@ namespace CurilClever2.Controllers
         {
           MailSender.SendNewsToSubscribers(news, (List<Subscribe>)x);
         }, db.Subscribes.Include(x => x.User).ToList()).Start();
+        #endregion
 
         return RedirectToAction("Index");
       }
@@ -116,9 +127,13 @@ namespace CurilClever2.Controllers
     [HttpPost]
     public IActionResult EditHotel(Hotel hotel)
     {
-      db.Hotels.Update(hotel);
-      db.SaveChanges();
-      return RedirectToAction("Index");
+      // старый вариант через EntityFramework
+      //db.Hotels.Update(hotel);
+      //db.SaveChanges();
+      string updateQuery = "UPDATE [Hotels] SET [Addres] = {0}, [Name] = {1}, [Price] = {2}, [StarsRate] = {3}, [X] = {4}, [Y] = {5}, [Zoom] = {6} WHERE [id] = {7}";
+      db.Database.ExecuteSqlCommand(updateQuery, hotel.Addres, hotel.Name, hotel.Price, hotel.StarsRate, hotel.X, hotel.Y, hotel.Zoom, hotel.id);
+
+      return RedirectToAction("Details", new { id = hotel.id });
     }
 
     public IActionResult Details(int id)
@@ -146,8 +161,13 @@ namespace CurilClever2.Controllers
         Hotel hotel = db.Hotels.Where(h => h.id == id).FirstOrDefault();
         if (hotel != null)
         {
-          db.Hotels.Remove(hotel);
-          db.SaveChanges();
+          // старый вариант через EntityFramework
+          //db.Hotels.Remove(hotel);
+          //db.SaveChanges();
+          
+           
+          string removeQuery = "DELETE FROM [Hotels] WHERE Id={0}";
+          db.Database.ExecuteSqlCommand(removeQuery, id);
         }
       }
       return RedirectToAction("GetTableOfHotels", new { page = page });
