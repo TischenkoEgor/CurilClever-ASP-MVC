@@ -45,6 +45,7 @@ namespace CurilClever2.Controllers
       VkAuthCallBackUrl = "http://";
       VkAuthCallBackUrl += HttpContext.Request.Host;
       VkAuthCallBackUrl += "/account/vkauth";
+
       ViewData["callbackurl"] = VkAuthCallBackUrl;
       return View();
     }
@@ -55,6 +56,7 @@ namespace CurilClever2.Controllers
       VkAuthCallBackUrl = "http://";
       VkAuthCallBackUrl += HttpContext.Request.Host;
       VkAuthCallBackUrl += "/account/vkauth";
+
       ViewData["callbackurl"] = VkAuthCallBackUrl;
 
       if (ModelState.IsValid)
@@ -74,11 +76,13 @@ namespace CurilClever2.Controllers
     public async Task<IActionResult> VkAuth(string code = "")
     {
       VkAuthCallBackUrl = "http://";
-      VkAuthCallBackUrl += HttpContext.Request.Host;
+      VkAuthCallBackUrl += HttpContext.Request.Host; //название домена, берется из ссылки
       VkAuthCallBackUrl += "/account/vkauth";
 
       string secret_key = "ftOs39sriOsLSZEhTOSd";
-      string API_ID = "7020055";
+      string VkApp_ID = "7020055";
+
+      // переменные для данных от вконтакте
       string access_token = "";
       string expires_in = "";
       int user_id;
@@ -89,23 +93,23 @@ namespace CurilClever2.Controllers
 
       // урл для запроса токена доступа из API Vkontakte 
       string request = "https://oauth.vk.com/access_token";
-      request += "?client_id=" + API_ID;
+      request += "?client_id=" + VkApp_ID;
       request += "&client_secret=" + secret_key;
-      // адрес коллбэка нужен только для того, что бы ВК сравнил его с прошлым каллбэком и убедился что этот запрос делает не верблюд, а мы
+      // адрес коллбэка нужен только для того, что бы ВК сравнил его с прошлым коллбэком 
+      // и убедился что этот запрос делаем мы, а не левый верблюд, который мимо проходил
       request += "&redirect_uri=" + VkAuthCallBackUrl;
       request += "&code=" + code;
 
       // загружаем коментарии в формате JSON
-      var json_string = new WebClient().DownloadString(request);
-      // парсим JSON в объект
-      Rootobject2 data = JsonConvert.DeserializeObject<Rootobject2>(json_string);
+      string json_string = new WebClient().DownloadString(request);
+      // распаковываем JSON в соотвествующий объект
+      VkAccessTokenData data = JsonConvert.DeserializeObject<VkAccessTokenData>(json_string);
+
       // получаем данные из JSON объекта
       access_token = data.access_token;
       expires_in = data.expires_in.ToString();
       user_id = data.user_id;
       email = data.email;
-      
-      int vk_uid;
 
       // проверяем есть ли уже в базе пользователь с такой почтой
       User existuser = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Login == email);
@@ -118,8 +122,8 @@ namespace CurilClever2.Controllers
         return RedirectToAction("Index", "Home");
       }
 
-
-      //получаем остальнгые даные пользователя (имя)
+      // если пользователя с такой почтой нет, то СОЗДАЕМ НоооОВОГО В НАШЕЙ БАЗЕ блэт
+      // получаем остальнгые даные пользователя (имя)
 
       string first_name = "";
       string last_name = "";
@@ -128,8 +132,8 @@ namespace CurilClever2.Controllers
       string api_url = "https://api.vk.com/method/users.get?user_id=" + user_id + "&v=5.59&access_token=" + access_token;
       // загружаем коментарии в формате JSON
       json_string = new WebClient().DownloadString(api_url);
-      // парсим JSON в объект
-      Rootobject json = JsonConvert.DeserializeObject<Rootobject>(json_string);
+      // распаковываем JSON в объект
+      VkusersData json = JsonConvert.DeserializeObject<VkusersData>(json_string);
 
       // получаем данные из JSON объекта
       first_name = json.response[0].first_name;
@@ -141,7 +145,7 @@ namespace CurilClever2.Controllers
         name = first_name + " " + last_name,
         Login = email,
         AccessLevel = 9000,
-        PasswordHash = CryptoHelper.GetMD5(user_id.ToString()),
+        PasswordHash = CryptoHelper.GetMD5("ololololololokek"),
         Role = db.Roles.Where(r => r.Name.Contains("DefaultUser")).FirstOrDefault()
       };
 
