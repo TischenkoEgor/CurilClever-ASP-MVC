@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using reCAPTCHA.AspNetCore;
+using StackExchange.Profiling.Storage;
 
 namespace CurilClever2
 {
@@ -50,6 +51,7 @@ namespace CurilClever2
           options.CheckConsentNeeded = context => true;
           options.MinimumSameSitePolicy = SameSiteMode.None;
         });
+      
       services.Configure<RequestLocalizationOptions>(options =>
       {
         var supportedCultures = new[]
@@ -62,7 +64,25 @@ namespace CurilClever2
         options.SupportedCultures = supportedCultures;
         options.SupportedUICultures = supportedCultures;
       });
+      services.AddMiniProfiler(options =>
+      {
+        // All of this is optional. You can simply call .AddMiniProfiler() for all defaults
 
+        // (Optional) Path to use for profiler URLs, default is /mini-profiler-resources
+        options.RouteBasePath = "/profiler";
+
+        // (Optional) Control storage
+        // (default is 30 minutes in MemoryCacheStorage)
+        (options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(60);
+
+        // (Optional) Control which SQL formatter to use, InlineFormatter is the default
+        options.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
+
+        // (Optional) You can disable "Connection Open()", "Connection Close()" (and async variant) tracking.
+        // (defaults to true, and connection opening/closing is tracked)
+        options.TrackConnectionOpenClose = true;
+      })
+      .AddEntityFramework();
 
       services.AddMvc()
         .AddViewLocalization() // добавляем локализацию представлений
@@ -99,6 +119,8 @@ namespace CurilClever2
       app.UseStaticFiles();
 
       app.UseCookiePolicy();
+
+      app.UseMiniProfiler();
 
       app.UseAuthentication();
 
